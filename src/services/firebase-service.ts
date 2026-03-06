@@ -38,20 +38,20 @@ export function getData<T>(path: string): Promise<T | null> {
   });
 }
 
-export function getReactively(path: string, cb: (data: any) => void) {
+export function getReactively<T>(path: string, cb: (data: T) => void) {
   const theRef = ref(database, path);
 
-  return onValue(theRef, (snapshot: any) => {
-    const data = snapshot.val();
+  return onValue(theRef, (snapshot) => {
+    const data = snapshot.val() as T;
     cb(data);
   });
 }
 
-export function setData(path: string, data: any) {
+export function setData(path: string, data: unknown) {
   return set(ref(database, path), data);
 }
 
-export function updateData(path: string, data: any) {
+export function updateData(path: string, data: object) {
   return update(ref(database, path), data);
 }
 

@@ -21,7 +21,7 @@ export function Pulse() {
     });
     onBlur(() => setCurrentUser({ away: true }));
     onFocus(() => setCurrentUser({ away: false, lastPulseAt: Date.now() }));
-  }, []);
+  }, [setCurrentUser]);
 
   return <></>;
 }

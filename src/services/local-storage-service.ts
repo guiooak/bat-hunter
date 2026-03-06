@@ -1,4 +1,4 @@
-const VALID_LOCAL_STORAGE_KEYS = [
+export const VALID_LOCAL_STORAGE_KEYS = [
   'bh-background-music-muted',
   'bh-user-session',
 ] as const;
@@ -14,7 +14,7 @@ export function getLocalStorageValue(key: ValidLocalStorageKeysType) {
 
 export function setLocalStorageValue(
   key: ValidLocalStorageKeysType,
-  value: any
+  value: unknown
 ) {
   const stringfiedValue = JSON.stringify(value);
   localStorage.setItem(key, stringfiedValue);

@@ -35,10 +35,10 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      _setCurrentUser({
-        ...currentUser,
+      _setCurrentUser((prevCurrentUser) => ({
+        ...prevCurrentUser,
         ...useSessionData,
-      });
+      }));
     },
     []
   );

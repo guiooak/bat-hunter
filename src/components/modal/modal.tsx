@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import clsx from 'clsx';
 import './modal.scss';
 
@@ -18,21 +18,19 @@ export function Modal({
   footer?: React.ReactNode;
   preventOverlayClosing?: boolean;
 }>) {
-  const [eventListenerCallback, setEventListenerCallback] =
-    useState<(e: KeyboardEvent) => void | undefined>();
-
   // Set the keyup event listener to close modal only while it's open
   useEffect(() => {
-    if (open) {
-      const cb = onEscape(onClose);
-      setEventListenerCallback(() => cb);
-      return;
-    }
+    if (!open) return;
 
-    if (eventListenerCallback) {
-      clearOnEscape(eventListenerCallback);
-      setEventListenerCallback(undefined);
-    }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose?.();
+    };
+
+    window.addEventListener('keyup', handleEscape);
+
+    return () => {
+      window.removeEventListener('keyup', handleEscape);
+    };
   }, [open, onClose]);
 
   if (!open) {
@@ -55,18 +53,4 @@ export function Modal({
       </div>
     </div>
   );
-}
-
-function onEscape(cb?: () => void) {
-  function eventListenerCallback(e: KeyboardEvent) {
-    if (e.key === 'Escape') cb?.();
-  }
-
-  window.addEventListener('keyup', eventListenerCallback);
-
-  return eventListenerCallback;
-}
-
-function clearOnEscape(cb: (e: KeyboardEvent) => void) {
-  window.removeEventListener('keyup', cb);
 }

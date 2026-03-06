@@ -37,7 +37,7 @@ export async function createMessageInFirebase({
   try {
     setData(`matches/${matchId}/messages/${data.id}`, data);
     onCreated?.(id);
-  } catch (e) {
+  } catch {
     console.error(
       'createMessageInFirebase::ERROR: it was not possible to store the new message. Try again later.'
     );

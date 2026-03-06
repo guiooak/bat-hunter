@@ -53,17 +53,22 @@ export function createBat(killCallback = () => {}) {
     divStyle.opacity = opacity;
     opacity = '1';
 
-    // eslint-disable-next-line no-multi-assign, prefer-template
-    divStyle.transition = divStyle.webkitTransition =
-      timeout / 1000 + 's linear';
+    interface WebkitCSSStyleDeclaration extends CSSStyleDeclaration {
+      webkitTransition: string;
+      webkitTransform: string;
+    }
 
-    // eslint-disable-next-line no-multi-assign, prefer-template
-    divStyle.transform = divStyle.webkitTransform =
-      'translate(' + x + 'px,' + y + 'px)';
+    (divStyle as WebkitCSSStyleDeclaration).transition = (
+      divStyle as WebkitCSSStyleDeclaration
+    ).webkitTransition = `${timeout / 1000}s linear`;
 
-    // eslint-disable-next-line no-multi-assign, prefer-template
-    image.style.transform = image.style.webkitTransform =
-      windowWidth > x ? '' : 'scaleX(-1)';
+    (divStyle as WebkitCSSStyleDeclaration).transform = (
+      divStyle as WebkitCSSStyleDeclaration
+    ).webkitTransform = `translate(${x}px,${y}px)`;
+
+    (image.style as WebkitCSSStyleDeclaration).transform = (
+      image.style as WebkitCSSStyleDeclaration
+    ).webkitTransform = windowWidth > x ? '' : 'scaleX(-1)';
 
     windowWidth = x;
     windowHeight = y;
