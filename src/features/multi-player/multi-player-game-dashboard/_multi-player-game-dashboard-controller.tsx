@@ -137,7 +137,7 @@ export function MultiPlayerGameDashboardController({
 
   return (
     <section>
-      <Gutter className="text-center" size="lg">
+      <Gutter className="text-center" size="lg" direction="bottom">
         <Text size="xl">
           {handleGameLabel(countdownTime, currentGameModel.label || '')}
         </Text>
