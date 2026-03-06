@@ -3,6 +3,7 @@ import { HomePage } from './pages/home-page';
 import { LoginPage } from './pages/login-page';
 import { MultiPlayerPage } from './pages/multi-player-page';
 import { SinglePlayerPage } from './pages/single-player-page';
+import { MatchesPage } from './pages/matches-page';
 import { Navbar } from './components/navbar';
 import './App.scss';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -34,6 +35,7 @@ export function App() {
                   path="invitation-link/:matchId"
                   element={<InvitationPage />}
                 />
+                <Route path="matches" element={<MatchesPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="logout" element={<LogoutPage />} />
               </Routes>

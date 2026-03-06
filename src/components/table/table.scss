@@ -1,0 +1,26 @@
+.bh-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  & th,
+  & td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  & th {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  & td {
+    font-size: 14px;
+  }
+
+  & tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+}

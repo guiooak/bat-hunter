@@ -50,3 +50,35 @@ export function getUserDataReactivelyFromFirebase(
 ) {
   getReactively('users/' + id, cb);
 }
+
+// -- User Matches --
+
+export type UserMatchType = {
+  matchId: string;
+  hostId: string;
+  hostName: string;
+  guestId: string;
+  guestName: string;
+  createdAt: number;
+};
+
+export function setUserMatchInFirebase(userId: string, match: UserMatchType) {
+  if (!userId || !match?.matchId) {
+    console.error('setUserMatchInFirebase::ERROR: missing userId or matchId');
+    return;
+  }
+
+  updateData(`users/${userId}/matches/${match.matchId}`, match);
+}
+
+export async function getUserMatchesFromFirebase(
+  userId: string
+): Promise<UserMatchType[]> {
+  const data = await getData<Record<string, UserMatchType>>(
+    `users/${userId}/matches`
+  );
+
+  if (!data) return [];
+
+  return Object.values(data);
+}

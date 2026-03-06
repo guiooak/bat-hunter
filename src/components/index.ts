@@ -9,3 +9,4 @@ export * from './title';
 export * from './text';
 export * from './text-area';
 export * from './modal';
+export * from './table';
