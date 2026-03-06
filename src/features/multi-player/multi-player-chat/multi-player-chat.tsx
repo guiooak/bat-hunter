@@ -30,7 +30,7 @@ export function MultiPlayerChat() {
     if (chatOpen) {
       setReadMessagesCounter(messagesArray?.length);
     }
-  }, [chatOpen, messages]);
+  }, [chatOpen, messages, messagesArray.length]);
 
   function saveMessage() {
     setIsSubmitting(true);
