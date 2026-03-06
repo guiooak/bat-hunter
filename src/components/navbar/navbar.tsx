@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router';
 import './navbar.scss';
-import { Avatar } from '@components';
+import { Avatar, DropdownPopover } from '@components';
 import { useAuthContext } from 'src/features/authentication';
 
 export function Navbar() {
@@ -25,16 +25,28 @@ export function Navbar() {
         </NavLink>
       </div>
       <div className="bh-navbar__right">
-        <div className="bh-navbar__greetings">Hi {name}!</div>{' '}
-        <Avatar src={picture} />
         {isValidCurrentUser ? (
-          <NavLink to="/logout">
-            <div>Sign out</div>
-          </NavLink>
+          <DropdownPopover
+            trigger={
+              <div className="bh-navbar__user-info">
+                <div className="bh-navbar__greetings">Hi {name}!</div>
+                <Avatar src={picture} />
+              </div>
+            }
+          >
+            <NavLink to="/matches" className="dropdown-popover__item">
+              Matches
+            </NavLink>
+            <NavLink to="/logout" className="dropdown-popover__item">
+              Sign out
+            </NavLink>
+          </DropdownPopover>
         ) : (
-          <NavLink to="/login">
-            <div>Sign in</div>
-          </NavLink>
+          <div className="bh-navbar__right">
+            <NavLink to="/login">
+              <div>Sign in</div>
+            </NavLink>
+          </div>
         )}
       </div>
     </div>

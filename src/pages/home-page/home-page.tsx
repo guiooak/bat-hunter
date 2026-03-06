@@ -30,10 +30,6 @@ export function HomePage() {
         <NavLink to="/multi-player">
           <Button kind="primary">Play Multi</Button>
         </NavLink>
-        <span style={{ marginLeft: 16 }} />
-        <NavLink to="/matches">
-          <Button kind="tertiary">My Matches</Button>
-        </NavLink>
       </div>
     </div>
   );

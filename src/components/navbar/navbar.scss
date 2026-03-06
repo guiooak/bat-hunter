@@ -7,6 +7,7 @@
   justify-content: space-between;
   background-color: #353535;
   width: 100%;
+  z-index: 2;
 
   & .bh-navbar-logo {
     margin: 8px 12px;
@@ -22,5 +23,11 @@
 
   & .bh-avatar {
     width: 32px;
+  }
+
+  & .bh-navbar__user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 }

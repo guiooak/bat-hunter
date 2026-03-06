@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Button, Table } from 'src/components';
+import { NavLink, useNavigate } from 'react-router';
+import { Button, Gutter, Table, Text, Title } from 'src/components';
 import { useAuthContext } from 'src/features/authentication';
 import {
   getUserMatchesFromFirebase,
@@ -32,36 +32,52 @@ export function MatchesPage() {
   if (loading) {
     return (
       <div className="matches-page">
-        <div className="matches-loading">Loading matches...</div>
+        <Gutter size="xxl" direction="vertical">
+          <Text align="center" secondary block>
+            Loading matches...
+          </Text>
+        </Gutter>
       </div>
     );
   }
 
   return (
     <div className="matches-page">
-      <div className="matches-page-title">My Matches</div>
+      <div className="matches-page-container">
+        <Gutter size="lg" direction="bottom">
+          <Title size="h1">My Matches</Title>
+        </Gutter>
 
-      {matches.length === 0 ? (
-        <div className="matches-empty">No matches found.</div>
-      ) : (
-        <Table headers={['Host', 'Guest', 'Created At', '']}>
-          {matches.map((match) => (
-            <tr key={match.matchId}>
-              <td>{match.hostName}</td>
-              <td>{match.guestName}</td>
-              <td>{new Date(match.createdAt).toLocaleDateString()}</td>
-              <td>
-                <Button
-                  kind="primary"
-                  onClick={() => navigate(`/multi-player/${match.matchId}`)}
-                >
-                  Open
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </Table>
-      )}
+        {matches.length === 0 ? (
+          <Gutter size="xxl" direction="vertical">
+            <Text align="center" secondary block>
+              No matches found.
+            </Text>
+          </Gutter>
+        ) : (
+          <Table headers={['Host', 'Guest', 'Created At', '']}>
+            {matches.map((match) => (
+              <tr key={match.matchId}>
+                <td>{match.hostName}</td>
+                <td>{match.guestName}</td>
+                <td>{new Date(match.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <Button
+                    kind="primary"
+                    onClick={() => navigate(`/multi-player/${match.matchId}`)}
+                  >
+                    Open
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </Table>
+        )}
+
+        <NavLink to="/" className="matches-back-link">
+          ← Home
+        </NavLink>
+      </div>
     </div>
   );
 }

@@ -1,24 +1,22 @@
 .matches-page {
-  padding: 32px;
-  max-width: 900px;
-  margin: 0 auto;
+  min-height: calc(100vh - 50px);
+  cursor: initial;
 
-  & .matches-page-title {
-    font-size: 28px;
-    margin-bottom: 24px;
+  & .matches-page-container {
+    padding: 32px;
+    max-width: 900px;
+    margin: 0 auto;
   }
 
-  & .matches-empty {
-    text-align: center;
-    padding: 64px 0;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 16px;
-  }
+  & .matches-back-link {
+    display: inline-block;
+    margin-top: 64px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
 
-  & .matches-loading {
-    text-align: center;
-    padding: 64px 0;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 16px;
+    &:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
   }
 }
