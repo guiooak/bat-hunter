@@ -55,9 +55,10 @@ export function MatchesPage() {
             </Text>
           </Gutter>
         ) : (
-          <Table headers={['Host', 'Guest', 'Created At', '']}>
-            {matches.map((match) => (
+          <Table headers={['#', 'Host', 'Guest', 'Created At', '']}>
+            {matches.map((match, index) => (
               <tr key={match.matchId}>
+                <td>{index + 1}</td>
                 <td>{match.hostName}</td>
                 <td>{match.guestName}</td>
                 <td>{new Date(match.createdAt).toLocaleDateString()}</td>
