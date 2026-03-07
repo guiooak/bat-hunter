@@ -16,7 +16,7 @@ export function MultiPlayerOpponentDashboardScore({
     <section className="bat-game-score-section">
       <div>
         {opponentName ? (
-          <Title size="h4">{opponentName}'s Score</Title>
+          <Title size="h4">Score</Title>
         ) : (
           <Title size="h4">Loading...</Title>
         )}
