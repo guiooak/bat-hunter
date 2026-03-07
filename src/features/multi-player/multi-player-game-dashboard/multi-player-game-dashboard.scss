@@ -5,6 +5,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  z-index: 1;
+  opacity: 0.9;
 
   .multi-player-game-dashboard__card {
     width: 300px;
