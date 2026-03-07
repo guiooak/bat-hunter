@@ -13,6 +13,16 @@ export type GameStateType =
   | 'GAME_FINISHED'
   | 'GAME_CLOSED';
 
+export const CHALLENGE_STATES = {
+  FREE_PLAY: 'FREE_PLAY',
+  CHALLENGE_READY: 'CHALLENGE_READY',
+  CHALLENGE_IN_PROGRESS: 'CHALLENGE_IN_PROGRESS',
+  CHALLENGE_FINISHED: 'CHALLENGE_FINISHED',
+} as const;
+
+export type ChallengeStateType =
+  (typeof CHALLENGE_STATES)[keyof typeof CHALLENGE_STATES];
+
 export type GameType = {
   id?: string;
   createdAt?: number;

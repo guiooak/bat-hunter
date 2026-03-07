@@ -25,9 +25,9 @@ export function MultiPlayerGameHistoryModal({
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
 
   function retrieveWinnerName(winnerId?: string) {
-    if (winnerId === 'DRAW') return 'Same Score!';
-    if (winnerId === currentUser?.id) return currentUser?.firstName;
-    if (winnerId === opponentUser?.id) return opponentUser?.firstName;
+    if (winnerId === 'DRAW') return 'Same Score! 🤝';
+    if (winnerId === currentUser?.id) return `${currentUser?.firstName} 🎉`;
+    if (winnerId === opponentUser?.id) return `${opponentUser?.firstName} 🎉`;
     return 'N/A';
   }
 
@@ -61,6 +61,7 @@ export function MultiPlayerGameHistoryModal({
         };
       }, init) || init
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gamesArray]);
 
   return (
@@ -100,7 +101,7 @@ export function MultiPlayerGameHistoryModal({
                 <li key={game?.id}>
                   <Gutter direction="bottom" size="xl">
                     <Gap vertical>
-                      <div>Winner: {retrieveWinnerName(game?.winnerId)} 🎉</div>
+                      <div>Winner: {retrieveWinnerName(game?.winnerId)}</div>
                       <div>
                         {currentUser?.firstName}: {currentData.kills} kills |{' '}
                         {currentAccuracy}% accuracy | score: {currentData.score}

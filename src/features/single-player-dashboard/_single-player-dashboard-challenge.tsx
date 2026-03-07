@@ -6,13 +6,7 @@ import {
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
 import { iterate } from 'src/services/iteration-service';
-
-export const CHALLENGE_STATES = {
-  FREE_PLAY: 'FREE_PLAY',
-  CHALLENGE_READY: 'CHALLENGE_READY',
-  CHALLENGE_IN_PROGRESS: 'CHALLENGE_IN_PROGRESS',
-  CHALLENGE_FINISHED: 'CHALLENGE_FINISHED',
-};
+import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 
 function handleGameLabel(countdownTime: number, label: string) {
   const seconds = `${countdownTime}s`;
@@ -29,7 +23,7 @@ function handleGameLabel(countdownTime: number, label: string) {
 }
 
 export function SinglePlayerDashboardChallenge({
-  currentGameStateFull = [CHALLENGE_STATES.FREE_PLAY, () => {}],
+  currentGameStateFull = [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY, () => {}],
   onCreateBat = () => {},
   setIsScoreEnabled = () => {},
   onResetScore = () => {},
@@ -47,27 +41,30 @@ export function SinglePlayerDashboardChallenge({
 
   const GAME_MODE = useMemo(
     () => ({
-      [CHALLENGE_STATES.FREE_PLAY]: {
+      [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY]: {
         label: 'Free Play!',
         onStart: () => {
           onResetScore();
           setIsScoreEnabled(true);
         },
         onChallengeReady: () =>
-          setCurrentGameState(CHALLENGE_STATES.CHALLENGE_READY),
+          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
       },
-      [CHALLENGE_STATES.CHALLENGE_READY]: {
+      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY]: {
         label: 'Get Ready!',
         onStart: () => {
           onResetScore();
           killAllBats();
           setIsScoreEnabled(false);
         },
-        onFreePlay: () => setCurrentGameState(CHALLENGE_STATES.FREE_PLAY),
+        onFreePlay: () =>
+          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
         onChallengeStart: () =>
-          setCurrentGameState(CHALLENGE_STATES.CHALLENGE_IN_PROGRESS),
+          setCurrentGameState(
+            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
+          ),
       },
-      [CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
+      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
         onStart: () => {
           iterate(30, onCreateBat);
           setCountdownTime(COUNTDOWN_TIME_TOTAL);
@@ -78,7 +75,9 @@ export function SinglePlayerDashboardChallenge({
 
           const id = setInterval(() => {
             if (counter <= 0) {
-              setCurrentGameState(CHALLENGE_STATES.CHALLENGE_FINISHED);
+              setCurrentGameState(
+                SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED
+              );
               clearInterval(id);
             }
 
@@ -89,20 +88,24 @@ export function SinglePlayerDashboardChallenge({
           setIntervalId(id);
         },
         onCancel: () =>
-          setCurrentGameState(CHALLENGE_STATES.CHALLENGE_FINISHED),
+          setCurrentGameState(
+            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED
+          ),
       },
-      [CHALLENGE_STATES.CHALLENGE_FINISHED]: {
+      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED]: {
         label: "Time's Up!",
         onStart: () => {
           killAllBats();
           playBackgroundMusic();
           setIsScoreEnabled(false);
         },
-        onFreePlay: () => setCurrentGameState(CHALLENGE_STATES.FREE_PLAY),
+        onFreePlay: () =>
+          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
         onChallengeReady: () =>
-          setCurrentGameState(CHALLENGE_STATES.CHALLENGE_READY),
+          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
       },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -124,7 +127,7 @@ export function SinglePlayerDashboardChallenge({
         {currentGameModel.onCancel && (
           <Button
             onClick={() => {
-              currentGameModel.onCancel();
+              currentGameModel.onCancel?.();
               clearInterval(intervalId);
               setCountdownTime(0);
             }}

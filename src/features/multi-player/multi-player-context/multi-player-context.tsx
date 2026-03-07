@@ -1,10 +1,4 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useAuthContext } from 'src/features/authentication';
 import {
@@ -13,14 +7,7 @@ import {
 } from 'src/models/match-model';
 import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
 import { UserSessionType } from 'src/services/authentication-service';
-
-const MultiPlayerContext = createContext({
-  opponentUser: null,
-  match: undefined,
-} as {
-  opponentUser: UserSessionType | null;
-  match: MatchType | undefined;
-});
+import { MultiPlayerContext } from './_multi-player-context-definition';
 
 export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
   const [opponentUser, setOpponentUser] = useState<UserSessionType | null>(
@@ -58,5 +45,3 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
     </MultiPlayerContext.Provider>
   );
 }
-
-export const useMultiPlayerContext = () => useContext(MultiPlayerContext);

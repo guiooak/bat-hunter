@@ -7,17 +7,15 @@ import {
   killAllBats,
 } from 'src/services/game-service';
 import { createBat } from '@services/fly-engine-service';
-import {
-  SinglePlayerDashboardChallenge,
-  CHALLENGE_STATES,
-} from './_single-player-dashboard-challenge';
+import { SinglePlayerDashboardChallenge } from './_single-player-dashboard-challenge';
 import { Card, Divider, Gutter } from '@components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
 import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
 import { iterate } from 'src/services/iteration-service';
+import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 
-export function counterReducer(state: number, action: string) {
+function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
 }
 
@@ -25,7 +23,9 @@ export function SinglePlayerDashboard() {
   const [isScoreEnabled, setIsScoreEnabled] = useState(true);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
-  const currentGameStateFull = useState(CHALLENGE_STATES.FREE_PLAY);
+  const currentGameStateFull = useState(
+    SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY
+  );
   const [currentGameState] = currentGameStateFull;
 
   const createControlledBat = () =>

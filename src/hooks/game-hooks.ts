@@ -22,8 +22,6 @@ export function useGameCounters({
   match?: MatchType;
   playerKind: 'main' | 'opponent';
 }) {
-  const { currentUser } = useAuthContext();
-
   const currentGame = useMemo(() => findLastGame(match), [match]);
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
 
@@ -42,7 +40,8 @@ export function useGameCounters({
       shotCounter: currentGame?.guestData?.shotCounter || 0,
       killCounter: currentGame?.guestData?.killCounter || 0,
     };
-  }, [match, currentUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match]);
 }
 
 export function useGameCounterTriggers({
@@ -61,6 +60,7 @@ export function useGameCounterTriggers({
         onShot();
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isScoreEnabled]);
 
   return {

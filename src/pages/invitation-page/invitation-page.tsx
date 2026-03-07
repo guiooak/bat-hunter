@@ -39,6 +39,7 @@ export function InvitationPage() {
     if (match?.guestId) {
       navigate(`/multi-player/${matchId}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.guestId]);
 
   const gameHostName = gameHost?.name;

@@ -9,7 +9,7 @@ import { iterate } from 'src/services/iteration-service';
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GameStateType } from 'src/models/game-model';
 
-export const GAME_STATES = {
+const GAME_STATES = {
   GAME_READY: 'GAME_READY',
   GAME_IN_PROGRESS: 'GAME_IN_PROGRESS',
   GAME_FINISHED: 'GAME_FINISHED',
@@ -65,7 +65,7 @@ export function MultiPlayerGameDashboardController({
 
   useEffect(() => {
     onStateChange(currentGameState);
-  }, [currentGameState]);
+  }, [currentGameState, onStateChange]);
 
   const GAME_MODE: Record<GameStateType, GameModeConfigType> = useMemo(
     () => ({
@@ -126,6 +126,7 @@ export function MultiPlayerGameDashboardController({
         },
       },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

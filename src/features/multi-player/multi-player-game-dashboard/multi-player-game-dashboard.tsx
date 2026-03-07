@@ -44,6 +44,7 @@ export function MultiPlayerGameDashboard() {
     if (currentGame?.winnerId && !isGameClosed(currentGame)) {
       finishGameWithWinner(currentGame, match?.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCurrentUserTheHost]);
 
   // Create a new game once there is no unfinished game
@@ -53,6 +54,7 @@ export function MultiPlayerGameDashboard() {
     if (!currentGame) {
       findOrCreateGame(match);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCurrentUserTheHost, currentGame]);
 
   // Save score data in database
@@ -69,6 +71,7 @@ export function MultiPlayerGameDashboard() {
           killCounter,
         },
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shotCounter, killCounter]);
 
   function cleanScore() {
@@ -80,6 +83,7 @@ export function MultiPlayerGameDashboard() {
     if (currentGame?.winnerId && !isGameClosed(currentGame)) {
       setOpenResultModal(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGame?.winnerId, currentGame?.state]);
 
   const onStateChange = (state: GameStateType) => {
