@@ -4,6 +4,8 @@
   top: 75px;
   right: 25px;
   z-index: 1;
+  // Lets the bats show through the boxes
+  opacity: 0.9;
 
   & .status-slot {
     display: flex;

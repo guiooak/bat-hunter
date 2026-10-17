@@ -1,6 +1,6 @@
 import clsx from 'clsx';
+import { KeyboardEvent } from 'react';
 import './text-area.scss';
-import { useRef } from 'react';
 
 export function TextArea({
   placeholder,
@@ -21,24 +21,24 @@ export function TextArea({
   onChange?: (v?: string) => void;
   onReturn?: () => void;
 }) {
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  function onKeyDown(e: { key: string }) {
-    if (e.key === 'Enter') {
-      onReturn?.();
-      setTimeout(() => textareaRef.current?.focus());
-    }
+  // Enter submits; Shift+Enter (or Enter while composing an accent) types a new line
+  function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+    if (!onReturn || e.key !== 'Enter' || e.shiftKey) return;
+    if (e.nativeEvent.isComposing) return;
+
+    e.preventDefault();
+    onReturn();
   }
 
   return (
     <textarea
       className={clsx('bh-text-area', className)}
       placeholder={placeholder}
-      ref={textareaRef}
       readOnly={readOnly}
       disabled={disabled}
       value={value}
       name={name}
-      key={name}
+      id={name}
       onKeyDown={onKeyDown}
       onChange={(e) => onChange?.(e.target.value)}
     />

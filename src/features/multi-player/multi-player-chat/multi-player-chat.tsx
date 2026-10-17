@@ -18,6 +18,7 @@ export function MultiPlayerChat() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [readMessagesCounter, setReadMessagesCounter] = useState(0);
   const [currentMessage, setCurrentMessage] = useState<string | undefined>();
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const messagesArray = useMemo(
     () => buildArray(match?.messages),
@@ -33,12 +34,15 @@ export function MultiPlayerChat() {
     }
   }, [chatOpen, messagesArray.length]);
 
+  const canChat = Boolean(match?.id && currentUser?.id);
+
   function saveMessage() {
     const message = currentMessage?.trim();
 
-    if (!match?.id || !currentUser?.id || !message) return;
+    if (!match?.id || !currentUser?.id || !message || isSubmitting) return;
 
     setIsSubmitting(true);
+    setSendError(null);
     createMessageInFirebase({
       matchId: match.id,
       authorId: currentUser.id,
@@ -50,6 +54,7 @@ export function MultiPlayerChat() {
       })
       .catch((e) => {
         console.error('MultiPlayerChat::Error: Message could not be saved', e);
+        setSendError('Message not sent. Press Enter to try again.');
       })
       .finally(() => setIsSubmitting(false));
   }
@@ -99,14 +104,23 @@ export function MultiPlayerChat() {
         </main>
         <footer>
           <TextArea
-            placeholder="Hit enter to send"
+            placeholder={
+              canChat
+                ? 'Enter to send, Shift+Enter for a new line'
+                : 'Create or join a match to chat'
+            }
             className="chat-input"
             name="chat-input"
-            disabled={isSubmitting}
-            value={trim(currentMessage)}
+            disabled={!canChat}
+            value={currentMessage ?? ''}
             onChange={setCurrentMessage}
             onReturn={saveMessage}
           />
+          {sendError && (
+            <Text block size="xs" className="multi-player-chat__error">
+              {sendError}
+            </Text>
+          )}
         </footer>
       </section>
     </div>
@@ -117,10 +131,6 @@ function scrollTopBottom(container: HTMLElement | null) {
   if (container) {
     container.scrollTop = container?.scrollHeight;
   }
-}
-
-function trim(message?: string) {
-  return message === '\n' ? '' : message;
 }
 
 function ChatMessage({

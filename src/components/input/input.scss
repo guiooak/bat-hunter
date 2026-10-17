@@ -10,7 +10,10 @@
   height: 36px;
   padding: 0 10px;
 
-  &:focus {
+  // The moon border alone marks the focused field (no extra focus ring)
+  &:focus,
+  &:focus-visible {
+    outline: none;
     border-color: var(--bh-moon);
   }
 }

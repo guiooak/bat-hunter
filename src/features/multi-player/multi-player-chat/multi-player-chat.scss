@@ -21,25 +21,31 @@
     letter-spacing: 0.04em;
   }
 
+  // The message list shrinks and scrolls so the input below is never cut off
   .multi-player-chat__collapse {
+    display: flex;
+    flex-direction: column;
     max-height: 0px;
     overflow: hidden;
     transition: max-height 0.2s ease-in-out;
 
     &.open {
-      max-height: 300px;
+      max-height: min(400px, calc(100vh - 160px));
     }
   }
 
   main {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 220px;
     padding: 12px;
     border-top: 1px solid var(--bh-line);
     background-color: var(--bh-night);
-    overflow-y: scroll;
-    max-height: 200px;
+    overflow-y: auto;
   }
 
   footer {
+    flex: none;
     padding: 12px;
     background-color: var(--bh-night);
     border-top: 1px solid var(--bh-line);
@@ -47,6 +53,11 @@
 
   .chat-message {
     width: 100%;
+  }
+
+  .multi-player-chat__error {
+    margin-top: 6px;
+    color: var(--bh-red);
   }
 
   .multi-player-chat__unread {
