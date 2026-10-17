@@ -1,4 +1,5 @@
 import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
+import { Gap } from 'src/components/gap';
 
 type Props = {
   killCounter: number;
@@ -28,14 +29,19 @@ export function SinglePlayerDashboardScore({
             <Text size="xxl">{killCounter}</Text>
           </Gutter>
         </div>
-        <div className="text-center">Final Score: {finalScore}</div>
+        <Gap justify="space-around">
+          <div className="text-center">
+            <div>Final Score</div>
+            <div>{finalScore}</div>
+          </div>
+          <div className="text-center">
+            <div>Accuracy</div>
+            <div>{accuracy}%</div>
+          </div>
+        </Gap>
         <br />
       </div>
       <ButtonGroup flex>
-        <div>
-          <div>Accuracy</div>
-          <div className="text-center">{accuracy}%</div>
-        </div>
         <Button kind="tertiary" disabled={resetDisabled} onClick={onResetScore}>
           Reset
         </Button>

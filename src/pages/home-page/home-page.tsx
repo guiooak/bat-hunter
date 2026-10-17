@@ -25,7 +25,7 @@ export function HomePage() {
         <p className="home-page__tagline">Too many bats, time to drop some.</p>
         <div className="home-page__actions">
           <NavLink to="/single-player">
-            <Button kind="primary">Play Single</Button>
+            <Button kind="secondary">Play Single</Button>
           </NavLink>
           <NavLink to="/multi-player">
             <Button kind="secondary">Play Multi</Button>
