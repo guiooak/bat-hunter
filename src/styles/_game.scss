@@ -1,0 +1,41 @@
+// Touch and pen support for the game pages.
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+// A double tap must shoot twice, not zoom the page
+.single-player-page,
+.multi-player-page {
+  touch-action: manipulation;
+}
+
+.flying-bat {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+
+  & img {
+    display: block;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+
+  // A fingertip is bigger than a cursor: grow the hit area, not the drawing
+  @media (pointer: coarse) {
+    padding: 12px;
+    margin: -12px;
+  }
+}
+
+// Drawn by shot-service where a finger shot
+.touch-shot {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+}

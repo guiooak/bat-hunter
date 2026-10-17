@@ -26,7 +26,7 @@ export function disableBatGame() {
 }
 
 export function setBodyOnClick(cb: ((e: ShotEventType) => void) | null) {
-  bodyEl.onmousedown = cb;
+  bodyEl.onpointerdown = cb;
 }
 
 export function calcAccuracy(shotCounter: number, killCounter: number) {

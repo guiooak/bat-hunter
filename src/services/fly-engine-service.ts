@@ -17,8 +17,8 @@ export function createBat(killCallback = () => {}) {
 
   div.classList.add('flying-bat');
 
-  // Kill bat on click
-  div.onmousedown = () => {
+  // Kill bat on click or tap
+  div.onpointerdown = () => {
     div.remove();
     killCallback();
     playBatSound();

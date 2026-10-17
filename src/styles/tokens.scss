@@ -42,3 +42,10 @@
   --bh-navbar-height: 56px;
   --full-height: calc(100vh - var(--bh-navbar-height));
 }
+
+// On phones 100vh ignores the browser bars, 100dvh follows them
+@supports (height: 100dvh) {
+  :root {
+    --full-height: calc(100dvh - var(--bh-navbar-height));
+  }
+}

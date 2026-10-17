@@ -26,6 +26,23 @@ function buildAimCursor(imgPath: string, position = '32 32') {
 
 export type ShotEventType = { target: EventTarget | null };
 
+const TOUCH_SHOT_DURATION = 150;
+
+// Touch screens have no cursor, so the ring of fire is drawn where the finger
+// landed instead.
+function showTouchShot(x: number, y: number) {
+  const shot = document.createElement('img');
+
+  shot.src = aimImageShotPath;
+  shot.alt = '';
+  shot.className = 'touch-shot';
+  shot.style.left = `${x}px`;
+  shot.style.top = `${y}px`;
+  document.body.appendChild(shot);
+
+  setTimeout(() => shot.remove(), TOUCH_SHOT_DURATION);
+}
+
 export function isShotEnabled(e: ShotEventType) {
   const computedCursor =
     window.getComputedStyle(e.target as Element).cursor ||
@@ -34,12 +51,16 @@ export function isShotEnabled(e: ShotEventType) {
   return computedCursor.includes('aim');
 }
 
-// shot handler
-document.onmousedown = (e) => {
+// shot handler. Pointer events cover mouse, touch and pen.
+document.onpointerdown = (e) => {
   if (!bodyEl.style.cursor) return;
 
   if (isShotEnabled(e)) {
     playShotSound();
+
+    if (e.pointerType !== 'mouse') {
+      showTouchShot(e.clientX, e.clientY);
+    }
   }
 
   bodyEl.style.cursor = getAimCursorShot();
