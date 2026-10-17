@@ -1,22 +1,40 @@
 .login-page {
   display: flex;
   justify-content: center;
-  height: var(--full-height);
-
-  & .login-page__box {
-    margin-top: 300px;
-    text-align: center;
-    z-index: 2;
-
-    & .sign-in-button > div > div {
-      border-radius: 50px;
-      box-shadow: 5px 5px 15px #222;
-    }
-  }
+  align-items: flex-start;
+  min-height: var(--full-height);
+  overflow: hidden;
 
   & .login-page__bg {
     position: fixed;
     height: var(--full-height);
     z-index: 1;
+  }
+
+  & .login-page__box {
+    margin: 120px 16px 48px;
+    padding: 32px 28px;
+    width: min(380px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  & .login-page__symbol {
+    width: 88px;
+    height: 88px;
+  }
+
+  & .login-page__title {
+    margin: 4px 0 0;
+    font-size: 26px;
+  }
+
+  & .login-page__text {
+    margin: 0 0 8px;
+    color: var(--bh-muted);
   }
 }

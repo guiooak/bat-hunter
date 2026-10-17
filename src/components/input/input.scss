@@ -1,10 +1,16 @@
 .bh-input {
-  background-color: #e3e3e3;
+  background-color: var(--bh-field);
+  color: var(--bh-fg);
+  font: inherit;
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: var(--bh-radius);
   outline: none;
-  border: none;
+  border: 1px solid var(--bh-line);
   width: 100%;
-  height: 30px;
-  padding: 0 8px;
+  height: 36px;
+  padding: 0 10px;
+
+  &:focus {
+    border-color: var(--bh-moon);
+  }
 }

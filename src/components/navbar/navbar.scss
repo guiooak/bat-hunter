@@ -1,33 +1,61 @@
 .bh-navbar {
-  height: 50px;
-  max-height: 50px;
-  min-height: 50px;
+  height: var(--bh-navbar-height);
   position: fixed;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  background-color: #353535;
+  gap: 16px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background-color: rgba(22, 12, 28, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--bh-line);
   width: 100%;
   z-index: 2;
 
+  & .bh-navbar__left a {
+    display: flex;
+  }
+
   & .bh-navbar-logo {
-    margin: 8px 12px;
-    height: 36px;
+    height: 34px;
+    width: auto;
+    display: block;
   }
 
   & .bh-navbar__right {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-right: 16px;
   }
 
   & .bh-avatar {
     width: 32px;
+    border: 2px solid var(--bh-line);
   }
 
   & .bh-navbar__user-info {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  & .bh-navbar__greetings {
+    font-family: var(--bh-font-display);
+    font-weight: 600;
+  }
+
+  & .bh-navbar__sign-in {
+    font-family: var(--bh-font-display);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  @media (max-width: 480px) {
+    & .bh-navbar__greetings {
+      display: none;
+    }
   }
 }

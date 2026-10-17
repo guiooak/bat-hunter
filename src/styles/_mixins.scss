@@ -1,0 +1,13 @@
+// Chamfered corners, the same 45° cut used in the BAT HUNTER lettering.
+@mixin chamfer($size: var(--bh-chamfer)) {
+  clip-path: polygon(
+    $size 0,
+    calc(100% - #{$size}) 0,
+    100% $size,
+    100% calc(100% - #{$size}),
+    calc(100% - #{$size}) 100%,
+    $size 100%,
+    0 calc(100% - #{$size}),
+    0 $size
+  );
+}

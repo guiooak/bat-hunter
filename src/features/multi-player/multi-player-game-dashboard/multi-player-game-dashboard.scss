@@ -6,7 +6,6 @@
   display: flex;
   justify-content: center;
   z-index: 1;
-  opacity: 0.9;
   // The wrapper spans the full width only to center the card, so it must not
   // block clicks on what's beside it (e.g. the music toggle).
   pointer-events: none;

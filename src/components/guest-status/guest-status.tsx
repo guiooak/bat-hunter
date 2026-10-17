@@ -9,20 +9,9 @@ export function GuestStatus({
 }) {
   const status = calcStatus(lastPulseAt, away);
 
-  const colors = {
-    online: 'green',
-    away: 'orange',
-    offline: 'red',
-  };
-
-  const currentColor = colors[status];
-
   return (
     <span className="bh-guest-status">
-      <span
-        className="bh-guest-status-circle"
-        style={{ backgroundColor: currentColor }}
-      />
+      <span className={`bh-guest-status-circle ${status}`} />
       <span>{status}</span>
     </span>
   );

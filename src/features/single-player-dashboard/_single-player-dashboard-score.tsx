@@ -34,7 +34,7 @@ export function SinglePlayerDashboardScore({
       <ButtonGroup flex>
         <div>
           <div>Accuracy</div>
-          <div style={{ textAlign: 'center' }}>{accuracy}%</div>
+          <div className="text-center">{accuracy}%</div>
         </div>
         <Button kind="tertiary" disabled={resetDisabled} onClick={onResetScore}>
           Reset

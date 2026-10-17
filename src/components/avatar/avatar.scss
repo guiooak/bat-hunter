@@ -1,4 +1,8 @@
 .bh-avatar {
   width: 120px;
+  aspect-ratio: 1;
+  object-fit: cover;
   border-radius: 50%;
+  border: 3px solid var(--bh-line);
+  box-sizing: border-box;
 }

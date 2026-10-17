@@ -1,5 +1,8 @@
 .bh-title {
   margin: 0;
+  font-family: var(--bh-font-display);
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 h1.bh-title {
   font-size: 30px;
@@ -20,12 +23,13 @@ h4.bh-title {
 .bh-title--center {
   text-align: center;
 }
+// Chakra Petch ships 500–700, so "light" maps to its lightest weight
 .bh-title-weight--light {
-  font-weight: 300;
-}
-.bh-title-weight--medium {
   font-weight: 500;
 }
+.bh-title-weight--medium {
+  font-weight: 600;
+}
 .bh-title-weight--bold {
-  font-weight: 800;
+  font-weight: 700;
 }

@@ -1,5 +1,7 @@
 .bh-guest-status {
-  color: #aaa;
+  color: var(--bh-muted);
+  font-size: 14px;
+  text-transform: capitalize;
 
   & .bh-guest-status-circle {
     display: inline-block;
@@ -7,9 +9,15 @@
     border-radius: 50%;
     width: 8px;
     height: 8px;
+    background-color: var(--bh-offline);
 
-    &:before {
-      content: ' ';
+    &.online {
+      background-color: var(--bh-online);
+      box-shadow: 0 0 6px var(--bh-online);
+    }
+
+    &.away {
+      background-color: var(--bh-away);
     }
   }
 }

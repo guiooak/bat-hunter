@@ -1,0 +1,44 @@
+// Bat Hunter design tokens. Colors and fonts follow the brand manual
+// (brand/index.html). The app is dark only: the whole game happens at night.
+
+:root {
+  color-scheme: dark;
+
+  // Brand palette
+  --bh-night: #160c1c;
+  --bh-plum: #3a1236;
+  --bh-ember: #e8762b;
+  --bh-moon: #f7c873;
+  --bh-red: #e63946;
+  --bh-bone: #f3ede2;
+  --bh-ink: #120b16;
+
+  // Surfaces and text
+  --bh-bg: var(--bh-night);
+  --bh-surface: rgba(30, 18, 38, 0.92);
+  --bh-surface-raised: #2a1a33;
+  --bh-field: #120a17;
+  --bh-line: #3a2a40;
+  --bh-fg: var(--bh-bone);
+  --bh-muted: #b6a7b4;
+  --bh-overlay: rgba(10, 5, 14, 0.8);
+
+  // Status
+  --bh-online: #4ade80;
+  --bh-away: var(--bh-moon);
+  --bh-offline: var(--bh-red);
+
+  // Type
+  --bh-font-display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow',
+    sans-serif;
+  --bh-font-body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+
+  // Shape
+  --bh-radius: 6px;
+  --bh-chamfer: 8px;
+  --bh-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  // Layout
+  --bh-navbar-height: 56px;
+  --full-height: calc(100vh - var(--bh-navbar-height));
+}

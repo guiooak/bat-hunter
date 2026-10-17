@@ -116,8 +116,9 @@ files = [
  ('symbol-mono-light.svg','Símbolo em uma cor, clara'),
  ('symbol-mono-dark.svg','Símbolo em uma cor, escura'),
  ('favicon.svg','Símbolo simplificado para 16 a 48 px'),
+ ('apple-touch-icon.png','Ícone de 180 px para a tela inicial do celular'),
 ]
-file_rows = ''.join(f'<tr><td><a href="logo/{f}" download><code>{f}</code></a></td><td>{d}</td><td><a class="dl" href="logo/{f}" download>Baixar SVG</a></td></tr>' for f,d in files)
+file_rows = ''.join(f'<tr><td><a href="logo/{f}" download><code>{f}</code></a></td><td>{d}</td><td><a class="dl" href="logo/{f}" download>Baixar {f.rsplit('.',1)[1].upper()}</a></td></tr>' for f,d in files)
 
 html = f'''<!doctype html>
 <html lang="pt-BR">
@@ -364,7 +365,7 @@ footer .wrap {{ padding-block: 32px 48px; color: var(--muted); font-size: 14px; 
     <div class="sec-head">
       <span class="eyebrow">07 · Arquivos</span>
       <h2>Baixar a logo</h2>
-      <p>Todos os arquivos são SVG, sem fontes externas, e também ficam na pasta <code>brand/logo</code> do repositório <code>guiooak/bat-hunter</code>. Para mudar algo, edite <code>brand/tools/gen.py</code> e gere tudo de novo.</p>
+      <p>Os arquivos são SVG, sem fontes externas (só o ícone do celular é PNG), e também ficam na pasta <code>brand/logo</code> do repositório <code>guiooak/bat-hunter</code>. Para mudar algo, edite <code>brand/tools/gen.py</code> e gere tudo de novo.</p>
     </div>
     <div class="table-wrap"><table><tbody>{file_rows}</tbody></table></div>
   </div>

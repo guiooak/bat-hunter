@@ -63,9 +63,10 @@ export function MultiPlayerChat() {
           </div>
           <div>
             {!!unreadMessagesCounter && (
-              <span style={{ verticalAlign: 'text-top', fontSize: 12 }}>
-                🔴
-              </span>
+              <span
+                className="multi-player-chat__unread"
+                aria-label="Unread messages"
+              />
             )}
           </div>
         </Gap>
@@ -140,7 +141,7 @@ function ChatMessage({
   const align = self ? 'right' : 'left';
 
   return (
-    <div className="chat-message" style={{ width: '100%' }}>
+    <div className="chat-message">
       <Text block size="sm" align={align}>
         {text}
       </Text>

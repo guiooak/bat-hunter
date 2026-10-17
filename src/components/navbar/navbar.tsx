@@ -2,6 +2,7 @@ import { NavLink } from 'react-router';
 import './navbar.scss';
 import { Avatar, DropdownPopover } from '@components';
 import { useAuthContext } from 'src/features/authentication';
+import logoUrl from '../../../brand/logo/logo-horizontal-dark.svg';
 
 export function Navbar() {
   const { currentUser } = useAuthContext();
@@ -16,12 +17,7 @@ export function Navbar() {
     <div className="bh-navbar">
       <div className="bh-navbar__left">
         <NavLink to="/">
-          <img
-            className="bh-navbar-logo"
-            src="/images/logo.png"
-            alt="BatHunter logo"
-            title="Bat Hunter"
-          />
+          <img className="bh-navbar-logo" src={logoUrl} alt="Bat Hunter" />
         </NavLink>
       </div>
       <div className="bh-navbar__right">
@@ -42,11 +38,9 @@ export function Navbar() {
             </NavLink>
           </DropdownPopover>
         ) : (
-          <div className="bh-navbar__right">
-            <NavLink to="/login">
-              <div>Sign in</div>
-            </NavLink>
-          </div>
+          <NavLink to="/login" className="bh-navbar__sign-in">
+            Sign in
+          </NavLink>
         )}
       </div>
     </div>

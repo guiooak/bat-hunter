@@ -6,7 +6,7 @@
   }
 
   &.bh-text--secondary {
-    color: #ccc;
+    color: var(--bh-muted);
   }
 
   &.bh-text__size--xxs {
@@ -29,12 +29,22 @@
     font-size: 24px;
   }
 
+  // Large sizes show scores and the countdown
+  &.bh-text__size--xl,
+  &.bh-text__size--xxl {
+    font-family: var(--bh-font-display);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
   &.bh-text__size--xl {
     font-size: 32px;
   }
 
   &.bh-text__size--xxl {
     font-size: 64px;
+    color: var(--bh-moon);
   }
 
   &.bh-text__weight--light {

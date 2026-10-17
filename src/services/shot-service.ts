@@ -1,8 +1,11 @@
 import { playShotSound } from './audio-service';
 
-const aimImagePath = '/images/aim.png';
-const aimImageShotPath = '/images/aim-shot.png';
-const aimTargetImagePath = '/images/aim-target.png';
+// Drawn by brand/tools/cursors.py. The originals are still in /images
+// (aim.png, aim-shot.png, aim-target.png, hotspot "30 30") to switch back.
+// isShotEnabled() relies on these paths containing "aim".
+const aimImagePath = '/images/cursor/aim.png';
+const aimImageShotPath = '/images/cursor/aim-shot.png';
+const aimTargetImagePath = '/images/cursor/aim-target.png';
 const bodyEl = document.querySelector('body')!;
 
 export function getAimCursorOverTarget() {
@@ -17,7 +20,7 @@ function getAimCursorShot() {
   return buildAimCursor(aimImageShotPath);
 }
 
-function buildAimCursor(imgPath: string, position = '30 30') {
+function buildAimCursor(imgPath: string, position = '32 32') {
   return `url('${imgPath}') ${position}, auto`;
 }
 

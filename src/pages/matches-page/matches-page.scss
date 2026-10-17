@@ -1,9 +1,9 @@
 .matches-page {
-  min-height: calc(100vh - 50px);
+  min-height: var(--full-height);
   cursor: initial;
 
   & .matches-page-container {
-    padding: 32px;
+    padding: 32px 16px;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -12,11 +12,11 @@
     display: inline-block;
     margin-top: 64px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--bh-muted);
     text-decoration: none;
 
     &:hover {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--bh-moon);
     }
   }
 }

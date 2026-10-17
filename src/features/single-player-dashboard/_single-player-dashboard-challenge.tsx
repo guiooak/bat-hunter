@@ -4,26 +4,12 @@ import {
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
-import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
+import { Button, ButtonGroup, GameClock, Gutter, Title } from '@components';
 import { iterate } from 'src/services/iteration-service';
 import { useCountdown } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 
 const COUNTDOWN_TIME_TOTAL = 60;
-
-function handleGameLabel(countdownTime: number, label: string) {
-  const seconds = `${countdownTime}s`;
-
-  if (countdownTime <= 0) {
-    return label;
-  }
-
-  if (countdownTime <= 10) {
-    return <span style={{ color: '#f05b7b' }}>{seconds}</span>;
-  }
-
-  return seconds;
-}
 
 export function SinglePlayerDashboardChallenge({
   currentGameStateFull = [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY, () => {}],
@@ -118,9 +104,10 @@ export function SinglePlayerDashboardChallenge({
     <section>
       <Title>Game Mode</Title>
       <Gutter className="text-center" size="xxl">
-        <Text size="xl">
-          {handleGameLabel(countdownTime, currentGameModel.label || '')}
-        </Text>
+        <GameClock
+          countdownTime={countdownTime}
+          label={currentGameModel.label}
+        />
       </Gutter>
       <ButtonGroup flex>
         {currentGameModel.onCancel && (

@@ -1,26 +1,52 @@
+@use '../../styles/mixins' as *;
+
 .bh-button {
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border: none;
   height: max-content;
   cursor: pointer;
+  font-family: var(--bh-font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+
+  &:active:not([disabled]) {
+    transform: translateY(1px);
+  }
 
   &.bh-button--primary {
-    border: solid 1px transparent;
-    background-color: #e3e3e3;
-    color: #333;
+    @include chamfer;
+    background-color: var(--bh-moon);
+    color: var(--bh-ink);
+
+    &:hover:not([disabled]) {
+      background-color: #ffd98f;
+    }
   }
 
   &.bh-button--secondary {
-    border: solid 1px #e3e3e3;
-    color: #e3e3e3;
-    background-color: transparent;
+    @include chamfer;
+    background-color: rgba(243, 237, 226, 0.1);
+    color: var(--bh-fg);
+
+    &:hover:not([disabled]) {
+      background-color: rgba(243, 237, 226, 0.18);
+    }
   }
 
   &.bh-button--tertiary {
-    border: none;
     background-color: transparent;
-    color: #e3e3e3;
-    font-weight: 800;
+    color: var(--bh-fg);
+    padding-inline: 8px;
+
+    &:hover:not([disabled]) {
+      color: var(--bh-moon);
+    }
   }
 
   &[disabled] {

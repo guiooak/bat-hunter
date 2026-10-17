@@ -1,19 +1,17 @@
 .bh-modal {
-  // display: flex;
-  // justify-content: center;
-
   position: fixed;
   height: 100vh;
   width: 100vw;
   top: 0px;
   left: 0px;
-  z-index: 2;
-  overflow-y: scroll;
+  z-index: 3;
+  overflow-y: auto;
+  cursor: default;
 
   .bh-modal__overlay {
-    position: relative;
-    background-color: #222;
-    opacity: 0.8;
+    background-color: var(--bh-overlay);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     position: fixed;
     top: 0;
     left: 0;
@@ -24,39 +22,45 @@
 
   .bh-modal__container {
     position: relative;
-    border-radius: 8px;
-    background-color: #353535;
-    color: #e2e2e2;
-    width: 500px;
+    border-radius: var(--bh-radius);
+    border: 1px solid var(--bh-line);
+    background-color: var(--bh-surface-raised);
+    color: var(--bh-fg);
+    box-shadow: var(--bh-shadow);
+    width: min(500px, calc(100vw - 32px));
     z-index: 4;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin: 100px auto;
 
     & header {
-      border-bottom: 1px solid #4e4e4e;
-      padding: 16px;
+      border-bottom: 1px solid var(--bh-line);
+      padding: 16px 48px 16px 20px;
+      font-family: var(--bh-font-display);
+      font-size: 20px;
+      font-weight: 600;
     }
 
     & main {
-      padding: 16px;
+      padding: 20px;
     }
 
     & footer {
-      border-top: 1px solid #4e4e4e;
-      padding: 16px;
+      border-top: 1px solid var(--bh-line);
+      padding: 16px 20px;
     }
 
     .bh-modal__close-button {
       position: absolute;
-      top: 18px;
+      top: 16px;
       right: 16px;
       background-color: transparent;
       border: none;
-      color: #e2e2e2;
+      color: var(--bh-muted);
       font-size: 16px;
       cursor: pointer;
+
+      &:hover {
+        color: var(--bh-moon);
+      }
     }
   }
 }

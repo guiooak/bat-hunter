@@ -11,6 +11,7 @@ Everything is drawn from code, so change the source and regenerate instead of ed
 ```bash
 python3 brand/tools/gen.py           # brand/logo/*.svg
 python3 brand/tools/build_manual.py  # brand/index.html
+python3 brand/tools/cursors.py       # public/images/cursor/*.png (in-game crosshairs)
 ```
 
 Pushing changes under `brand/` to `main` publishes the manual to GitHub Pages (`.github/workflows/pages.yml`).

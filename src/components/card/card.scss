@@ -1,5 +1,9 @@
 .bh-card {
-  background-color: #353535;
-  color: #e2e2e2;
-  border-radius: 8px;
+  background-color: var(--bh-surface);
+  color: var(--bh-fg);
+  border: 1px solid var(--bh-line);
+  border-radius: var(--bh-radius);
+  box-shadow: var(--bh-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }

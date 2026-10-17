@@ -126,6 +126,12 @@ def build(out):
         write(f'logo-horizontal-{theme}.svg', horizontal(theme))
         write(f'logo-stacked-{theme}.svg', stacked(theme))
     write('favicon.svg', favicon())
+    # PNG app icon for iOS home screens (needs rsvg-convert; skipped without it)
+    import shutil, subprocess
+    if shutil.which('rsvg-convert'):
+        icon = favicon().replace('<circle r="40" fill="url(#g)"/>', '<rect x="-50" y="-50" width="100" height="100" fill="#160C1C"/><circle r="40" fill="url(#g)"/>')
+        subprocess.run(['rsvg-convert', '-w', '180', '-h', '180', '-o', os.path.join(out, 'apple-touch-icon.png')],
+                       input=icon.encode(), check=True)
 
 
 if __name__ == '__main__':

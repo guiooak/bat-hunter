@@ -4,7 +4,7 @@ import {
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
-import { Button, ButtonGroup, Gutter, Text } from '@components';
+import { Button, ButtonGroup, GameClock, Gutter } from '@components';
 import { iterate } from 'src/services/iteration-service';
 import { useCountdown, useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
@@ -130,9 +130,10 @@ export function MultiPlayerGameDashboardController({
   return (
     <section>
       <Gutter className="text-center" size="lg" direction="bottom">
-        <Text size="xl">
-          {handleGameLabel(countdownTime, currentGameModel.label || '')}
-        </Text>
+        <GameClock
+          countdownTime={countdownTime}
+          label={currentGameModel.label}
+        />
       </Gutter>
       <ButtonGroup flex>
         {currentGameModel.onCancel && isCurrentUserTheHost && (
@@ -167,18 +168,4 @@ export function MultiPlayerGameDashboardController({
       </ButtonGroup>
     </section>
   );
-}
-
-function handleGameLabel(countdownTime: number, label: string) {
-  const seconds = `${countdownTime}s`;
-
-  if (countdownTime <= 0) {
-    return label;
-  }
-
-  if (countdownTime <= 10) {
-    return <span style={{ color: '#f05b7b' }}>{seconds}</span>;
-  }
-
-  return seconds;
 }
