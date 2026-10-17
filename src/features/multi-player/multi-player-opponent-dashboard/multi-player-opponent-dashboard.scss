@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .multi-player-guest-dashboard {
   width: 230px;
   position: absolute;
@@ -13,5 +15,32 @@
     position: absolute;
     right: 16px;
     top: 16px;
+  }
+
+  .bh-score-chip {
+    display: none;
+  }
+
+  @include phone {
+    // The match setup stays whole, below the player's chip: the link must be
+    // shareable from the phone
+    top: calc(var(--bh-navbar-height) + 96px);
+    left: 8px;
+    right: 8px;
+    width: auto;
+
+    &.multi-player-guest-dashboard--with-match {
+      top: calc(var(--bh-navbar-height) + 8px);
+      left: auto;
+      width: calc(50% - 12px);
+
+      .bh-card {
+        display: none;
+      }
+
+      .bh-score-chip {
+        display: block;
+      }
+    }
   }
 }

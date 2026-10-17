@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .multi-player-main-dashboard {
   width: 230px;
   position: absolute;
@@ -6,4 +8,23 @@
   z-index: 1;
   // Lets the bats show through the boxes
   opacity: 0.9;
+
+  .bh-score-chip {
+    display: none;
+  }
+
+  // Two score chips side by side at the top
+  @include phone {
+    top: calc(var(--bh-navbar-height) + 8px);
+    left: 8px;
+    width: calc(50% - 12px);
+
+    .bh-card {
+      display: none;
+    }
+
+    .bh-score-chip {
+      display: block;
+    }
+  }
 }

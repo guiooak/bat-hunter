@@ -1,6 +1,15 @@
+@use '../../styles/mixins' as *;
+
 .multi-player-page {
   background-image: url(/images/pumpkins-bg.jpg);
   background-size: cover;
   background-attachment: fixed;
   height: var(--full-height);
+
+  @include phone {
+    // iOS does not support fixed backgrounds
+    background-attachment: scroll;
+    background-position: center;
+    --bh-dock-height: 136px;
+  }
 }

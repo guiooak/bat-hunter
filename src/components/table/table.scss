@@ -1,3 +1,9 @@
+.bh-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .bh-table {
   width: 100%;
   border-collapse: collapse;
@@ -19,6 +25,7 @@
   }
 
   & td {
+    white-space: nowrap;
     font-size: 15px;
     font-variant-numeric: tabular-nums;
   }

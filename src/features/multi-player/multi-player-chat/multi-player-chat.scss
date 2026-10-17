@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .multi-player-chat {
   cursor: default;
   border: none;
@@ -66,5 +68,30 @@
     height: 8px;
     border-radius: 50%;
     background-color: var(--bh-red);
+  }
+
+  // A compact button above the game controller; open, it spans the width
+  @include phone {
+    right: 8px;
+    bottom: calc(var(--bh-dock-height, 0px) + 16px);
+    width: 120px;
+    border-bottom: 1px solid var(--bh-line);
+    border-radius: var(--bh-radius);
+
+    header {
+      padding: 10px 14px;
+    }
+
+    &.multi-player-chat--open {
+      left: 8px;
+      width: auto;
+      z-index: 3;
+
+      .multi-player-chat__collapse.open {
+        max-height: calc(
+          var(--full-height) - var(--bh-dock-height, 0px) - 80px
+        );
+      }
+    }
   }
 }

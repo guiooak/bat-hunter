@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as *;
+
 .single-player-dashboard {
   width: 280px;
   position: absolute;
@@ -6,4 +8,15 @@
   z-index: 1;
   // Lets the bats show through the boxes
   opacity: 0.9;
+
+  // Docked at the bottom so the bats keep the screen
+  @include phone {
+    position: fixed;
+    top: auto;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    z-index: 3;
+  }
 }

@@ -29,10 +29,19 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  &:hover &__content {
+  &--open &__content {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+  }
+
+  // Touch screens fire a fake hover on tap, which would fight the toggle
+  @media (hover: hover) {
+    &:hover &__content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
   }
 
   &__item {

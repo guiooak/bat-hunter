@@ -1,6 +1,6 @@
 import './multi-player-main-dashboard.scss';
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Card, Divider, Gutter } from '@components';
+import { Card, Divider, Gutter, ScoreChip } from '@components';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
 import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from '@components/profile-section';
@@ -34,6 +34,12 @@ export function MultiPlayerMainDashboard() {
           <ProfileSection image={currentUser?.picture} name="You" />
         </Gutter>
       </Card>
+      <ScoreChip
+        name="You"
+        killCounter={killCounter}
+        finalScore={finalScore}
+        accuracy={accuracy}
+      />
     </div>
   );
 }

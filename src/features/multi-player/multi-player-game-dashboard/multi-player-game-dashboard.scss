@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .multi-player-game-dashboard {
   position: absolute;
   bottom: 25px;
@@ -16,5 +18,16 @@
     width: 300px;
     z-index: 1;
     pointer-events: auto;
+  }
+
+  @include phone {
+    position: fixed;
+    bottom: 8px;
+    padding: 0 8px;
+
+    .multi-player-game-dashboard__card {
+      width: 100%;
+      max-width: 420px;
+    }
   }
 }

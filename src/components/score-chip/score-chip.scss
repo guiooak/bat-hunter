@@ -1,0 +1,44 @@
+.bh-score-chip {
+  background-color: var(--bh-surface);
+  border: 1px solid var(--bh-line);
+  border-radius: var(--bh-radius);
+  box-shadow: var(--bh-shadow);
+  padding: 8px 12px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+
+  .bh-score-chip__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--bh-muted);
+
+    // The status text does not fit, its dot is enough
+    .bh-guest-status > span:last-child {
+      display: none;
+    }
+
+    .bh-guest-status-circle {
+      margin-right: 0;
+    }
+  }
+
+  .bh-score-chip__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bh-score-chip__kills {
+    font-family: var(--bh-font-display);
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .bh-score-chip__meta {
+    font-size: 12px;
+    color: var(--bh-muted);
+  }
+}

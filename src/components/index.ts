@@ -12,3 +12,5 @@ export * from './modal';
 export * from './table';
 export * from './dropdown-popover';
 export * from './game-clock';
+export * from './game-panel';
+export * from './score-chip';

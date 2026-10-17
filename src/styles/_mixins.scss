@@ -11,3 +11,10 @@
     0 $size
   );
 }
+
+// Phones. Matches the small-screen layout of the game pages.
+@mixin phone {
+  @media (max-width: 640px) {
+    @content;
+  }
+}

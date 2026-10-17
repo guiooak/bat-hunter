@@ -60,7 +60,11 @@ export function MultiPlayerChat() {
   }
 
   return (
-    <div className="multi-player-chat">
+    <div
+      className={clsx('multi-player-chat', {
+        'multi-player-chat--open': chatOpen,
+      })}
+    >
       <header onClick={() => setChatOpen(!chatOpen)}>
         <Gap justify="space-between" align="center">
           <div>

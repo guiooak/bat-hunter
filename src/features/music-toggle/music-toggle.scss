@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as *;
+
 .music-toggle {
   position: fixed;
   bottom: 30px;
@@ -6,5 +8,15 @@
 
   .bh-button {
     font-size: 32px;
+  }
+
+  // Sits above whatever the page docks at the bottom (--bh-dock-height)
+  @include phone {
+    bottom: calc(var(--bh-dock-height, 0px) + 16px);
+    left: 8px;
+
+    .bh-button {
+      font-size: 26px;
+    }
   }
 }

@@ -6,7 +6,7 @@ import {
   killAllBats,
 } from 'src/services/game-service';
 import { SinglePlayerDashboardChallenge } from './_single-player-dashboard-challenge';
-import { Card, Divider, Gutter } from '@components';
+import { Divider, GamePanel, GamePanelStat, Gutter } from '@components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
 import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';
@@ -26,6 +26,8 @@ export function SinglePlayerDashboard() {
     onKill: () => dispatchKillCounter('add'),
   });
 
+  const accuracy = calcAccuracy(shotCounter, killCounter);
+
   function cleanScore() {
     dispatchKillCounter('reset');
     dispatchShotCounter('reset');
@@ -33,11 +35,19 @@ export function SinglePlayerDashboard() {
 
   return (
     <div className="single-player-dashboard">
-      <Card>
+      <GamePanel
+        summary={
+          <>
+            <GamePanelStat label="Kills" value={killCounter} />
+            <GamePanelStat label="Score" value={killCounter * accuracy} />
+            <GamePanelStat label="Accuracy" value={`${accuracy}%`} />
+          </>
+        }
+      >
         <Gutter size="md">
           <SinglePlayerDashboardScore
             killCounter={killCounter}
-            accuracy={calcAccuracy(shotCounter, killCounter)}
+            accuracy={accuracy}
             resetDisabled={currentGameState !== 'FREE_PLAY'}
             sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
               currentGameState
@@ -63,7 +73,7 @@ export function SinglePlayerDashboard() {
             onCleanBats={killAllBats}
           />
         </Gutter>
-      </Card>
+      </GamePanel>
     </div>
   );
 }

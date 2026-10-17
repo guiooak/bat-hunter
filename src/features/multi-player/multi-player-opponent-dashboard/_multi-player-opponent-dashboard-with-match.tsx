@@ -1,5 +1,5 @@
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Divider, Gutter } from '@components';
+import { Card, Divider, Gutter, ScoreChip } from '@components';
 import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
 import { ProfileSection } from '@components/profile-section';
 import { GuestStatus } from 'src/components/guest-status';
@@ -21,30 +21,41 @@ export function MultiPlayerOpponentDashboardWithMatch({
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
   const finalScore = calcFinalScore(shotCounter, killCounter);
+  const firstName = opponentUser?.name?.split(' ')[0];
+  const status = (
+    <GuestStatus
+      lastPulseAt={opponentUser?.lastPulseAt}
+      away={opponentUser?.away}
+    />
+  );
 
   return (
-    <div className="multi-player-guest-dashboard-with-match">
-      <div className="status-slot">
-        <GuestStatus
-          lastPulseAt={opponentUser?.lastPulseAt}
-          away={opponentUser?.away}
-        />
-      </div>
-      <Gutter size="md">
-        <MultiPlayerOpponentDashboardScore
-          opponentName={opponentUser?.name?.split(' ')[0]}
-          killCounter={killCounter}
-          accuracy={accuracy}
-          finalScore={finalScore}
-        />
-      </Gutter>
-      <Divider />
-      <Gutter size="md">
-        <ProfileSection
-          image={opponentUser?.picture}
-          name={opponentUser?.name}
-        />
-      </Gutter>
-    </div>
+    <>
+      <Card className="multi-player-guest-dashboard-with-match">
+        <div className="status-slot">{status}</div>
+        <Gutter size="md">
+          <MultiPlayerOpponentDashboardScore
+            opponentName={firstName}
+            killCounter={killCounter}
+            accuracy={accuracy}
+            finalScore={finalScore}
+          />
+        </Gutter>
+        <Divider />
+        <Gutter size="md">
+          <ProfileSection
+            image={opponentUser?.picture}
+            name={opponentUser?.name}
+          />
+        </Gutter>
+      </Card>
+      <ScoreChip
+        name={firstName}
+        status={status}
+        killCounter={killCounter}
+        finalScore={finalScore}
+        accuracy={accuracy}
+      />
+    </>
   );
 }

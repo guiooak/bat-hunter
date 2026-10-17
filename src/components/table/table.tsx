@@ -13,15 +13,17 @@ export function Table({
   children,
 }: PropsWithChildren<Props>) {
   return (
-    <table className={clsx('bh-table', className)}>
-      <thead>
-        <tr>
-          {headers.map((header) => (
-            <th key={header}>{header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{children}</tbody>
-    </table>
+    <div className="bh-table-scroll">
+      <table className={clsx('bh-table', className)}>
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </div>
   );
 }
