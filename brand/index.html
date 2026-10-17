@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bat Hunter Logo Manual</title>
+<meta name="description" content="Manual da logo do Bat Hunter: conceito, versões, cores, letreiro, área de proteção e usos incorretos.">
+<link rel="icon" href="logo/favicon.svg" type="image/svg+xml">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a night-sky field guide; one dark world, with "daylight" plates where the light versions are shown. */
+:root {
+  --night: #160C1C; --plum: #3A1236; --ember: #E8762B; --moon: #F7C873;
+  --red: #E63946; --bone: #F3EDE2; --ink: #120B16;
+  --bg: #120A17; --surface: #1E1226; --line: #3A2A40; --fg: #F3EDE2; --muted: #B6A7B4;
+  --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+  --body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 17px/1.6 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: 0.01em; }
+h3 { font-size: 15px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+p { margin: 0; max-width: 62ch; }
+code { font-family: var(--mono); font-size: 0.86em; }
+.eyebrow { font: 600 13px/1 var(--display); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ember); }
+
+header.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line);
+  background: radial-gradient(60% 90% at 70% 110%, rgba(232,118,43,.35), transparent 70%), var(--night); }
+.hero .wrap { padding-block: 56px 48px; display: grid; gap: 28px; }
+.hero-logo { width: min(680px, 100%); height: auto; }
+.hero p { color: var(--muted); font-size: 19px; }
+.meta a { color: inherit; text-underline-offset: 3px; }
+.dl, td a { color: var(--moon); text-underline-offset: 3px; }
+footer a { color: var(--fg); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font: 500 13px/1.4 var(--mono); color: var(--muted); }
+
+section { border-bottom: 1px solid var(--line); }
+section .wrap { padding-block: 64px; display: grid; gap: 28px; }
+.sec-head { display: grid; gap: 12px; }
+.sec-head p { color: var(--muted); }
+
+.anatomy { background: var(--surface); border-radius: 6px; padding: 16px; }
+.anatomy svg { width: 100%; height: auto; display: block; max-height: 460px; }
+.anatomy-note { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.anatomy-note div { display: grid; gap: 6px; }
+.anatomy-note strong { font-family: var(--display); font-weight: 600; }
+.anatomy-note span { color: var(--muted); font-size: 15px; }
+
+.versions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.plate { margin: 0; display: grid; gap: 10px; }
+.plate .art { border-radius: 6px; padding: 32px 24px; display: grid; place-items: center; min-height: 200px; }
+.plate .art svg { width: 100%; height: auto; max-height: 150px; }
+.plate .art.square svg { max-height: 140px; width: auto; }
+.plate figcaption { font-size: 15px; color: var(--muted); }
+.plate figcaption b { color: var(--fg); font-weight: 600; display: block; }
+.on-night { background: var(--night); outline: 1px solid var(--line); outline-offset: -1px; }
+.on-bone { background: var(--bone); }
+.on-ember { background: var(--ember); }
+.on-moon { background: var(--moon); }
+.wide { grid-column: 1 / -1; }
+
+.swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+.swatch { display: grid; gap: 4px; }
+.chip { aspect-ratio: 4 / 3; border-radius: 6px; outline: 1px solid rgba(243,237,226,.12); outline-offset: -1px; margin-bottom: 6px; }
+.sw-name { font: 600 16px/1.2 var(--display); }
+.sw-hex { color: var(--fg); }
+.sw-rgb, .sw-use { font-size: 14px; color: var(--muted); }
+.sw-rgb { font-family: var(--mono); font-size: 12px; }
+.ratio { display: flex; height: 18px; border-radius: 4px; overflow: hidden; max-width: 640px; }
+.ratio span { display: block; }
+
+.type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; align-items: start; }
+.alphabet { list-style: none; margin: 0; padding: 20px; display: flex; flex-wrap: wrap; gap: 14px; background: var(--surface); border-radius: 6px; color: var(--fg); }
+.alphabet .lettering { width: 100%; height: auto; display: block; }
+.specs { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 8px 20px; font-size: 15px; }
+.specs dt { font: 500 12px/1.9 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.specs dd { margin: 0; }
+.ui-sample { display: grid; gap: 6px; padding: 20px; border: 1px solid var(--line); border-radius: 6px; }
+.ui-sample .d { font: 700 30px/1.1 var(--display); }
+.ui-sample .b { color: var(--muted); }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: center; }
+.rules svg { width: 100%; height: auto; }
+.minsizes { display: flex; flex-wrap: wrap; gap: 28px; align-items: end; }
+.minsizes figure { margin: 0; display: grid; gap: 8px; justify-items: start; }
+.minsizes figcaption { font: 500 12px/1.4 var(--mono); color: var(--muted); }
+
+.donts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.dont { margin: 0; display: grid; gap: 10px; }
+.dont-art { position: relative; border-radius: 6px; height: 150px; display: grid; place-items: center; overflow: hidden; outline: 1px solid var(--line); outline-offset: -1px; }
+.dont-inner { width: 78%; }
+.dont-inner svg { width: 100%; height: auto; display: block; }
+.dont-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - 1.5px), rgba(230,57,70,.9) calc(50% - 1.5px), rgba(230,57,70,.9) calc(50% + 1.5px), transparent calc(50% + 1.5px)); pointer-events: none; }
+.dont figcaption { font-size: 15px; display: flex; gap: 8px; align-items: baseline; }
+.dont .x { color: var(--red); font-weight: 700; }
+
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+td { padding: 12px 16px 12px 0; border-top: 1px solid var(--line); vertical-align: top; }
+td:first-child { white-space: nowrap; color: var(--moon); }
+footer .wrap { padding-block: 32px 48px; color: var(--muted); font-size: 14px; }
+@media (max-width: 520px) { body { font-size: 16px; } section .wrap { padding-block: 48px; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Manual da marca · v1.0</span>
+    <svg class="hero-logo" role="img" aria-label="Logo Bat Hunter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-6" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-6"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-6"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-6)"/>
+  <g clip-path="url(#disc-6)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-6)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+
+    <p>A marca de um jogo de mira numa noite de Halloween: a lua crescente vista pela luneta, com o morcego travado no centro do alvo. Este manual mostra como usar a logo do Bat Hunter sem perder esse recorte.</p>
+    <div class="meta"><a href="https://bat-hunter-game.web.app">bat-hunter-game.web.app</a><a href="#arquivos">Baixar arquivos</a><span>Outubro de 2026</span></div>
+  </div>
+</header>
+
+<section id="conceito">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">01 · Conceito</span>
+      <h2>Um alvo, uma lua, uma noite</h2>
+      <p>O símbolo reúne o que o jogador vê na tela: o céu, o morcego em voo e a mira do cursor. As pontas das asas tocam o anel de propósito. É o instante do tiro, com o alvo travado.</p>
+    </div>
+    <div class="anatomy"><svg role="img" aria-label="Anatomia do símbolo" xmlns="http://www.w3.org/2000/svg" viewBox="-120 -62 240 124">
+  <g transform="translate(0 0)">
+  <defs>
+    <radialGradient id="sky-7" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-7"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-7"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-7)"/>
+  <g clip-path="url(#disc-7)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-7)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g>
+  <g fill="none" stroke="var(--muted)" stroke-width="0.5">
+    <path d="M13,-28 L52,-46 L70,-46"/>
+    <path d="M30,8 L58,20 L70,20"/>
+    <path d="M-40,0 L-70,0"/>
+    <path d="M0,24 L-52,46 L-70,46"/>
+  </g>
+  <g fill="var(--fg)" font-family="'Chakra Petch', sans-serif" font-size="6.2" font-weight="600" letter-spacing="0.6">
+    <text x="72" y="-44">LUA CRESCENTE</text>
+    <text x="72" y="22">ALVO</text>
+    <text x="-72" y="2" text-anchor="end">MIRA</text>
+    <text x="-72" y="48" text-anchor="end">BRILHO DA NOITE</text>
+  </g>
+  <g fill="var(--muted)" font-family="'Barlow', sans-serif" font-size="4.6">
+    <text x="72" y="-37">o tempo do jogo</text>
+    <text x="72" y="29">morcego travado no centro</text>
+    <text x="-72" y="9" text-anchor="end">anel + 4 marcas</text>
+    <text x="-72" y="55" text-anchor="end">laranja sob o morcego</text>
+  </g>
+</svg>
+</div>
+    <div class="anatomy-note">
+      <div><strong>Mira</strong><span>Anel e quatro marcas em vermelho Mira. É o mesmo desenho do cursor do jogo.</span></div>
+      <div><strong>Morcego</strong><span>Silhueta desenhada sob medida, com punho e dedos da asa à mostra, para não lembrar emblemas de super-herói.</span></div>
+      <div><strong>Lua crescente</strong><span>Sempre no quadrante superior direito, sem tocar o morcego.</span></div>
+      <div><strong>Brilho da noite</strong><span>Degradê radial de Brasa para Ameixa, mais forte atrás do morcego para recortar a silhueta.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="versoes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">02 · Versões</span>
+      <h2>Assinaturas</h2>
+      <p>A assinatura horizontal é a principal. Use a vertical quando o espaço for mais alto do que largo, e o símbolo sozinho quando o nome já estiver por perto, como no ícone do app ou num avatar.</p>
+    </div>
+    <div class="versions">
+      <figure class="plate wide"><div class="art on-night"><svg role="img" aria-label="Assinatura horizontal para fundo escuro" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-8" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-8"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-8"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-8)"/>
+  <g clip-path="url(#disc-8)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-8)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+        <figcaption><b>Horizontal · fundo escuro</b>Versão principal. Navbar, telas do jogo, redes sociais.</figcaption></figure>
+      <figure class="plate wide"><div class="art on-bone"><svg role="img" aria-label="Assinatura horizontal para fundo claro" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-9" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-9"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-9"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-9)"/>
+  <g clip-path="url(#disc-9)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-9)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#C2410C" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#C2410C" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#C2410C" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+        <figcaption><b>Horizontal · fundo claro</b>“BAT” muda para um laranja mais escuro e o texto para Tinta, mantendo o contraste.</figcaption></figure>
+      <figure class="plate"><div class="art on-night square"><svg role="img" aria-label="Assinatura vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160.30 132"><g transform="translate(80.15 50)">
+  <defs>
+    <radialGradient id="sky-10" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-10"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-10"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-10)"/>
+  <g clip-path="url(#disc-10)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-10)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(0.00 112) scale(1.0)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+        <figcaption><b>Vertical</b>Tela inicial, cartazes, splash screen.</figcaption></figure>
+      <figure class="plate"><div class="art on-night square"><svg role="img" aria-label="Símbolo" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+  <defs>
+    <radialGradient id="sky-11" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-11"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-11"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-11)"/>
+  <g clip-path="url(#disc-11)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-11)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g>
+</svg>
+</div>
+        <figcaption><b>Símbolo</b>Ícone do app, avatar, marca d’água.</figcaption></figure>
+      <figure class="plate"><div class="art on-bone square"><svg role="img" aria-label="Favicon" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+  <defs><radialGradient id="g-12" cx="0.5" cy="0.55" r="0.6"><stop offset="0" stop-color="#E8762B"/><stop offset="1" stop-color="#3A1236"/></radialGradient></defs>
+  <circle r="40" fill="url(#g-12)"/>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 3) scale(0.86)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="7"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(0)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(90)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(180)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(270)"/></g>
+</svg>
+</div>
+        <figcaption><b>Favicon</b>Sem a lua e com a mira mais grossa, para continuar legível entre 16 e 48 px.</figcaption></figure>
+      <figure class="plate"><div class="art on-ember"><svg role="img" aria-label="Versão em uma cor clara" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <mask id="crescent-mono-light-13"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+  </defs>
+  <circle cx="13" cy="-20" r="13" fill="#F3EDE2" mask="url(#crescent-mono-light-13)"/>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#F3EDE2" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#F3EDE2"><circle r="40" fill="none" stroke="#F3EDE2" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F3EDE2" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+        <figcaption><b>Uma cor · clara</b>Sobre Brasa, fotos escurecidas ou impressão em uma cor.</figcaption></figure>
+      <figure class="plate"><div class="art on-moon"><svg role="img" aria-label="Versão em uma cor escura" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <mask id="crescent-mono-dark-14"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+  </defs>
+  <circle cx="13" cy="-20" r="13" fill="#120B16" mask="url(#crescent-mono-dark-14)"/>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#120B16"><circle r="40" fill="none" stroke="#120B16" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#120B16" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+        <figcaption><b>Uma cor · escura</b>Sobre Lua, Osso ou fundos claros coloridos.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="cores">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">03 · Cores</span>
+      <h2>A paleta da noite</h2>
+      <p>Sete cores tiradas do cenário do jogo. Noite domina a composição. Brasa e Lua aquecem. Mira aparece pouco e só onde há ação.</p>
+    </div>
+    <ul class="swatches"><li class="swatch">
+  <span class="chip" style="background:#160C1C"></span>
+  <span class="sw-name">Noite</span>
+  <code class="sw-hex">#160C1C</code>
+  <span class="sw-rgb">RGB 22, 12, 28</span>
+  <span class="sw-use">Fundo principal, telas do jogo</span></li><li class="swatch">
+  <span class="chip" style="background:#3A1236"></span>
+  <span class="sw-name">Ameixa</span>
+  <code class="sw-hex">#3A1236</code>
+  <span class="sw-rgb">RGB 58, 18, 54</span>
+  <span class="sw-use">Borda do céu no símbolo, superfícies</span></li><li class="swatch">
+  <span class="chip" style="background:#E8762B"></span>
+  <span class="sw-name">Brasa</span>
+  <code class="sw-hex">#E8762B</code>
+  <span class="sw-rgb">RGB 232, 118, 43</span>
+  <span class="sw-use">Brilho do céu, destaques quentes</span></li><li class="swatch">
+  <span class="chip" style="background:#F7C873"></span>
+  <span class="sw-name">Lua</span>
+  <code class="sw-hex">#F7C873</code>
+  <span class="sw-rgb">RGB 247, 200, 115</span>
+  <span class="sw-use">Lua e “BAT” no fundo escuro</span></li><li class="swatch">
+  <span class="chip" style="background:#E63946"></span>
+  <span class="sw-name">Mira</span>
+  <code class="sw-hex">#E63946</code>
+  <span class="sw-rgb">RGB 230, 57, 70</span>
+  <span class="sw-use">Anel e marcas da mira, alertas do jogo</span></li><li class="swatch">
+  <span class="chip" style="background:#F3EDE2"></span>
+  <span class="sw-name">Osso</span>
+  <code class="sw-hex">#F3EDE2</code>
+  <span class="sw-rgb">RGB 243, 237, 226</span>
+  <span class="sw-use">Texto sobre fundo escuro, fundo claro</span></li><li class="swatch">
+  <span class="chip" style="background:#120B16"></span>
+  <span class="sw-name">Tinta</span>
+  <code class="sw-hex">#120B16</code>
+  <span class="sw-rgb">RGB 18, 11, 22</span>
+  <span class="sw-use">Morcego, texto sobre fundo claro</span></li></ul>
+    <h3>Proporção de uso</h3>
+    <div class="ratio" role="img" aria-label="Noite 60%, Ameixa 15%, Osso 12%, Brasa 6%, Lua 4%, Mira 3%">
+      <span style="flex:60;background:var(--night);outline:1px solid var(--line)"></span><span style="flex:15;background:var(--plum)"></span><span style="flex:12;background:var(--bone)"></span><span style="flex:6;background:var(--ember)"></span><span style="flex:4;background:var(--moon)"></span><span style="flex:3;background:var(--red)"></span>
+    </div>
+    <p style="color:var(--muted);font-size:15px">Noite 60% · Ameixa 15% · Osso 12% · Brasa 6% · Lua 4% · Mira 3%</p>
+  </div>
+</section>
+
+<section id="tipografia">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">04 · Tipografia</span>
+      <h2>Letreiro desenhado, não digitado</h2>
+      <p>“BAT HUNTER” é um desenho geométrico próprio, com cantos chanfrados que lembram placas de metal e miras. Não existe como fonte: use sempre os arquivos da assinatura e nunca redigite o nome.</p>
+    </div>
+    <div class="type-grid">
+      <div style="display:grid;gap:16px">
+        <h3>Letreiro</h3>
+        <div class="alphabet"><svg class="lettering" role="img" aria-label="Letreiro BAT HUNTER" xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 166.30 26"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/>
+</svg>
+</div>
+        <dl class="specs">
+          <dt>Altura</dt><dd>20 unidades, com haste de 4,6</dd>
+          <dt>Chanfro</dt><dd>3,2 unidades a 45°, só nos cantos externos</dd>
+          <dt>Espaço</dt><dd>2,6 entre letras e 7 entre palavras</dd>
+        </dl>
+      </div>
+      <div style="display:grid;gap:16px">
+        <h3>Fontes de apoio</h3>
+        <div class="ui-sample"><span class="d">Chakra Petch</span><span class="b">Títulos, placares e botões. Os mesmos chanfros do letreiro. Google Fonts, licença OFL.</span></div>
+        <div class="ui-sample"><span class="d" style="font-family:var(--body);font-weight:600">Barlow</span><span class="b">Textos corridos, chat e instruções. Google Fonts, licença OFL.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="regras">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">05 · Área de proteção e tamanho mínimo</span>
+      <h2>Espaço para respirar</h2>
+      <p>A medida <b>x</b> é a altura das letras do letreiro na assinatura. Mantenha pelo menos x livre em volta de toda a logo, sem texto, bordas ou outros elementos.</p>
+    </div>
+    <div class="rules">
+      <div class="anatomy"><svg role="img" aria-label="Área de proteção da assinatura horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="-35 -35 418.43 170">
+  <rect x="-29" y="-29" width="406.43" height="158" fill="none" stroke="var(--ember)" stroke-dasharray="3 2" stroke-width="0.8"/>
+  <rect x="0" y="0" width="348.43" height="100" fill="none" stroke="var(--muted)" stroke-width="0.5"/>
+  <g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-16" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-16"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-16"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-16)"/>
+  <g clip-path="url(#disc-16)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-16)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+
+  <g fill="var(--ember)" font-family="'Chakra Petch', sans-serif" font-size="11" font-weight="700" text-anchor="middle">
+    <text x="174.215" y="-10.5">x</text><text x="174.215" y="118.5">x</text>
+    <text x="-14.5" y="54">x</text><text x="362.93" y="54">x</text>
+  </g>
+</svg>
+</div>
+      <div style="display:grid;gap:20px">
+        <h3>Tamanho mínimo</h3>
+        <div class="minsizes">
+          <figure><svg style="width:120px;height:auto" role="img" aria-label="Assinatura a 120 px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-17" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-17"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-17"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-17)"/>
+  <g clip-path="url(#disc-17)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-17)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+<figcaption>Horizontal · 120 px / 30 mm</figcaption></figure>
+          <figure><svg style="width:64px;height:auto" role="img" aria-label="Vertical a 64 px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160.30 132"><g transform="translate(80.15 50)">
+  <defs>
+    <radialGradient id="sky-18" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-18"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-18"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-18)"/>
+  <g clip-path="url(#disc-18)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-18)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(0.00 112) scale(1.0)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+<figcaption>Vertical · 64 px</figcaption></figure>
+          <figure><svg style="width:32px;height:32px" role="img" aria-label="Símbolo a 32 px" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+  <defs>
+    <radialGradient id="sky-19" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-19"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-19"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-19)"/>
+  <g clip-path="url(#disc-19)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-19)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g>
+</svg>
+<figcaption>Símbolo · 32 px</figcaption></figure>
+          <figure><svg style="width:16px;height:16px" role="img" aria-label="Favicon a 16 px" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+  <defs><radialGradient id="g-20" cx="0.5" cy="0.55" r="0.6"><stop offset="0" stop-color="#E8762B"/><stop offset="1" stop-color="#3A1236"/></radialGradient></defs>
+  <circle r="40" fill="url(#g-20)"/>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 3) scale(0.86)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="7"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(0)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(90)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(180)"/><rect x="-3.5" y="-50" width="7" height="17" transform="rotate(270)"/></g>
+</svg>
+<figcaption>Favicon · 16 px</figcaption></figure>
+        </div>
+        <p style="color:var(--muted);font-size:15px">Abaixo de 32 px, troque o símbolo pelo favicon: a lua e os dedos da asa somem em tamanhos pequenos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nao-faca">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">06 · Usos incorretos</span>
+      <h2>O que não fazer</h2>
+      <p>A logo só funciona com a proporção, as cores e as peças originais. Qualquer ajuste começa pelos arquivos de <code>brand/</code>.</p>
+    </div>
+    <div class="donts"><figure class="dont">
+      <div class="dont-art" style="background:var(--night)">
+        <div class="dont-inner" style="transform:scaleX(1.45) scaleY(0.75)"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-0" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-0"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-0"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-0)"/>
+  <g clip-path="url(#disc-0)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-0)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Distorcer ou achatar a proporção.</figcaption>
+    </figure><figure class="dont">
+      <div class="dont-art" style="background:var(--night)">
+        <div class="dont-inner" style="transform:rotate(-12deg)"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-1" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-1"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-1"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-1)"/>
+  <g clip-path="url(#disc-1)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-1)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Girar ou inclinar a assinatura.</figcaption>
+    </figure><figure class="dont">
+      <div class="dont-art" style="background:var(--night)">
+        <div class="dont-inner" style="transform:"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-2" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-2"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-2"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-2)"/>
+  <g clip-path="url(#disc-2)">
+    <circle cx="13" cy="-20" r="13" fill="#22C55E" mask="url(#crescent-2)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#3B82F6"><circle r="40" fill="none" stroke="#3B82F6" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#22C55E" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#22C55E" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#22C55E" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Trocar as cores da mira ou da lua.</figcaption>
+    </figure><figure class="dont">
+      <div class="dont-art" style="background:var(--night)">
+        <div class="dont-inner" style="transform:"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-3" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-3"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-3"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-3)"/>
+  <g clip-path="url(#disc-3)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-3)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  </g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Remover ou separar a mira do morcego.</figcaption>
+    </figure><figure class="dont">
+      <div class="dont-art" style="background:repeating-linear-gradient(45deg,#E8762B 0 10px,#F7C873 10px 20px,#3A1236 20px 30px)">
+        <div class="dont-inner" style="transform:"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <radialGradient id="sky-4" cx="0.5" cy="0.6" r="0.62">
+      <stop offset="0" stop-color="#E8762B"/>
+      <stop offset="0.55" stop-color="#9C3B2E"/>
+      <stop offset="1" stop-color="#3A1236"/>
+    </radialGradient>
+    <mask id="crescent-4"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+    <clipPath id="disc-4"><circle r="40"/></clipPath>
+  </defs>
+  <circle r="40" fill="url(#sky-4)"/>
+  <g clip-path="url(#disc-4)">
+    <circle cx="13" cy="-20" r="13" fill="#F7C873" mask="url(#crescent-4)"/>
+  </g>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#E63946"><circle r="40" fill="none" stroke="#E63946" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#F7C873" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#F7C873" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#F3EDE2" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Usar sobre fotos ou fundos com muito detalhe.</figcaption>
+    </figure><figure class="dont">
+      <div class="dont-art" style="background:var(--night)">
+        <div class="dont-inner" style="transform:"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.43 100"><g transform="translate(50 50)">
+  <defs>
+    <mask id="crescent-mono-dark-5"><rect x="-50" y="-50" width="100" height="100" fill="#fff"/><circle cx="19.5" cy="-26" r="11.5" fill="#000"/></mask>
+  </defs>
+  <circle cx="13" cy="-20" r="13" fill="#120B16" mask="url(#crescent-mono-dark-5)"/>
+  <path d="M0,-9 C1.5,-9 2.4,-11.5 3.3,-14.5 C4.6,-12.5 4.9,-9.6 4.4,-7.6 C5.6,-6.6 7.1,-6.2 8.6,-6.8 C12.5,-9.5 16.5,-13.5 20.5,-17 C28,-15.5 38,-12 47,-6 C42.5,-5.5 38.5,-2.5 37,2 C33,-1 28.5,-0.5 26.2,4.4 C22.2,0.6 17.4,1 15.2,6.6 C12.2,3.8 9.3,3.6 7.6,6.4 C6.3,9.2 3.6,11.4 1.8,12.8 C1.1,13.6 0.5,14.6 0,15.6 C-0.5,14.6 -1.1,13.6 -1.8,12.8 C-3.6,11.4 -6.3,9.2 -7.6,6.4 C-9.3,3.6 -12.2,3.8 -15.2,6.6 C-17.4,1 -22.2,0.6 -26.2,4.4 C-28.5,-0.5 -33,-1 -37,2 C-38.5,-2.5 -42.5,-5.5 -47,-6 C-38,-12 -28,-15.5 -20.5,-17 C-16.5,-13.5 -12.5,-9.5 -8.6,-6.8 C-7.1,-6.2 -5.6,-6.6 -4.4,-7.6 C-4.9,-9.6 -4.6,-12.5 -3.3,-14.5 C-2.4,-11.5 -1.5,-9 0,-9 Z" fill="#120B16" transform="translate(0 9) scale(0.78)"/>
+  <g fill="#120B16"><circle r="40" fill="none" stroke="#120B16" stroke-width="4"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(0)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(90)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(180)"/><rect x="-2.0" y="-50" width="4" height="15" transform="rotate(270)"/></g></g><g transform="translate(116 35.50) scale(1.45)"><path fill="#120B16" fill-rule="evenodd" d="M0.00,0.00 L11.80,0.00 L15.00,3.20 L15.00,8.40 L13.40,10.00 L15.00,11.60 L15.00,16.80 L11.80,20.00 L0.00,20.00 Z M4.60,4.60 L10.40,4.60 L10.40,7.70 L4.60,7.70 Z M4.60,12.30 L10.40,12.30 L10.40,15.40 L4.60,15.40 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M17.60,20.00 L17.60,4.20 L21.80,0.00 L28.90,0.00 L33.10,4.20 L33.10,20.00 L28.50,20.00 L28.50,13.20 L22.20,13.20 L22.20,20.00 Z M22.20,4.60 L28.50,4.60 L28.50,8.60 L22.20,8.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M35.70,0.00 L50.20,0.00 L50.20,4.60 L45.25,4.60 L45.25,20.00 L40.65,20.00 L40.65,4.60 L35.70,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M59.80,0.00 L64.40,0.00 L64.40,7.70 L70.20,7.70 L70.20,0.00 L74.80,0.00 L74.80,20.00 L70.20,20.00 L70.20,12.30 L64.40,12.30 L64.40,20.00 L59.80,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M77.40,0.00 L82.00,0.00 L82.00,15.40 L87.80,15.40 L87.80,0.00 L92.40,0.00 L92.40,16.80 L89.20,20.00 L80.60,20.00 L77.40,16.80 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M95.00,0.00 L100.20,0.00 L105.40,11.20 L105.40,0.00 L110.00,0.00 L110.00,20.00 L104.80,20.00 L99.60,8.80 L99.60,20.00 L95.00,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M112.60,0.00 L127.10,0.00 L127.10,4.60 L122.15,4.60 L122.15,20.00 L117.55,20.00 L117.55,4.60 L112.60,4.60 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M129.70,0.00 L142.70,0.00 L142.70,4.60 L134.30,4.60 L134.30,7.70 L141.30,7.70 L141.30,12.30 L134.30,12.30 L134.30,15.40 L142.70,15.40 L142.70,20.00 L129.70,20.00 Z"/>
+  <path fill="#120B16" fill-rule="evenodd" d="M145.30,0.00 L157.10,0.00 L160.30,3.20 L160.30,9.60 L157.90,12.10 L160.30,20.00 L155.30,20.00 L153.10,12.60 L149.90,12.60 L149.90,20.00 L145.30,20.00 Z M149.90,4.60 L155.70,4.60 L155.70,8.00 L149.90,8.00 Z"/></g>
+</svg>
+</div>
+      </div>
+      <figcaption><span class="x" aria-hidden="true">✕</span>Aplicar a versão escura sobre fundo escuro.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+<section id="arquivos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">07 · Arquivos</span>
+      <h2>Baixar a logo</h2>
+      <p>Todos os arquivos são SVG, sem fontes externas, e também ficam na pasta <code>brand/logo</code> do repositório <code>guiooak/bat-hunter</code>. Para mudar algo, edite <code>brand/tools/gen.py</code> e gere tudo de novo.</p>
+    </div>
+    <div class="table-wrap"><table><tbody><tr><td><a href="logo/logo-horizontal-dark.svg" download><code>logo-horizontal-dark.svg</code></a></td><td>Assinatura principal, para fundos escuros</td><td><a class="dl" href="logo/logo-horizontal-dark.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-horizontal-light.svg" download><code>logo-horizontal-light.svg</code></a></td><td>Assinatura para fundos claros</td><td><a class="dl" href="logo/logo-horizontal-light.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-horizontal-mono-light.svg" download><code>logo-horizontal-mono-light.svg</code></a></td><td>Uma cor, clara, para fundos escuros ou coloridos</td><td><a class="dl" href="logo/logo-horizontal-mono-light.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-horizontal-mono-dark.svg" download><code>logo-horizontal-mono-dark.svg</code></a></td><td>Uma cor, escura, para fundos claros ou coloridos</td><td><a class="dl" href="logo/logo-horizontal-mono-dark.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-stacked-dark.svg" download><code>logo-stacked-dark.svg</code></a></td><td>Vertical, para fundos escuros</td><td><a class="dl" href="logo/logo-stacked-dark.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-stacked-light.svg" download><code>logo-stacked-light.svg</code></a></td><td>Vertical, para fundos claros</td><td><a class="dl" href="logo/logo-stacked-light.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-stacked-mono-light.svg" download><code>logo-stacked-mono-light.svg</code></a></td><td>Vertical em uma cor, clara</td><td><a class="dl" href="logo/logo-stacked-mono-light.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/logo-stacked-mono-dark.svg" download><code>logo-stacked-mono-dark.svg</code></a></td><td>Vertical em uma cor, escura</td><td><a class="dl" href="logo/logo-stacked-mono-dark.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/symbol.svg" download><code>symbol.svg</code></a></td><td>Símbolo colorido, para avatar e ícone do app</td><td><a class="dl" href="logo/symbol.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/symbol-mono-light.svg" download><code>symbol-mono-light.svg</code></a></td><td>Símbolo em uma cor, clara</td><td><a class="dl" href="logo/symbol-mono-light.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/symbol-mono-dark.svg" download><code>symbol-mono-dark.svg</code></a></td><td>Símbolo em uma cor, escura</td><td><a class="dl" href="logo/symbol-mono-dark.svg" download>Baixar SVG</a></td></tr><tr><td><a href="logo/favicon.svg" download><code>favicon.svg</code></a></td><td>Símbolo simplificado para 16 a 48 px</td><td><a class="dl" href="logo/favicon.svg" download>Baixar SVG</a></td></tr></tbody></table></div>
+  </div>
+</section>
+
+<footer><div class="wrap">Bat Hunter · Manual da marca v1.0 · O símbolo, o morcego e o letreiro foram desenhados para este projeto. <a href="https://bat-hunter-game.web.app">Jogar</a> · <a href="https://github.com/guiooak/bat-hunter/tree/main/brand">Código-fonte da marca</a></div></footer>
+</body>
+</html>
