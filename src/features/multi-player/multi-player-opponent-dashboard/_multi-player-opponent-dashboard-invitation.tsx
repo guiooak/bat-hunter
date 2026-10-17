@@ -12,41 +12,50 @@ export function MultiPlayerOpponentDashboardInvitation() {
   const { currentUser } = useAuthContext();
   const [signInModalOpen, setSignInModalOpen] = useState(false);
 
-  function onCreateGame() {
+  async function onCreateGame() {
     if (!currentUser?.id) {
       setSignInModalOpen(true);
       return;
     }
 
-    const newMatchId = createMatchInFirebase({ hostId: currentUser.id });
-    navigate(`/multi-player/${newMatchId}`);
+    try {
+      const newMatchId = await createMatchInFirebase({
+        hostId: currentUser.id,
+      });
+      navigate(`/multi-player/${newMatchId}`);
+    } catch (e) {
+      console.error('ERROR: could not create the match.', e);
+    }
   }
 
   return (
     <>
-    <SignInModal open={signInModalOpen} onClose={() => setSignInModalOpen(false)} />
-    <div className="multi-player-guest-dashboard-invitation">
-      <Gutter size="md">
-        <Title>Match Setup</Title>
+      <SignInModal
+        open={signInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+      />
+      <div className="multi-player-guest-dashboard-invitation">
+        <Gutter size="md">
+          <Title>Match Setup</Title>
 
-        <Gutter size="xl">
-          <div>
-            {matchId ? (
-              <Gap vertical justify="center" align="center" size="md">
-                <div>Share the invitation link.</div>
-                <UrlCopyButton invitationUrl={buildInvitationUrl(matchId)} />
-              </Gap>
-            ) : (
-              <Gap justify="center">
-                <Button kind="primary" onClick={onCreateGame}>
-                  Create a Game
-                </Button>
-              </Gap>
-            )}
-          </div>
+          <Gutter size="xl">
+            <div>
+              {matchId ? (
+                <Gap vertical justify="center" align="center" size="md">
+                  <div>Share the invitation link.</div>
+                  <UrlCopyButton invitationUrl={buildInvitationUrl(matchId)} />
+                </Gap>
+              ) : (
+                <Gap justify="center">
+                  <Button kind="primary" onClick={onCreateGame}>
+                    Create a Game
+                  </Button>
+                </Gap>
+              )}
+            </div>
+          </Gutter>
         </Gutter>
-      </Gutter>
-    </div>
+      </div>
     </>
   );
 }

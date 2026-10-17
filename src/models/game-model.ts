@@ -1,4 +1,4 @@
-import { updateData } from 'src/services/firebase-service';
+import { setData, updateData } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
 
 type PlayerDataType = {
@@ -7,21 +7,14 @@ type PlayerDataType = {
   updatedAt?: number;
 };
 
-export type GameStateType =
-  | 'GAME_READY'
-  | 'GAME_IN_PROGRESS'
-  | 'GAME_FINISHED'
-  | 'GAME_CLOSED';
-
-export const CHALLENGE_STATES = {
-  FREE_PLAY: 'FREE_PLAY',
-  CHALLENGE_READY: 'CHALLENGE_READY',
-  CHALLENGE_IN_PROGRESS: 'CHALLENGE_IN_PROGRESS',
-  CHALLENGE_FINISHED: 'CHALLENGE_FINISHED',
+export const GAME_STATES = {
+  GAME_READY: 'GAME_READY',
+  GAME_IN_PROGRESS: 'GAME_IN_PROGRESS',
+  GAME_FINISHED: 'GAME_FINISHED',
+  GAME_CLOSED: 'GAME_CLOSED',
 } as const;
 
-export type ChallengeStateType =
-  (typeof CHALLENGE_STATES)[keyof typeof CHALLENGE_STATES];
+export type GameStateType = (typeof GAME_STATES)[keyof typeof GAME_STATES];
 
 export type GameType = {
   id?: string;
@@ -33,56 +26,34 @@ export type GameType = {
   hostData?: PlayerDataType;
 };
 
-export function createGameInFirebase({
-  matchId,
-  onCreated,
-  onError = () => {},
-}: {
-  matchId?: string;
-  onCreated?: (gameId: string) => void;
-  onError?: (error: string) => void;
-}) {
-  if (!matchId) {
-    console.error('setGameInFirebase::ERROR: no user id was provided');
-    return;
-  }
-
+export async function createGameInFirebase(matchId: string) {
   const id = generateUuid();
   const data = {
     id,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    state: 'GAME_READY' as const,
+    state: GAME_STATES.GAME_READY,
   };
 
-  setGameInFirebase({ matchId, data })
-    .then((r) => {
-      console.log('GAME_CREATED_IN_FIREBASE', r);
-      onCreated?.(id);
-    })
-    .catch(onError);
+  await setData(`matches/${matchId}/games/${id}`, data);
 
   return id;
 }
 
-export async function setGameInFirebase({
+export function setGameInFirebase({
   matchId,
   data,
 }: {
   matchId: string;
-  data: GameType;
+  data: GameType & { id: string };
 }) {
-  if (!data?.id) {
-    console.error('setGameInFirebase::ERROR: no game id was provided');
-    return;
-  }
-
-  const _data = { ...data, updatedAt: Date.now() };
-
-  updateData(`matches/${matchId}/games/${data.id}`, _data);
+  return updateData(`matches/${matchId}/games/${data.id}`, {
+    ...data,
+    updatedAt: Date.now(),
+  });
 }
 
-export async function setPlayerDataInFirebase({
+export function setPlayerDataInFirebase({
   matchId,
   gameId,
   player,
@@ -93,14 +64,10 @@ export async function setPlayerDataInFirebase({
   player: 'host' | 'guest';
   data: PlayerDataType;
 }) {
-  if (!matchId || !gameId) {
-    console.error('setPlayerDataInFirebase::ERROR: no user id was provided');
-    return;
-  }
-
-  const _data = { ...data, updatedAt: Date.now() };
-
-  updateData(`matches/${matchId}/games/${gameId}/${player}Data`, _data);
+  return updateData(`matches/${matchId}/games/${gameId}/${player}Data`, {
+    ...data,
+    updatedAt: Date.now(),
+  });
 }
 
 export function setGameWinner(
@@ -110,10 +77,7 @@ export function setGameWinner(
 ) {
   if (!matchId || !gameId || !winnerId) return;
 
-  setGameInFirebase({
-    matchId: matchId,
-    data: { id: gameId, winnerId },
-  });
+  return setGameInFirebase({ matchId, data: { id: gameId, winnerId } });
 }
 
 export function setGameState(
@@ -123,29 +87,5 @@ export function setGameState(
 ) {
   if (!matchId || !gameId || !state) return;
 
-  setGameInFirebase({
-    matchId: matchId,
-    data: { id: gameId, state },
-  });
+  return setGameInFirebase({ matchId, data: { id: gameId, state } });
 }
-
-// {
-//   id
-//   createdAt
-//   hostId
-//   guestId
-//   games {
-//     id
-//     createdAt
-//     state
-//     winnerId
-//     guestData {
-//       shotCounter
-//       killCounter
-//     }
-//     hostData {
-//       shotCounter
-//       killCounter
-//     }
-//   }
-// }

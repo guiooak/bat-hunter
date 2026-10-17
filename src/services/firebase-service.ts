@@ -7,44 +7,38 @@ import {
   ref,
   set,
   update,
-  remove,
 } from 'firebase/database';
 
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
-  // ...
-  // The value of `databaseURL` depends on the location of the database
-  databaseURL: 'https://bat-hunter-game-default-rtdb.firebaseio.com/',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// The single Firebase app instance, shared by the auth and database services.
+export const firebaseApp = initializeApp(firebaseConfig);
 
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+const database = getDatabase(firebaseApp);
 
-export function getData<T>(path: string): Promise<T | null> {
-  return new Promise((resolve, reject) => {
-    get(child(ref(database), path))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          resolve(snapshot.val());
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(reject);
-  });
+export async function getData<T>(path: string): Promise<T | null> {
+  const snapshot = await get(child(ref(database), path));
+
+  return snapshot.exists() ? (snapshot.val() as T) : null;
 }
 
+// Returns the unsubscribe function. Always call it on cleanup.
 export function getReactively<T>(path: string, cb: (data: T) => void) {
   const theRef = ref(database, path);
 
-  return onValue(theRef, (snapshot) => {
-    const data = snapshot.val() as T;
-    cb(data);
-  });
+  return onValue(
+    theRef,
+    (snapshot) => cb(snapshot.val() as T),
+    (error) => console.error(`getReactively::ERROR on "${path}"`, error)
+  );
 }
 
 export function setData(path: string, data: unknown) {
@@ -53,8 +47,4 @@ export function setData(path: string, data: unknown) {
 
 export function updateData(path: string, data: object) {
   return update(ref(database, path), data);
-}
-
-export function removeData(path: string) {
-  return remove(ref(database, path));
 }

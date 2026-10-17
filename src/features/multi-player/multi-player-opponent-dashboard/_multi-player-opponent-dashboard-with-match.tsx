@@ -1,7 +1,7 @@
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { Divider, Gutter } from '@components';
 import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
-import { ProfileSection } from '@components/profile-section/profile-section';
+import { ProfileSection } from '@components/profile-section';
 import { GuestStatus } from 'src/components/guest-status';
 import { MatchType } from 'src/models/match-model';
 import { useGameCounters } from 'src/hooks/game-hooks';

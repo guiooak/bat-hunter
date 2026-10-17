@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Button, ButtonGroup, Gutter, Text } from 'src/components';
+import { useAuthContext } from 'src/features/authentication';
 import { SignInModal } from 'src/features/sign-in-modal';
 import {
   getMatchInFirebase,
@@ -11,75 +12,78 @@ import {
   getUserDataFromFirebase,
   setUserMatchInFirebase,
 } from 'src/models/user-model';
-import {
-  getCurrentUserSession,
-  UserSessionType,
-} from 'src/services/authentication-service';
+import { UserSessionType } from 'src/services/auth-service';
 
 export function InvitationPage() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId: string }>();
+  const { currentUser, status } = useAuthContext();
   const [match, setMatch] = useState<MatchType | null>(null);
   const [signInModalOpen, setSignInModalOpen] = useState(false);
   const [gameHost, setGameHost] = useState<UserSessionType | null>(null);
+  const [isJoining, setIsJoining] = useState(false);
 
+  // Matches are only readable by signed in users
   useEffect(() => {
-    if (matchId) {
-      getMatchInFirebase(matchId).then(setMatch);
+    setSignInModalOpen(status === 'unauthenticated');
+
+    if (matchId && status === 'authenticated') {
+      getMatchInFirebase(matchId)
+        .then(setMatch)
+        .catch((e) => console.error('InvitationPage::ERROR', e));
     }
-  }, [matchId]);
+  }, [matchId, status]);
 
   useEffect(() => {
     if (match?.hostId) {
-      getUserDataFromFirebase(match.hostId).then(setGameHost);
+      getUserDataFromFirebase(match.hostId)
+        .then(setGameHost)
+        .catch((e) => console.error('InvitationPage::ERROR', e));
     }
   }, [match?.hostId]);
 
+  // Already joined (or it's the host's own invitation)
   useEffect(() => {
-    if (match?.guestId) {
+    if (match?.guestId || (match?.hostId && match.hostId === currentUser?.id)) {
       navigate(`/multi-player/${matchId}`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match?.guestId]);
+  }, [match?.guestId, match?.hostId, currentUser?.id, matchId, navigate]);
 
-  const gameHostName = gameHost?.name;
+  async function onJoinBattle() {
+    if (!matchId || !match?.hostId) return;
 
-  function onJoinBattle() {
-    if (!matchId) return;
-
-    const currentSession = getCurrentUserSession();
-
-    if (!currentSession?.id) {
+    if (!currentUser?.id) {
       setSignInModalOpen(true);
       return;
     }
 
-    const guestId = currentSession.id;
-    const guestName = currentSession.name || '';
-    const hostId = match?.hostId || '';
-    const hostName = gameHost?.name || '';
-    const createdAt = match?.createdAt || Date.now();
-
-    // Set the guest on the match
-    setMatchInFirebase({ id: matchId, guestId });
-
-    // Store match data for both host and guest
     const matchData = {
       matchId,
-      hostId,
-      hostName,
-      guestId,
-      guestName,
-      createdAt,
+      hostId: match.hostId,
+      hostName: gameHost?.name || '',
+      guestId: currentUser.id,
+      guestName: currentUser.name || '',
+      createdAt: match.createdAt || Date.now(),
     };
 
-    if (hostId) {
-      setUserMatchInFirebase(hostId, matchData);
+    setIsJoining(true);
+
+    try {
+      // The guest must be set first: the database rules only allow the guest
+      // to write in the host matches list once it's part of the match.
+      await setMatchInFirebase({ id: matchId, guestId: currentUser.id });
+      await Promise.all([
+        setUserMatchInFirebase(match.hostId, matchData),
+        setUserMatchInFirebase(currentUser.id, matchData),
+      ]);
+
+      navigate(`/multi-player/${matchId}`);
+    } catch (e) {
+      console.error('InvitationPage::ERROR: could not join the match', e);
+      alert('Ops! It was not possible to join this battle.');
+    } finally {
+      setIsJoining(false);
     }
-
-    setUserMatchInFirebase(guestId, matchData);
-
-    navigate(`/multi-player/${matchId}`);
   }
 
   return (
@@ -91,13 +95,18 @@ export function InvitationPage() {
       <Gutter size="xxl">
         <Gutter direction="vertical" size="xxl" className="text-center">
           <Text>
-            You're invited to a battle with {gameHostName}. Wanna join the game?
+            You're invited to a battle with {gameHost?.name}. Wanna join the
+            game?
           </Text>
         </Gutter>
         <div className="text-center">
           <ButtonGroup>
             <Button onClick={() => navigate('/')}>Nope</Button>
-            <Button kind="primary" onClick={onJoinBattle} disabled={!matchId}>
+            <Button
+              kind="primary"
+              onClick={onJoinBattle}
+              disabled={!match?.hostId || isJoining}
+            >
               Join battle
             </Button>
           </ButtonGroup>

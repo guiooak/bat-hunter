@@ -1,0 +1,91 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid",
+
+        "id": { ".validate": "newData.val() === $uid" },
+        "name": { ".validate": "newData.isString() && newData.val().length <= 200" },
+        "firstName": { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "lastName": { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "picture": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "away": { ".validate": "newData.isBoolean()" },
+        "lastPulseAt": { ".validate": "newData.isNumber()" },
+
+        "matches": {
+          "$matchId": {
+            ".write": "auth != null && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)",
+            ".validate": "newData.hasChildren(['matchId', 'hostId', 'guestId', 'createdAt'])",
+
+            "matchId": { ".validate": "newData.val() === $matchId" },
+            "hostId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/hostId').val()" },
+            "guestId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/guestId').val()" },
+            "hostName": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "guestName": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        },
+
+        "$other": { ".validate": false }
+      }
+    },
+
+    "matches": {
+      "$matchId": {
+        ".read": "auth != null",
+        ".write": "auth != null && ((!data.exists() && newData.child('hostId').val() === auth.uid) || (data.exists() && !data.child('guestId').exists() && data.child('hostId').val() !== auth.uid && newData.child('guestId').val() === auth.uid))",
+
+        "id": { ".validate": "newData.val() === $matchId" },
+        "hostId": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+        "guestId": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+
+        "games": {
+          "$gameId": {
+            ".write": "auth != null && root.child('matches/' + $matchId + '/hostId').val() === auth.uid",
+
+            "id": { ".validate": "newData.val() === $gameId" },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "updatedAt": { ".validate": "newData.isNumber()" },
+            "state": { ".validate": "newData.val() === 'GAME_READY' || newData.val() === 'GAME_IN_PROGRESS' || newData.val() === 'GAME_FINISHED' || newData.val() === 'GAME_CLOSED'" },
+            "winnerId": { ".validate": "newData.val() === 'DRAW' || newData.val() === root.child('matches/' + $matchId + '/hostId').val() || newData.val() === root.child('matches/' + $matchId + '/guestId').val()" },
+
+            "hostData": {
+              "shotCounter": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+              "killCounter": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+              "updatedAt": { ".validate": "newData.isNumber()" },
+              "$other": { ".validate": false }
+            },
+
+            "guestData": {
+              ".write": "auth != null && root.child('matches/' + $matchId + '/guestId').val() === auth.uid",
+              "shotCounter": { ".validate": "newData.isNumber() && newData.val() >= 0 && root.child('matches/' + $matchId + '/guestId').val() === auth.uid" },
+              "killCounter": { ".validate": "newData.isNumber() && newData.val() >= 0 && root.child('matches/' + $matchId + '/guestId').val() === auth.uid" },
+              "updatedAt": { ".validate": "newData.isNumber()" },
+              "$other": { ".validate": false }
+            },
+
+            "$other": { ".validate": false }
+          }
+        },
+
+        "messages": {
+          "$messageId": {
+            ".write": "auth != null && !data.exists() && newData.child('authorId').val() === auth.uid && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)",
+            ".validate": "newData.hasChildren(['id', 'authorId', 'message', 'createdAt'])",
+
+            "id": { ".validate": "newData.val() === $messageId" },
+            "authorId": { ".validate": "newData.val() === auth.uid" },
+            "message": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 1000" },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        },
+
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

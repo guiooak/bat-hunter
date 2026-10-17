@@ -18,7 +18,7 @@ export function SignInModal({
     >
       <Gutter size="xxl">
         <Gap align="center" justify="center">
-          <SignInButton onSuccess={() => location.reload()} />
+          <SignInButton onSuccess={onClose} />
         </Gap>
       </Gutter>
     </Modal>

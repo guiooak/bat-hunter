@@ -1,40 +1,43 @@
 import { useEffect } from 'react';
 import { useAuthContext } from '../auth-context';
 
-const DELAY_IN_SECONDS = 20 * 1000;
-
-// It's fine since there is only a single instance of this component in the whole application.
-// Using useState was registering multiple event listeners as a side effect.
-let lastPulseAt = 0;
+const DELAY_IN_MS = 20 * 1000;
 
 export function Pulse() {
-  const { setCurrentUser } = useAuthContext();
+  const { status, updatePresence } = useAuthContext();
+  const isAuthenticated = status === 'authenticated';
 
   useEffect(() => {
-    onPulse(() => {
+    if (!isAuthenticated) return;
+
+    let lastPulseAt = Date.now();
+
+    const onPulse = () => {
       const now = Date.now();
 
-      if (now > lastPulseAt + DELAY_IN_SECONDS) {
+      if (now > lastPulseAt + DELAY_IN_MS) {
         lastPulseAt = now;
-        setCurrentUser({ lastPulseAt: now, away: false });
+        updatePresence({ lastPulseAt: now, away: false });
       }
-    });
-    onBlur(() => setCurrentUser({ away: true }));
-    onFocus(() => setCurrentUser({ away: false, lastPulseAt: Date.now() }));
-  }, [setCurrentUser]);
+    };
+    const onBlur = () => updatePresence({ away: true });
+    const onFocus = () => {
+      lastPulseAt = Date.now();
+      updatePresence({ away: false, lastPulseAt });
+    };
 
-  return <></>;
-}
+    window.addEventListener('mouseover', onPulse);
+    window.addEventListener('click', onPulse);
+    window.addEventListener('blur', onBlur);
+    window.addEventListener('focus', onFocus);
 
-function onPulse(cb: () => void) {
-  window.addEventListener('mouseover', cb);
-  window.addEventListener('click', cb);
-}
+    return () => {
+      window.removeEventListener('mouseover', onPulse);
+      window.removeEventListener('click', onPulse);
+      window.removeEventListener('blur', onBlur);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, [isAuthenticated, updatePresence]);
 
-function onBlur(cb: () => void) {
-  window.addEventListener('blur', cb);
-}
-
-function onFocus(cb: () => void) {
-  window.addEventListener('focus', cb);
+  return null;
 }

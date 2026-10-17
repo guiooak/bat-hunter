@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { MatchType } from 'src/models/match-model';
-import { UserSessionType } from 'src/services/authentication-service';
+import { UserSessionType } from 'src/services/auth-service';
 
 export const MultiPlayerContext = createContext({
   opponentUser: null,

@@ -12,35 +12,32 @@ export type MatchType = {
   hostId?: string;
   guestId?: string;
   createdAt?: number;
-  currentGameId?: string;
-  games?: GameType[];
-  messages?: MessageType[];
+  games?: Record<string, GameType>;
+  messages?: Record<string, MessageType>;
 };
 
-export function getMatchInFirebase(id: string): Promise<MatchType | null> {
-  return getData(`matches/${id}`);
+export function getMatchInFirebase(id: string) {
+  return getData<MatchType>(`matches/${id}`);
 }
 
-export function createMatchInFirebase({ hostId }: { hostId?: string }) {
+export async function createMatchInFirebase({ hostId }: { hostId: string }) {
   const id = generateUuid();
 
-  setMatchInFirebase({ id, hostId, createdAt: Date.now() });
+  await setMatchInFirebase({ id, hostId, createdAt: Date.now() });
 
   return id;
 }
 
-export async function setMatchInFirebase(data: MatchType) {
-  if (!data?.id) {
-    console.error('setMatchInFirebase::ERROR: no match id was provided');
-    return;
-  }
-
-  updateData(`matches/${data.id}`, data);
+export function setMatchInFirebase(data: MatchType) {
+  return updateData(`matches/${data.id}`, data);
 }
 
+// Returns the unsubscribe function.
 export function getMatchDataReactivelyFromFirebase(
   id: string,
   cb: (match: MatchType | undefined) => void
 ) {
-  getReactively(`matches/${id}`, cb);
+  return getReactively<MatchType | null>(`matches/${id}`, (match) =>
+    cb(match ?? undefined)
+  );
 }

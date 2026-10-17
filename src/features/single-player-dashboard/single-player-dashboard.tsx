@@ -1,26 +1,19 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useReducer, useState } from 'react';
 import './single-player-dashboard.scss';
 import {
-  getIsGameModeOn,
-  setBodyOnClick,
   calcAccuracy,
+  counterReducer,
   killAllBats,
 } from 'src/services/game-service';
-import { createBat } from '@services/fly-engine-service';
 import { SinglePlayerDashboardChallenge } from './_single-player-dashboard-challenge';
 import { Card, Divider, Gutter } from '@components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
 import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
-import { isShotEnabled, ShotEventType } from '@services/shot-service';
+import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { iterate } from 'src/services/iteration-service';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 
-function counterReducer(state: number, action: string) {
-  return action === 'add' ? state + 1 : 0;
-}
-
 export function SinglePlayerDashboard() {
-  const [isScoreEnabled, setIsScoreEnabled] = useState(true);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const currentGameStateFull = useState(
@@ -28,21 +21,10 @@ export function SinglePlayerDashboard() {
   );
   const [currentGameState] = currentGameStateFull;
 
-  const createControlledBat = () =>
-    createBat(() => isScoreEnabled && dispatchKillCounter('add'));
-
-  useEffect(() => {
-    setBodyOnClick((e: ShotEventType) => {
-      if (isScoreEnabled && getIsGameModeOn() && isShotEnabled(e)) {
-        dispatchShotCounter('add');
-      }
-    });
-  }, [isScoreEnabled]);
-
-  useEffect(
-    () => console.log('kills x shots: ', `${killCounter} x ${shotCounter}`),
-    [shotCounter, killCounter]
-  );
+  const { createControlledBat, setIsScoreEnabled } = useGameCounterTriggers({
+    onShot: () => dispatchShotCounter('add'),
+    onKill: () => dispatchKillCounter('add'),
+  });
 
   function cleanScore() {
     dispatchKillCounter('reset');

@@ -1,6 +1,6 @@
 import './multi-player-chat.scss';
 import { useAuthContext } from 'src/features/authentication';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'src/components';
 import clsx from 'clsx';
 import { TextArea } from 'src/components/text-area/text-area';
@@ -19,25 +19,30 @@ export function MultiPlayerChat() {
   const [readMessagesCounter, setReadMessagesCounter] = useState(0);
   const [currentMessage, setCurrentMessage] = useState<string | undefined>();
 
-  const messages = match?.messages;
-  const messagesArray = buildArray(messages);
-  const unreadMessagesCounter =
-    (messagesArray?.length || 0) - readMessagesCounter;
+  const messagesArray = useMemo(
+    () => buildArray(match?.messages),
+    [match?.messages]
+  );
+  const unreadMessagesCounter = messagesArray.length - readMessagesCounter;
 
   useEffect(() => {
     scrollTopBottom(chatScrollContainerRef.current);
 
     if (chatOpen) {
-      setReadMessagesCounter(messagesArray?.length);
+      setReadMessagesCounter(messagesArray.length);
     }
-  }, [chatOpen, messages, messagesArray.length]);
+  }, [chatOpen, messagesArray.length]);
 
   function saveMessage() {
+    const message = currentMessage?.trim();
+
+    if (!match?.id || !currentUser?.id || !message) return;
+
     setIsSubmitting(true);
     createMessageInFirebase({
-      matchId: match?.id,
-      authorId: currentUser?.id,
-      message: currentMessage,
+      matchId: match.id,
+      authorId: currentUser.id,
+      message,
     })
       .then(() => {
         setCurrentMessage('');
@@ -81,7 +86,7 @@ export function MultiPlayerChat() {
                 return (
                   <ChatMessage
                     self={isSelf}
-                    key={message?.id}
+                    key={message.id}
                     authorName={name?.split(' ')[0]}
                     text={message?.message || ''}
                     timestamp={message?.createdAt || 0}

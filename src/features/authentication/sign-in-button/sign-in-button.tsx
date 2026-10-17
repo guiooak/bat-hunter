@@ -1,57 +1,44 @@
 import './sign-in-button.scss';
-import { useEffect } from 'react';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import {
-  setUserSessionHashInLocalStorage,
-  verboseJwt,
-} from 'src/services/authentication-service';
+import { useEffect, useState } from 'react';
+import { Button, Text } from '@components';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { useAuthContext } from 'src/features/authentication';
-import { enforceUTF8Encoding } from 'src/services/encoding-service';
 
 export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
+  const { signIn } = useAuthContext();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     disableBatGame();
     killAllBats();
   }, []);
 
-  const { setCurrentUser } = useAuthContext();
+  async function onSignIn() {
+    setError(null);
+    setBusy(true);
 
-  function _onSuccess(r: CredentialResponse) {
-    if (!r.credential) {
-      console.error('Error on Google Sign In - No credential was provided.');
-      return;
-    }
-
-    const userSession = verboseJwt(r.credential);
-
-    const fixedUserSession = {
-      ...userSession,
-      firstName: enforceUTF8Encoding(userSession?.firstName || ''),
-      lastName: enforceUTF8Encoding(userSession?.lastName || ''),
-      name: enforceUTF8Encoding(userSession?.name || ''),
-    };
-
-    if (userSession) {
-      setCurrentUser(fixedUserSession);
-      setUserSessionHashInLocalStorage(r.credential);
+    try {
+      await signIn();
       onSuccess?.();
+    } catch (e) {
+      console.error('Google Sign In Error', e);
+      setError('Ops! Something wrong happened. Try again.');
+    } finally {
+      setBusy(false);
     }
   }
 
   return (
     <div className="sign-in-button">
-      <GoogleLogin
-        locale="en-US"
-        shape="circle"
-        onSuccess={_onSuccess}
-        onError={onError}
-      />
+      <Button kind="primary" onClick={onSignIn} disabled={busy}>
+        {busy ? 'Signing in…' : 'Continue with Google'}
+      </Button>
+      {error && (
+        <Text block size="sm">
+          {error}
+        </Text>
+      )}
     </div>
   );
-}
-
-function onError() {
-  alert('Ops! Something wrong happened. Try again.');
-  console.error('Google Sign In Error');
 }

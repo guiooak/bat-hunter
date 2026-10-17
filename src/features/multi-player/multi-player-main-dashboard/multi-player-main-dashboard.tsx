@@ -3,7 +3,7 @@ import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { Card, Divider, Gutter } from '@components';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
 import { useAuthContext } from 'src/features/authentication';
-import { ProfileSection } from '@components/profile-section/profile-section';
+import { ProfileSection } from '@components/profile-section';
 import { useGameCounters } from 'src/hooks/game-hooks';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 

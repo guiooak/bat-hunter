@@ -1,54 +1,24 @@
-import {
-  getCurrentUserSession,
-  UserSessionType,
-} from 'src/services/authentication-service';
+import { UserSessionType } from 'src/services/auth-service';
 import {
   getData,
   getReactively,
   updateData,
 } from 'src/services/firebase-service';
 
-function getCurrentUserId() {
-  return getCurrentUserSession()?.id;
-}
-
-export function getCurrentUserDataFromFirebase() {
-  const currentUserId = getCurrentUserId();
-
-  return currentUserId ? getUserDataFromFirebase(currentUserId) : null;
-}
-
-export function setCurrentUserDataInFirebase(data: UserSessionType) {
-  const currentUserId = getCurrentUserId();
-
-  if (currentUserId) {
-    setUserDataInFirebase({
-      ...data,
-      id: currentUserId,
-    });
-  }
-}
-
 export function getUserDataFromFirebase(id: string) {
-  return getData('users/' + id) as Promise<UserSessionType | null>;
+  return getData<UserSessionType>('users/' + id);
 }
 
-export async function setUserDataInFirebase(
-  data: UserSessionType & { id: string }
-) {
-  if (!data?.id) {
-    console.error('setUserDataInFirebase::ERROR: no user id was provided');
-    return;
-  }
-
-  updateData('users/' + data.id, data);
+export function setUserDataInFirebase(data: UserSessionType & { id: string }) {
+  return updateData('users/' + data.id, data);
 }
 
+// Returns the unsubscribe function.
 export function getUserDataReactivelyFromFirebase(
   id: string,
-  cb: (userData: UserSessionType) => void
+  cb: (userData: UserSessionType | null) => void
 ) {
-  getReactively('users/' + id, cb);
+  return getReactively('users/' + id, cb);
 }
 
 // -- User Matches --
@@ -63,12 +33,7 @@ export type UserMatchType = {
 };
 
 export function setUserMatchInFirebase(userId: string, match: UserMatchType) {
-  if (!userId || !match?.matchId) {
-    console.error('setUserMatchInFirebase::ERROR: missing userId or matchId');
-    return;
-  }
-
-  updateData(`users/${userId}/matches/${match.matchId}`, match);
+  return updateData(`users/${userId}/matches/${match.matchId}`, match);
 }
 
 export async function getUserMatchesFromFirebase(
@@ -78,7 +43,5 @@ export async function getUserMatchesFromFirebase(
     `users/${userId}/matches`
   );
 
-  if (!data) return [];
-
-  return Object.values(data);
+  return data ? Object.values(data) : [];
 }

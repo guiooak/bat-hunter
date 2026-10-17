@@ -4,11 +4,8 @@ import { Gap } from 'src/components/gap';
 import { useAuthContext } from 'src/features/authentication';
 import { MatchType } from 'src/models/match-model';
 import { GameType } from 'src/models/game-model';
-import {
-  buildGameSortedArray,
-  calcAccuracy,
-  calcFinalScore,
-} from 'src/services/game-service';
+import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
+import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerGameHistoryModal({
@@ -45,28 +42,25 @@ export function MultiPlayerGameHistoryModal({
     };
   }
 
-  const gamesArray = buildGameSortedArray(match?.games, 'ASC');
+  const gamesArray = useMemo(() => buildArray(match?.games), [match?.games]);
 
-  const { currentWins, opponentWins } = useMemo(() => {
-    const init = { currentWins: 0, opponentWins: 0 };
-
-    return (
-      gamesArray?.reduce((acc, game) => {
-        const currentIncrease = game?.winnerId === currentUser?.id ? 1 : 0;
-        const opponentIncrease = game?.winnerId === opponentUser?.id ? 1 : 0;
-
-        return {
-          currentWins: acc.currentWins + currentIncrease,
-          opponentWins: acc.opponentWins + opponentIncrease,
-        };
-      }, init) || init
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gamesArray]);
+  const { currentWins, opponentWins } = useMemo(
+    () =>
+      gamesArray.reduce(
+        (acc, game) => ({
+          currentWins:
+            acc.currentWins + (game.winnerId === currentUser?.id ? 1 : 0),
+          opponentWins:
+            acc.opponentWins + (game.winnerId === opponentUser?.id ? 1 : 0),
+        }),
+        { currentWins: 0, opponentWins: 0 }
+      ),
+    [gamesArray, currentUser?.id, opponentUser?.id]
+  );
 
   return (
     <Modal open={open} onClose={onClose} header="Games History">
-      {gamesArray ? (
+      {gamesArray.length ? (
         <div>
           <FinalRanking
             opponentWins={opponentWins}

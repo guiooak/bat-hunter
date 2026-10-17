@@ -1,6 +1,7 @@
 import { getAimCursorRegular, ShotEventType } from './shot-service';
 import { pauseAllBackgroundMusic, playBackgroundMusic } from './audio-service';
 import { MatchType } from 'src/models/match-model';
+import { buildArray } from './array-service';
 
 const bodyEl = document.querySelector('body')!;
 
@@ -24,7 +25,7 @@ export function disableBatGame() {
   }, 200);
 }
 
-export function setBodyOnClick(cb: (e: ShotEventType) => void) {
+export function setBodyOnClick(cb: ((e: ShotEventType) => void) | null) {
   bodyEl.onmousedown = cb;
 }
 
@@ -42,6 +43,10 @@ export function calcFinalScore(shotCounter?: number, killCounter?: number) {
   return accuracy * (killCounter || 0);
 }
 
+export function counterReducer(state: number, action: 'add' | 'reset') {
+  return action === 'add' ? state + 1 : 0;
+}
+
 export function killAllBats() {
   document.querySelectorAll('.flying-bat').forEach((bat) => bat.remove());
 }
@@ -54,21 +59,5 @@ export function findCurrentGame(match?: MatchType) {
 }
 
 export function findLastGame(match?: MatchType) {
-  const sortedGames = buildGameSortedArray(match?.games);
-
-  return sortedGames?.[0];
-}
-
-// @TODO: use buildArray service here
-export function buildGameSortedArray(
-  games?: MatchType['games'],
-  order?: 'ASC' | 'DESC'
-) {
-  if (!games) return null;
-
-  const sortMultiplier = order === 'ASC' ? -1 : 1;
-
-  return Object.values(games).sort(
-    (a, b) => ((b.createdAt || 0) - (a.createdAt || 0)) * sortMultiplier
-  );
+  return buildArray(match?.games, 'DESC')[0];
 }

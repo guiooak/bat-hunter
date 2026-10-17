@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
@@ -6,15 +6,10 @@ import {
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text } from '@components';
 import { iterate } from 'src/services/iteration-service';
-import { useGameCounterTriggers } from 'src/hooks/game-hooks';
-import { GameStateType } from 'src/models/game-model';
+import { useCountdown, useGameCounterTriggers } from 'src/hooks/game-hooks';
+import { GAME_STATES, GameStateType } from 'src/models/game-model';
 
-const GAME_STATES = {
-  GAME_READY: 'GAME_READY',
-  GAME_IN_PROGRESS: 'GAME_IN_PROGRESS',
-  GAME_FINISHED: 'GAME_FINISHED',
-  GAME_CLOSED: 'GAME_CLOSED',
-} as const;
+const COUNTDOWN_TIME_TOTAL = 60;
 
 type GameModeConfigType = {
   label?: string;
@@ -26,8 +21,6 @@ type GameModeConfigType = {
   onChallengeReady?: () => void;
   onChallengeReadyLabel?: string;
 };
-
-let intervalId: NodeJS.Timeout;
 
 export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
@@ -46,11 +39,12 @@ export function MultiPlayerGameDashboardController({
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
-  const COUNTDOWN_TIME_TOTAL = 60;
   const [currentGameState, setCurrentGameState] = useState<GameStateType>(
     GAME_STATES.GAME_READY
   );
-  const [countdownTime, setCountdownTime] = useState(0);
+  const { countdownTime, startCountdown, stopCountdown } = useCountdown(() =>
+    setCurrentGameState(GAME_STATES.GAME_FINISHED)
+  );
 
   const { createControlledBat, setIsScoreEnabled } = useGameCounterTriggers({
     onShot,
@@ -75,8 +69,7 @@ export function MultiPlayerGameDashboardController({
           onResetScore();
           killAllBats();
           setIsScoreEnabled(false);
-          clearInterval(intervalId);
-          setCountdownTime(0);
+          stopCountdown();
         },
         onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
         onOpenHistory,
@@ -85,23 +78,9 @@ export function MultiPlayerGameDashboardController({
       [GAME_STATES.GAME_IN_PROGRESS]: {
         onStart: () => {
           iterate(30, createControlledBat);
-          setCountdownTime(COUNTDOWN_TIME_TOTAL);
           setIsScoreEnabled(true);
           playChallengeBackgroundMusic();
-
-          let counter = COUNTDOWN_TIME_TOTAL - 1;
-
-          const id = setInterval(() => {
-            if (counter <= 0) {
-              setCurrentGameState(GAME_STATES.GAME_FINISHED);
-              clearInterval(id);
-            }
-
-            setCountdownTime(counter);
-            counter -= 1;
-          }, 1000);
-
-          intervalId = id;
+          startCountdown(COUNTDOWN_TIME_TOTAL);
         },
         onAddBats: createControlledBat,
         onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
@@ -109,6 +88,7 @@ export function MultiPlayerGameDashboardController({
       [GAME_STATES.GAME_FINISHED]: {
         label: "Time's Up!",
         onStart: () => {
+          stopCountdown();
           killAllBats();
           playBackgroundMusic();
           setIsScoreEnabled(false);
@@ -121,18 +101,29 @@ export function MultiPlayerGameDashboardController({
       [GAME_STATES.GAME_CLOSED]: {
         label: 'Game Closed',
         onStart: () => {
+          stopCountdown();
           killAllBats();
           setIsScoreEnabled(false);
         },
       },
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      onResetScore,
+      onOpenHistory,
+      createControlledBat,
+      setIsScoreEnabled,
+      startCountdown,
+      stopCountdown,
+    ]
   );
 
+  // Only a state change starts a mode, not a new GAME_MODE reference
+  const gameModeRef = useRef(GAME_MODE);
+  gameModeRef.current = GAME_MODE;
+
   useEffect(() => {
-    GAME_MODE[currentGameState].onStart();
-  }, [currentGameState, GAME_MODE]);
+    gameModeRef.current[currentGameState].onStart();
+  }, [currentGameState]);
 
   const currentGameModel = GAME_MODE[currentGameState];
 

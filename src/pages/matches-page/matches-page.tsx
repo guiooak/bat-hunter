@@ -10,11 +10,13 @@ import './matches-page.scss';
 
 export function MatchesPage() {
   const navigate = useNavigate();
-  const { currentUser } = useAuthContext();
+  const { currentUser, status } = useAuthContext();
   const [matches, setMatches] = useState<UserMatchType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (status === 'loading') return;
+
     if (!currentUser?.id) {
       alert('You must be signed in to view your matches.');
       navigate('/');
@@ -26,8 +28,9 @@ export function MatchesPage() {
         const sorted = data.sort((a, b) => a.createdAt - b.createdAt);
         setMatches(sorted);
       })
+      .catch((e) => console.error('MatchesPage::ERROR: matches not loaded', e))
       .finally(() => setLoading(false));
-  }, [currentUser?.id, navigate]);
+  }, [currentUser?.id, status, navigate]);
 
   if (loading) {
     return (

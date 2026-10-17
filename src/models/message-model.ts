@@ -5,7 +5,6 @@ export type MessageType = {
   id?: string;
   createdAt?: number;
   authorId?: string;
-  readerId?: string;
   message?: string;
 };
 
@@ -13,19 +12,11 @@ export async function createMessageInFirebase({
   matchId,
   authorId,
   message,
-  onCreated,
 }: {
-  matchId?: string;
-  authorId?: string;
-  message?: string;
-  onCreated?: (gameId: string) => void;
-  onError?: (error: string) => void;
+  matchId: string;
+  authorId: string;
+  message: string;
 }) {
-  if (!matchId || !authorId || !message) {
-    console.error('createMessageInFirebase::ERROR: missing required paramters');
-    return;
-  }
-
   const id = generateUuid();
   const data = {
     id,
@@ -34,14 +25,7 @@ export async function createMessageInFirebase({
     message,
   };
 
-  try {
-    setData(`matches/${matchId}/messages/${data.id}`, data);
-    onCreated?.(id);
-  } catch {
-    console.error(
-      'createMessageInFirebase::ERROR: it was not possible to store the new message. Try again later.'
-    );
-  }
+  await setData(`matches/${matchId}/messages/${id}`, data);
 
   return id;
 }

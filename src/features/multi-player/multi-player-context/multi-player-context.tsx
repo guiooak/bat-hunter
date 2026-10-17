@@ -6,7 +6,7 @@ import {
   MatchType,
 } from 'src/models/match-model';
 import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
-import { UserSessionType } from 'src/services/authentication-service';
+import { UserSessionType } from 'src/services/auth-service';
 import { MultiPlayerContext } from './_multi-player-context-definition';
 
 export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
@@ -16,28 +16,32 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
   const [match, setMatch] = useState<MatchType | undefined>(undefined);
   const { currentUser } = useAuthContext();
   const { matchId } = useParams<{ matchId?: string }>();
+  const currentUserId = currentUser?.id;
 
   useEffect(() => {
-    if (!matchId) {
-      console.error(
-        'MultiPlayerContextProvider::ERROR: no match id was provided'
-      );
+    if (!matchId || !currentUserId) {
+      setMatch(undefined);
       return;
     }
 
-    getMatchDataReactivelyFromFirebase(matchId, setMatch);
-  }, [matchId, setMatch]);
+    return getMatchDataReactivelyFromFirebase(matchId, setMatch);
+  }, [matchId, currentUserId]);
+
+  const opponentUserId =
+    match && currentUserId
+      ? match.hostId === currentUserId
+        ? match.guestId
+        : match.hostId
+      : undefined;
 
   useEffect(() => {
-    if (!currentUser || !match) return;
-
-    const isCurrentUserTheHost = match.hostId === currentUser.id;
-    const opponentUserId = isCurrentUserTheHost ? match.guestId : match.hostId;
-
-    if (opponentUserId) {
-      getUserDataReactivelyFromFirebase(opponentUserId, setOpponentUser);
+    if (!opponentUserId) {
+      setOpponentUser(null);
+      return;
     }
-  }, [currentUser, match]);
+
+    return getUserDataReactivelyFromFirebase(opponentUserId, setOpponentUser);
+  }, [opponentUserId]);
 
   return (
     <MultiPlayerContext.Provider value={{ opponentUser, match }}>

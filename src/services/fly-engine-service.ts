@@ -18,9 +18,8 @@ export function createBat(killCallback = () => {}) {
   div.classList.add('flying-bat');
 
   // Kill bat on click
-  div.onmousedown = (e) => {
-    const targetEl = e.target as HTMLElement;
-    targetEl?.remove();
+  div.onmousedown = () => {
+    div.remove();
     killCallback();
     playBatSound();
   };
@@ -44,6 +43,9 @@ export function createBat(killCallback = () => {}) {
   }
 
   function A() {
+    // Stop flying once the bat was killed or removed (e.g. killAllBats)
+    if (!div.isConnected) return;
+
     const x = R(windowWidth, window.innerWidth);
     const y = R(windowHeight, window.innerHeight);
 

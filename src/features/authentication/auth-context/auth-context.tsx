@@ -1,44 +1,58 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
-import { setCurrentUserDataInFirebase } from 'src/models/user-model';
+import { setUserDataInFirebase } from 'src/models/user-model';
 import {
-  getCurrentUserSession,
-  isLoggedIn,
-} from 'src/services/authentication-service';
-import { UserSessionType } from 'src/services/authentication-service';
+  AuthStatusType,
+  observeAuth,
+  signInWithGoogle,
+  signOutUser,
+  UserSessionType,
+} from 'src/services/auth-service';
 
 import { AuthContext } from './_auth-context-definition';
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [currentUser, _setCurrentUser] = useState<UserSessionType | null>(
-    getCurrentUserSession()
+  const [currentUser, setCurrentUser] = useState<UserSessionType | null>(null);
+  const [status, setStatus] = useState<AuthStatusType>('loading');
+
+  useEffect(
+    () =>
+      observeAuth((user) => {
+        setCurrentUser(
+          user && { ...user, away: false, lastPulseAt: Date.now() }
+        );
+        setStatus(user ? 'authenticated' : 'unauthenticated');
+      }),
+    []
   );
 
-  const setCurrentUser = useCallback(
-    (useSessionData: UserSessionType | null) => {
-      if (!isLoggedIn()) return;
-
-      if (!useSessionData) {
-        _setCurrentUser(null);
-        return;
-      }
-
-      _setCurrentUser((prevCurrentUser) => ({
-        ...prevCurrentUser,
-        ...useSessionData,
-      }));
+  const updatePresence = useCallback(
+    (presence: Pick<UserSessionType, 'away' | 'lastPulseAt'>) => {
+      setCurrentUser((prevCurrentUser) =>
+        prevCurrentUser ? { ...prevCurrentUser, ...presence } : null
+      );
     },
     []
   );
 
   // Update Firebase DB
   useEffect(() => {
-    if (currentUser) {
-      setCurrentUserDataInFirebase(currentUser);
+    if (currentUser?.id) {
+      setUserDataInFirebase({ ...currentUser, id: currentUser.id }).catch((e) =>
+        console.error('AuthContextProvider::ERROR: user not saved', e)
+      );
     }
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        status,
+        updatePresence,
+        signIn: signInWithGoogle,
+        signOut: signOutUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

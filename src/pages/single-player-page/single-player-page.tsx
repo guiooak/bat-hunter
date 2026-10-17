@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { SinglePlayerDashboard } from 'src/features/single-player-dashboard';
-import { MusicToggle } from 'src/features/music-toogle';
+import { MusicToggle } from 'src/features/music-toggle';
 import { enableBatGame } from 'src/services/game-service';
 import './single-player-page.scss';
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
@@ -6,7 +6,10 @@ import {
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
 import { iterate } from 'src/services/iteration-service';
+import { useCountdown } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
+
+const COUNTDOWN_TIME_TOTAL = 60;
 
 function handleGameLabel(countdownTime: number, label: string) {
   const seconds = `${countdownTime}s`;
@@ -33,17 +36,17 @@ export function SinglePlayerDashboardChallenge({
   setIsScoreEnabled: (v: boolean) => void;
   onResetScore: () => void;
 }) {
-  const COUNTDOWN_TIME_TOTAL = 60;
-
   const [currentGameState, setCurrentGameState] = currentGameStateFull;
-  const [countdownTime, setCountdownTime] = useState(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+  const { countdownTime, startCountdown, stopCountdown } = useCountdown(() =>
+    setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED)
+  );
 
   const GAME_MODE = useMemo(
     () => ({
       [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY]: {
         label: 'Free Play!',
         onStart: () => {
+          stopCountdown();
           onResetScore();
           setIsScoreEnabled(true);
         },
@@ -53,6 +56,7 @@ export function SinglePlayerDashboardChallenge({
       [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY]: {
         label: 'Get Ready!',
         onStart: () => {
+          stopCountdown();
           onResetScore();
           killAllBats();
           setIsScoreEnabled(false);
@@ -67,25 +71,9 @@ export function SinglePlayerDashboardChallenge({
       [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
         onStart: () => {
           iterate(30, onCreateBat);
-          setCountdownTime(COUNTDOWN_TIME_TOTAL);
           setIsScoreEnabled(true);
           playChallengeBackgroundMusic();
-
-          let counter = COUNTDOWN_TIME_TOTAL - 1;
-
-          const id = setInterval(() => {
-            if (counter <= 0) {
-              setCurrentGameState(
-                SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED
-              );
-              clearInterval(id);
-            }
-
-            setCountdownTime(counter);
-            counter -= 1;
-          }, 1000);
-
-          setIntervalId(id);
+          startCountdown(COUNTDOWN_TIME_TOTAL);
         },
         onCancel: () =>
           setCurrentGameState(
@@ -95,6 +83,7 @@ export function SinglePlayerDashboardChallenge({
       [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED]: {
         label: "Time's Up!",
         onStart: () => {
+          stopCountdown();
           killAllBats();
           playBackgroundMusic();
           setIsScoreEnabled(false);
@@ -105,13 +94,23 @@ export function SinglePlayerDashboardChallenge({
           setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
       },
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      onResetScore,
+      onCreateBat,
+      setIsScoreEnabled,
+      setCurrentGameState,
+      startCountdown,
+      stopCountdown,
+    ]
   );
 
+  // Only a state change starts a mode, not a new GAME_MODE reference
+  const gameModeRef = useRef(GAME_MODE);
+  gameModeRef.current = GAME_MODE;
+
   useEffect(() => {
-    GAME_MODE[currentGameState].onStart();
-  }, [currentGameState, GAME_MODE]);
+    gameModeRef.current[currentGameState].onStart();
+  }, [currentGameState]);
 
   const currentGameModel = GAME_MODE[currentGameState];
 
@@ -125,15 +124,7 @@ export function SinglePlayerDashboardChallenge({
       </Gutter>
       <ButtonGroup flex>
         {currentGameModel.onCancel && (
-          <Button
-            onClick={() => {
-              currentGameModel.onCancel?.();
-              clearInterval(intervalId);
-              setCountdownTime(0);
-            }}
-          >
-            Cancel
-          </Button>
+          <Button onClick={currentGameModel.onCancel}>Cancel</Button>
         )}
         {currentGameModel.onFreePlay && (
           <Button onClick={currentGameModel.onFreePlay}>Free Play</Button>

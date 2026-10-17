@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import './multi-player-game-dashboard.scss';
 import { MultiPlayerGameDashboardController } from './_multi-player-game-dashboard-controller';
 import { Card, Gutter } from '@components';
@@ -12,7 +12,11 @@ import {
   setGameWinner,
   setPlayerDataInFirebase,
 } from 'src/models/game-model';
-import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
+import {
+  calcFinalScore,
+  counterReducer,
+  findCurrentGame,
+} from 'src/services/game-service';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
 import { MultiPlayerGameResultModal } from './_multi-player-game-result-modal';
 import { MultiPlayerGameHistoryModal } from './_multi-player-game-history-modal';
@@ -22,7 +26,8 @@ export function MultiPlayerGameDashboard() {
   const { match } = useMultiPlayerContext();
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
   const [openResultModal, setOpenResultModal] = useState(false);
-  const [openHhistoryModal, setOpenHhistoryModal] = useState(false);
+  const [openHistoryModal, setOpenHistoryModal] = useState(false);
+  const isCreatingGameRef = useRef(false);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
 
@@ -51,26 +56,31 @@ export function MultiPlayerGameDashboard() {
   useEffect(() => {
     if (!isCurrentUserTheHost) return;
 
-    if (!currentGame) {
-      findOrCreateGame(match);
+    if (match?.id && !currentGame && !isCreatingGameRef.current) {
+      isCreatingGameRef.current = true;
+      createGameInFirebase(match.id)
+        .catch((e) =>
+          console.error('ERROR: could not register new game in Firebase.', e)
+        )
+        .finally(() => {
+          isCreatingGameRef.current = false;
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCurrentUserTheHost, currentGame]);
 
   // Save score data in database
   useEffect(() => {
-    console.log('kills x shots: ', `${killCounter} x ${shotCounter}`);
-
     if (match?.id && currentGame?.id && isGameInProgress)
       setPlayerDataInFirebase({
         matchId: match.id,
-        gameId: currentGame?.id,
+        gameId: currentGame.id,
         player: isCurrentUserTheHost ? 'host' : 'guest',
         data: {
           shotCounter,
           killCounter,
         },
-      });
+      }).catch(logFirebaseError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shotCounter, killCounter]);
 
@@ -88,7 +98,7 @@ export function MultiPlayerGameDashboard() {
 
   const onStateChange = (state: GameStateType) => {
     if (isCurrentUserTheHost && !currentGame?.winnerId) {
-      setGameState(match?.id, currentGame?.id, state);
+      setGameState(match?.id, currentGame?.id, state)?.catch(logFirebaseError);
     }
 
     if (state === 'GAME_READY') {
@@ -100,7 +110,9 @@ export function MultiPlayerGameDashboard() {
     if (state === 'GAME_FINISHED') {
       if (isCurrentUserTheHost) {
         const winnerId = getWinnerId(match);
-        setGameWinner(match?.id, currentGame?.id, winnerId);
+        setGameWinner(match?.id, currentGame?.id, winnerId)?.catch(
+          logFirebaseError
+        );
       }
     }
   };
@@ -113,7 +125,7 @@ export function MultiPlayerGameDashboard() {
             <MultiPlayerGameDashboardController
               onKill={() => dispatchKillCounter('add')}
               onShot={() => dispatchShotCounter('add')}
-              onOpenHistory={() => setOpenHhistoryModal(true)}
+              onOpenHistory={() => setOpenHistoryModal(true)}
               onStateChange={onStateChange}
               onResetScore={cleanScore}
               isCurrentUserTheHost={isCurrentUserTheHost}
@@ -130,8 +142,8 @@ export function MultiPlayerGameDashboard() {
       />
       <MultiPlayerGameHistoryModal
         match={match}
-        open={openHhistoryModal}
-        onClose={() => setOpenHhistoryModal(false)}
+        open={openHistoryModal}
+        onClose={() => setOpenHistoryModal(false)}
       />
     </>
   );
@@ -147,9 +159,9 @@ function finishGameWithWinner(game?: GameType, matchId?: string) {
   if (!game?.winnerId || isGameClosed(game)) return;
 
   setGameInFirebase({
-    matchId: matchId,
-    data: { id: game?.id, state: 'GAME_CLOSED' },
-  });
+    matchId,
+    data: { id: game.id, state: 'GAME_CLOSED' },
+  }).catch(logFirebaseError);
 }
 
 function getWinnerId(match?: MatchType) {
@@ -171,24 +183,6 @@ function getWinnerId(match?: MatchType) {
       : match?.hostId;
 }
 
-function findOrCreateGame(match?: MatchType) {
-  if (findCurrentGame(match)) {
-    return;
-  }
-
-  if (match?.id) {
-    createGameInFirebase({
-      matchId: match?.id,
-      onError: () => {
-        console.error('ERROR: could not register new game in Firebase.');
-      },
-    });
-    return;
-  }
-
-  console.error('ERROR: Could not retrieve a game.');
-}
-
-function counterReducer(state: number, action: 'add' | 'reset') {
-  return action === 'add' ? state + 1 : 0;
+function logFirebaseError(e: unknown) {
+  console.error('MultiPlayerGameDashboard::ERROR: Firebase write failed', e);
 }

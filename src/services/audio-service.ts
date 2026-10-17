@@ -47,7 +47,7 @@ export function pauseAllBackgroundMusic() {
   backgroundAudioSingleton.pause();
 }
 
-export function playSound(volume: number, audioPath: string) {
+function playSound(volume: number, audioPath: string) {
   const audio = new Audio(audioPath);
   audio.volume = volume;
   audio.play();

@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
-import { clearUserSession } from 'src/services/authentication-service';
-import { loadNewPage } from 'src/services/route-service';
+import { useNavigate } from 'react-router';
+import { useAuthContext } from 'src/features/authentication';
+import { disableBatGame, killAllBats } from 'src/services/game-service';
 
 export function LogoutPage() {
+  const navigate = useNavigate();
+  const { signOut } = useAuthContext();
+
   useEffect(() => {
-    // disableBatGame();
-    // killAllBats();
-    // setCurrentUser(null);
-    clearUserSession();
-    loadNewPage('/');
-  }, []);
+    disableBatGame();
+    killAllBats();
+    signOut().finally(() => navigate('/', { replace: true }));
+  }, [navigate, signOut]);
 
   return <div className="logout-page">Loading...</div>;
 }
