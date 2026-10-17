@@ -18,12 +18,14 @@
   }
 
   & .home-page__box {
-    padding: 72px 16px 48px;
+    // Content sits high so the tagline and buttons stay above the scope
+    // in the background image.
+    padding: 24px 16px 48px;
     width: min(460px, 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
     text-align: center;
     z-index: 2;
   }
