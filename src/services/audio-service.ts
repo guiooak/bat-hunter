@@ -63,3 +63,12 @@ export function playBatSound() {
 
   playSound(1, randomBatSound);
 }
+
+// The owl gets a bat sound slowed down, deeper and sadder.
+export function playOwlSound() {
+  const audio = new Audio(batSounds[0]);
+  audio.volume = 1;
+  audio.preservesPitch = false;
+  audio.playbackRate = 0.55;
+  audio.play();
+}

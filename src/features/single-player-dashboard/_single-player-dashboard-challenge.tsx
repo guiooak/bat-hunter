@@ -8,6 +8,8 @@ import { Button, ButtonGroup, GameClock, Gutter, Title } from '@components';
 import { iterate } from 'src/services/iteration-service';
 import { useCountdown } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
+import { DifficultyPicker } from 'src/features/difficulty-picker';
+import { Difficulty } from 'src/services/bat-types';
 
 const COUNTDOWN_TIME_TOTAL = 60;
 
@@ -16,8 +18,12 @@ export function SinglePlayerDashboardChallenge({
   onCreateBat = () => {},
   setIsScoreEnabled = () => {},
   onResetScore = () => {},
+  difficulty,
+  onDifficultyChange,
 }: {
   currentGameStateFull: [string, (v: string) => void];
+  difficulty: Difficulty;
+  onDifficultyChange: (value: Difficulty) => void;
   onCreateBat: () => void;
   setIsScoreEnabled: (v: boolean) => void;
   onResetScore: () => void;
@@ -107,6 +113,16 @@ export function SinglePlayerDashboardChallenge({
         <GameClock
           countdownTime={countdownTime}
           label={currentGameModel.label}
+        />
+      </Gutter>
+      <Gutter size="lg" direction="bottom">
+        <DifficultyPicker
+          value={difficulty}
+          onChange={onDifficultyChange}
+          disabled={
+            currentGameState ===
+            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
+          }
         />
       </Gutter>
       <ButtonGroup flex>

@@ -8,6 +8,8 @@ import { Button, ButtonGroup, GameClock, Gutter } from '@components';
 import { iterate } from 'src/services/iteration-service';
 import { useCountdown, useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
+import { BatType, Difficulty } from 'src/services/bat-types';
+import { DifficultyPicker } from 'src/features/difficulty-picker';
 
 const COUNTDOWN_TIME_TOTAL = 60;
 
@@ -25,15 +27,19 @@ type GameModeConfigType = {
 export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
   onShot = () => {},
-  onKill = () => {},
+  onHit = () => {},
   onStateChange = () => {},
   onOpenHistory = () => {},
+  onDifficultyChange = () => {},
+  difficulty,
   isCurrentUserTheHost,
   remoteGameState,
 }: {
   onResetScore: () => void;
   onShot: () => void;
-  onKill: () => void;
+  onHit: (type: BatType) => void;
+  onDifficultyChange: (value: Difficulty) => void;
+  difficulty: Difficulty;
   onOpenHistory: () => void;
   onStateChange: (state: GameStateType) => void;
   isCurrentUserTheHost?: boolean;
@@ -48,7 +54,8 @@ export function MultiPlayerGameDashboardController({
 
   const { createControlledBat, setIsScoreEnabled } = useGameCounterTriggers({
     onShot,
-    onKill,
+    onHit,
+    difficulty,
   });
 
   useEffect(() => {
@@ -133,6 +140,16 @@ export function MultiPlayerGameDashboardController({
         <GameClock
           countdownTime={countdownTime}
           label={currentGameModel.label}
+        />
+      </Gutter>
+      {/* The host picks before the game starts, the guest just sees it */}
+      <Gutter size="md" direction="bottom">
+        <DifficultyPicker
+          value={difficulty}
+          onChange={onDifficultyChange}
+          disabled={
+            !isCurrentUserTheHost || currentGameState !== GAME_STATES.GAME_READY
+          }
         />
       </Gutter>
       <ButtonGroup flex>

@@ -1,9 +1,11 @@
 import { setData, updateData } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
+import { Difficulty } from 'src/services/bat-types';
 
 type PlayerDataType = {
   shotCounter: number;
   killCounter: number;
+  points?: number;
   updatedAt?: number;
 };
 
@@ -22,17 +24,22 @@ export type GameType = {
   updatedAt?: number;
   state?: GameStateType;
   winnerId?: string;
+  difficulty?: Difficulty;
   guestData?: PlayerDataType;
   hostData?: PlayerDataType;
 };
 
-export async function createGameInFirebase(matchId: string) {
+export async function createGameInFirebase(
+  matchId: string,
+  difficulty: Difficulty = 'easy'
+) {
   const id = generateUuid();
   const data = {
     id,
     createdAt: Date.now(),
     updatedAt: Date.now(),
     state: GAME_STATES.GAME_READY,
+    difficulty,
   };
 
   await setData(`matches/${matchId}/games/${id}`, data);

@@ -8,6 +8,7 @@ import {
 } from 'src/services/game-service';
 import { createBat } from 'src/services/fly-engine-service';
 import { isShotEnabled, ShotEventType } from 'src/services/shot-service';
+import { BatType, Difficulty, pickBatType } from 'src/services/bat-types';
 
 export function useIsCurrentUserTheHost(match?: MatchType) {
   const { currentUser } = useAuthContext();
@@ -33,9 +34,13 @@ export function useGameCounters({
       ? currentGame?.hostData
       : currentGame?.guestData;
 
+    const killCounter = playerData?.killCounter || 0;
+
     return {
       shotCounter: playerData?.shotCounter || 0,
-      killCounter: playerData?.killCounter || 0,
+      killCounter,
+      // Games saved before the hard mode have no points: a kill was a point
+      points: playerData?.points ?? killCounter,
     };
   }, [match, isCurrentUserTheHost, playerKind]);
 }
@@ -53,22 +58,29 @@ function useLatestRef<T>(value: T) {
 
 export function useGameCounterTriggers({
   onShot,
-  onKill,
+  onHit,
+  difficulty,
 }: {
   onShot: () => void;
-  onKill: () => void;
+  onHit: (type: BatType) => void;
+  difficulty: Difficulty;
 }) {
   const [isScoreEnabled, setIsScoreEnabled] = useState(true);
   const isScoreEnabledRef = useLatestRef(isScoreEnabled);
   const onShotRef = useLatestRef(onShot);
-  const onKillRef = useLatestRef(onKill);
+  const onHitRef = useLatestRef(onHit);
+  const difficultyRef = useLatestRef(difficulty);
 
   const createControlledBat = useCallback(
     () =>
-      createBat(() => {
-        if (isScoreEnabledRef.current) onKillRef.current();
+      createBat({
+        type: pickBatType(difficultyRef.current),
+        withPoints: difficultyRef.current === 'hard',
+        onHit: (type) => {
+          if (isScoreEnabledRef.current) onHitRef.current(type);
+        },
       }),
-    [isScoreEnabledRef, onKillRef]
+    [isScoreEnabledRef, onHitRef, difficultyRef]
   );
 
   useEffect(() => {

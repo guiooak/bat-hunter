@@ -11,13 +11,13 @@ export function MultiPlayerMainDashboard() {
   const { currentUser } = useAuthContext();
   const { match } = useMultiPlayerContext();
 
-  const { shotCounter, killCounter } = useGameCounters({
+  const { shotCounter, killCounter, points } = useGameCounters({
     match,
     playerKind: 'main',
   });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
-  const finalScore = calcFinalScore(shotCounter, killCounter);
+  const finalScore = calcFinalScore(shotCounter, killCounter, points);
 
   return (
     <div className="multi-player-main-dashboard">

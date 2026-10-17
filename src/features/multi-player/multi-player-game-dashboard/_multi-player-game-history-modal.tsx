@@ -38,7 +38,8 @@ export function MultiPlayerGameHistoryModal({
     return {
       kills: data?.killCounter || 0,
       shots: data?.shotCounter || 0,
-      score: calcFinalScore(data?.shotCounter, data?.killCounter) || 0,
+      score:
+        calcFinalScore(data?.shotCounter, data?.killCounter, data?.points) || 0,
     };
   }
 

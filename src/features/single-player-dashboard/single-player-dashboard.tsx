@@ -2,9 +2,17 @@ import { useReducer, useState } from 'react';
 import './single-player-dashboard.scss';
 import {
   calcAccuracy,
+  calcFinalScore,
   counterReducer,
   killAllBats,
+  pointsReducer,
+  scoreHit,
 } from 'src/services/game-service';
+import { Difficulty, isDifficulty } from 'src/services/bat-types';
+import {
+  getLocalStorageValue,
+  setLocalStorageValue,
+} from 'src/services/local-storage-service';
 import { SinglePlayerDashboardChallenge } from './_single-player-dashboard-challenge';
 import { Divider, GamePanel, GamePanelStat, Gutter } from '@components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
@@ -16,6 +24,11 @@ import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 export function SinglePlayerDashboard() {
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
+  const [points, dispatchPoints] = useReducer(pointsReducer, 0);
+  const [difficulty, setDifficulty] = useState<Difficulty>(() => {
+    const saved = getLocalStorageValue('bh-difficulty');
+    return isDifficulty(saved) ? saved : 'easy';
+  });
   const currentGameStateFull = useState(
     SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY
   );
@@ -23,14 +36,26 @@ export function SinglePlayerDashboard() {
 
   const { createControlledBat, setIsScoreEnabled } = useGameCounterTriggers({
     onShot: () => dispatchShotCounter('add'),
-    onKill: () => dispatchKillCounter('add'),
+    onHit: (type) =>
+      scoreHit(type, {
+        addKill: () => dispatchKillCounter('add'),
+        addPoints: dispatchPoints,
+      }),
+    difficulty,
   });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
+  const finalScore = calcFinalScore(shotCounter, killCounter, points);
 
   function cleanScore() {
     dispatchKillCounter('reset');
     dispatchShotCounter('reset');
+    dispatchPoints('reset');
+  }
+
+  function changeDifficulty(value: Difficulty) {
+    setDifficulty(value);
+    setLocalStorageValue('bh-difficulty', value);
   }
 
   return (
@@ -39,7 +64,7 @@ export function SinglePlayerDashboard() {
         summary={
           <>
             <GamePanelStat label="Kills" value={killCounter} />
-            <GamePanelStat label="Score" value={killCounter * accuracy} />
+            <GamePanelStat label="Score" value={finalScore} />
             <GamePanelStat label="Accuracy" value={`${accuracy}%`} />
           </>
         }
@@ -47,6 +72,7 @@ export function SinglePlayerDashboard() {
         <Gutter size="md">
           <SinglePlayerDashboardScore
             killCounter={killCounter}
+            finalScore={finalScore}
             accuracy={accuracy}
             resetDisabled={currentGameState !== 'FREE_PLAY'}
             sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
@@ -60,6 +86,8 @@ export function SinglePlayerDashboard() {
         <Gutter size="md">
           <SinglePlayerDashboardChallenge
             currentGameStateFull={currentGameStateFull}
+            difficulty={difficulty}
+            onDifficultyChange={changeDifficulty}
             setIsScoreEnabled={setIsScoreEnabled}
             onResetScore={cleanScore}
             onCreateBat={createControlledBat}

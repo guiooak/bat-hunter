@@ -2,6 +2,7 @@ import { getAimCursorRegular, ShotEventType } from './shot-service';
 import { pauseAllBackgroundMusic, playBackgroundMusic } from './audio-service';
 import { MatchType } from 'src/models/match-model';
 import { buildArray } from './array-service';
+import { BAT_TYPES, BatType } from './bat-types';
 
 const bodyEl = document.querySelector('body')!;
 
@@ -38,13 +39,37 @@ export function calcAccuracy(shotCounter: number, killCounter: number) {
   return Math.round(raw * 100);
 }
 
-export function calcFinalScore(shotCounter?: number, killCounter?: number) {
+// Points times accuracy. Games saved before the hard mode have no points, and
+// in the easy mode every kill is worth one point, so points fall back to kills.
+export function calcFinalScore(
+  shotCounter?: number,
+  killCounter?: number,
+  points?: number
+) {
   const accuracy = calcAccuracy(shotCounter || 0, killCounter || 0);
-  return accuracy * (killCounter || 0);
+  return accuracy * (points ?? killCounter ?? 0);
 }
 
 export function counterReducer(state: number, action: 'add' | 'reset') {
   return action === 'add' ? state + 1 : 0;
+}
+
+export function pointsReducer(state: number, action: number | 'reset') {
+  return action === 'reset' ? 0 : state + action;
+}
+
+// A hit on an innocent costs points and is no kill, so its shot is a miss.
+export function scoreHit(
+  type: BatType,
+  {
+    addKill,
+    addPoints,
+  }: { addKill: () => void; addPoints: (points: number) => void }
+) {
+  const { points, innocent } = BAT_TYPES[type];
+
+  if (!innocent) addKill();
+  addPoints(points);
 }
 
 export function killAllBats() {

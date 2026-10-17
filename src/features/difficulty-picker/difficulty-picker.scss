@@ -1,0 +1,46 @@
+.difficulty-picker {
+  .difficulty-picker__legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 14px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--bh-font-display);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  .difficulty-picker__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    // The bat GIF is black, light it up on the dark card
+    filter: invert(1);
+
+    &--small {
+      width: 16px;
+    }
+
+    // Same tint as the golden bat in flight (styles/_game.scss)
+    &--golden {
+      filter: invert(1) sepia(1) saturate(12) hue-rotate(-8deg) brightness(0.92)
+        drop-shadow(0 0 4px var(--bh-moon));
+    }
+
+    &--owl {
+      filter: none;
+    }
+  }
+
+  .difficulty-picker__negative {
+    color: var(--bh-red);
+  }
+}

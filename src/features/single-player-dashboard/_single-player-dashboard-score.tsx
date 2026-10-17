@@ -3,6 +3,7 @@ import { Gap } from 'src/components/gap';
 
 type Props = {
   killCounter: number;
+  finalScore: number;
   accuracy: number;
   resetDisabled: boolean;
   sendBatDisabled: boolean;
@@ -12,14 +13,13 @@ type Props = {
 
 export function SinglePlayerDashboardScore({
   killCounter = 0,
+  finalScore = 0,
   accuracy = 100,
   resetDisabled = false,
   sendBatDisabled = false,
   onCreateBat = () => {},
   onResetScore = () => {},
 }: Props) {
-  const finalScore = killCounter * accuracy;
-
   return (
     <section className="bat-game-score-section">
       <div>

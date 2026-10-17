@@ -28,12 +28,14 @@ export function MultiPlayerGameResultModal({
 
   const currentUserFinalScore = calcFinalScore(
     currentUserData?.shotCounter,
-    currentUserData?.killCounter
+    currentUserData?.killCounter,
+    currentUserData?.points
   );
 
   const opponentUserFinalScore = calcFinalScore(
     opponentData?.shotCounter,
-    opponentData?.killCounter
+    opponentData?.killCounter,
+    opponentData?.points
   );
 
   return (

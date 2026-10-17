@@ -14,13 +14,13 @@ export function MultiPlayerOpponentDashboardWithMatch({
 }) {
   const { opponentUser } = useMultiPlayerContext();
 
-  const { shotCounter, killCounter } = useGameCounters({
+  const { shotCounter, killCounter, points } = useGameCounters({
     match: match || undefined,
     playerKind: 'opponent',
   });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
-  const finalScore = calcFinalScore(shotCounter, killCounter);
+  const finalScore = calcFinalScore(shotCounter, killCounter, points);
   const firstName = opponentUser?.name?.split(' ')[0];
   const status = (
     <GuestStatus
