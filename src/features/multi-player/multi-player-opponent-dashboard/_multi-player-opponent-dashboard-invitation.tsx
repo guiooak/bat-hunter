@@ -38,10 +38,16 @@ export function MultiPlayerOpponentDashboardInvitation() {
         <Gutter size="md">
           <Title>Match Setup</Title>
 
-          <Gutter size="xl">
+          <Gutter size="lg" direction="vertical">
             <div>
               {matchId ? (
-                <Gap vertical justify="center" align="center" size="md">
+                <Gap
+                  vertical
+                  justify="center"
+                  align="stretch"
+                  size="md"
+                  className="text-center"
+                >
                   <div>Share the invitation link.</div>
                   <UrlCopyButton invitationUrl={buildInvitationUrl(matchId)} />
                 </Gap>
