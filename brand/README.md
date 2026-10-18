@@ -1,6 +1,7 @@
 # Bat Hunter brand
 
-Logo and logo manual for Bat Hunter, published at https://guiooak.github.io/bat-hunter/.
+Logo and logo manual for Bat Hunter, published at https://guiooak.github.io/bat-hunter-style-guide/
+(by [guiooak/bat-hunter-style-guide](https://github.com/guiooak/bat-hunter-style-guide), which fetches this folder daily).
 
 - `index.html` — the logo manual (generated).
 - `logo/` — every logo version as SVG (generated).
@@ -16,4 +17,4 @@ python3 brand/tools/owl.py           # public/images/owl.svg (hard mode's innoce
 python3 brand/tools/readme.py        # docs/readme/* (README banner and play button)
 ```
 
-Pushing changes under `brand/` to `main` publishes the manual to GitHub Pages (`.github/workflows/pages.yml`).
+Changes pushed under `brand/` to `main` go live with the next daily publish, or right away by running the Publish workflow in [guiooak/bat-hunter-style-guide](https://github.com/guiooak/bat-hunter-style-guide/actions).

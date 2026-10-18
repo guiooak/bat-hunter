@@ -1,9 +1,13 @@
-name: Brand manual
+# The style guide moved to https://guiooak.github.io/bat-hunter-style-guide/
+# (repo guiooak/bat-hunter-style-guide, which publishes brand/ from here).
+# This keeps the old address, https://guiooak.github.io/bat-hunter/, working by
+# redirecting it there.
+name: Brand manual redirect
 
 on:
   push:
     branches: [main]
-    paths: ['brand/**', '.github/workflows/pages.yml']
+    paths: ['.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -13,7 +17,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -22,10 +26,27 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Build the redirect
+        run: |
+          mkdir -p site
+          cat > site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8" />
+              <title>Bat Hunter style guide</title>
+              <link rel="canonical" href="https://guiooak.github.io/bat-hunter-style-guide/" />
+              <meta http-equiv="refresh" content="0; url=https://guiooak.github.io/bat-hunter-style-guide/" />
+            </head>
+            <body>
+              <p>The Bat Hunter style guide moved to
+                <a href="https://guiooak.github.io/bat-hunter-style-guide/">guiooak.github.io/bat-hunter-style-guide</a>.</p>
+            </body>
+          </html>
+          HTML
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: brand
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v5
