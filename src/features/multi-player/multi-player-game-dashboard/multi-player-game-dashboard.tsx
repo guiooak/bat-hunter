@@ -22,6 +22,7 @@ import {
 } from 'src/services/game-service';
 import { Difficulty } from 'src/services/bat-types';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
+import { useDockHeight } from 'src/hooks/layout-hooks';
 import { MultiPlayerGameResultModal } from './_multi-player-game-result-modal';
 import { MultiPlayerGameHistoryModal } from './_multi-player-game-history-modal';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
@@ -32,6 +33,8 @@ export function MultiPlayerGameDashboard() {
   const [openResultModal, setOpenResultModal] = useState(false);
   const [openHistoryModal, setOpenHistoryModal] = useState(false);
   const isCreatingGameRef = useRef(false);
+  const dockRef = useRef<HTMLDivElement>(null);
+  useDockHeight(dockRef);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const [points, dispatchPoints] = useReducer(pointsReducer, 0);
@@ -139,26 +142,28 @@ export function MultiPlayerGameDashboard() {
   return (
     <>
       <div className="multi-player-game-dashboard">
-        <Card className="multi-player-game-dashboard__card">
-          <Gutter size="md">
-            <MultiPlayerGameDashboardController
-              onHit={(type) =>
-                scoreHit(type, {
-                  addKill: () => dispatchKillCounter('add'),
-                  addPoints: dispatchPoints,
-                })
-              }
-              difficulty={difficulty}
-              onDifficultyChange={changeDifficulty}
-              onShot={() => dispatchShotCounter('add')}
-              onOpenHistory={() => setOpenHistoryModal(true)}
-              onStateChange={onStateChange}
-              onResetScore={cleanScore}
-              isCurrentUserTheHost={isCurrentUserTheHost}
-              remoteGameState={currentGame?.state}
-            />
-          </Gutter>
-        </Card>
+        <div ref={dockRef} className="multi-player-game-dashboard__dock">
+          <Card className="multi-player-game-dashboard__card">
+            <Gutter size="md">
+              <MultiPlayerGameDashboardController
+                onHit={(type) =>
+                  scoreHit(type, {
+                    addKill: () => dispatchKillCounter('add'),
+                    addPoints: dispatchPoints,
+                  })
+                }
+                difficulty={difficulty}
+                onDifficultyChange={changeDifficulty}
+                onShot={() => dispatchShotCounter('add')}
+                onOpenHistory={() => setOpenHistoryModal(true)}
+                onStateChange={onStateChange}
+                onResetScore={cleanScore}
+                isCurrentUserTheHost={isCurrentUserTheHost}
+                remoteGameState={currentGame?.state}
+              />
+            </Gutter>
+          </Card>
+        </div>
       </div>
       <MultiPlayerGameResultModal
         open={openResultModal}

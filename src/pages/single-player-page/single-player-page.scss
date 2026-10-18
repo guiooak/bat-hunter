@@ -10,6 +10,7 @@
     // iOS does not support fixed backgrounds
     background-attachment: scroll;
     background-position: center;
-    --bh-dock-height: 68px;
+    // The collapsed panel bar; opened, the panel covers the music toggle
+    --bh-dock-height: 66px;
   }
 }
