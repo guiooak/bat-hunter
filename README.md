@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://bat-hunter-game.web.app/" target="_blank" rel="noopener">
-    <img src="docs/readme/banner.jpg" alt="Bat Hunter: too many bats, time to drop some." width="100%">
+    <img src="docs/readme/banner.png" alt="Bat Hunter: too many bats, time to drop some." width="100%">
   </a>
 </p>
 

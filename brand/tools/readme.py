@@ -16,6 +16,7 @@ FONT = "'Avenir Next Condensed', 'Arial Narrow', sans-serif"  # the display fall
 BAT = open(os.path.join(TOOLS, 'bat-path.txt')).read().strip()
 
 W, H = 1280, 560
+RADIUS = 24
 
 
 def data_uri(path, mime):
@@ -54,6 +55,8 @@ def banner():
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {W} {H}" width="{W}" height="{H}">
   <defs>
+    <!-- GitHub strips CSS from READMEs, so the rounded corners live in the image -->
+    <clipPath id="card"><rect width="{W}" height="{H}" rx="{RADIUS}"/></clipPath>
     <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="{INK}" stop-opacity="0.35"/>
       <stop offset="0.55" stop-color="{INK}" stop-opacity="0.15"/>
@@ -71,6 +74,7 @@ def banner():
       <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="{INK}" flood-opacity="0.8"/>
     </filter>
   </defs>
+  <g clip-path="url(#card)">
   <image href="{background}" xlink:href="{background}" width="{W}" height="{H}" preserveAspectRatio="xMidYMid slice"/>
   <rect width="{W}" height="{H}" fill="url(#shade)"/>
   <rect width="{W}" height="{H}" fill="url(#vignette)"/>
@@ -81,6 +85,7 @@ def banner():
   <image href="{logo}" xlink:href="{logo}" x="{(W - 700) / 2}" y="150" width="700" height="201" filter="url(#lift)"/>
   <text x="{W / 2}" y="420" text-anchor="middle" font-family="{FONT}" font-weight="600" font-size="38"
         fill="{BONE}" letter-spacing="1" filter="url(#lift)">Too many bats, time to drop some.</text>
+  </g>
 </svg>'''
     return svg
 
@@ -107,10 +112,11 @@ def render(svg, name, scale=1, jpg=False):
         if jpg:
             subprocess.run(['magick', png, '-strip', '-quality', '84', out], check=True)
         else:
-            subprocess.run(['magick', png, '-strip', out], check=True)
+            # 256 colors keep the photo light; the corners stay transparent
+            subprocess.run(['magick', png, '-strip', '-colors', '256', out], check=True)
     print('wrote', os.path.relpath(out, ROOT))
 
 
 os.makedirs(OUT, exist_ok=True)
-render(banner(), 'banner.jpg', jpg=True)
+render(banner(), 'banner.png')
 render(button(), 'play-button.png', scale=2)
