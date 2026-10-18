@@ -133,3 +133,30 @@ export function useCountdown(onFinish: () => void) {
 
   return { countdownTime, startCountdown, stopCountdown };
 }
+
+const SPAWN_POPULATION = 30;
+const SPAWN_REFILL_PER_TICK = 3;
+const SPAWN_TICK_MS = 1000;
+
+// While a game runs the sky fills itself: a full flock at the start, then a
+// few bats a second whenever hits (or golden bats flying away) thin it out.
+export function useBatSpawner(createBat: () => void, active: boolean) {
+  const createBatRef = useLatestRef(createBat);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const missing = () =>
+      SPAWN_POPULATION - document.querySelectorAll('.flying-bat').length;
+
+    const initial = missing();
+    for (let i = 0; i < initial; i++) createBatRef.current();
+
+    const interval = setInterval(() => {
+      const count = Math.min(missing(), SPAWN_REFILL_PER_TICK);
+      for (let i = 0; i < count; i++) createBatRef.current();
+    }, SPAWN_TICK_MS);
+
+    return () => clearInterval(interval);
+  }, [active, createBatRef]);
+}

@@ -75,6 +75,7 @@ export function SinglePlayerDashboard() {
             finalScore={finalScore}
             accuracy={accuracy}
             resetDisabled={currentGameState !== 'FREE_PLAY'}
+            sendBatHidden={currentGameState === 'CHALLENGE_IN_PROGRESS'}
             sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
               currentGameState
             )}

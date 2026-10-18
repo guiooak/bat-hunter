@@ -5,8 +5,11 @@ import {
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, GameClock, Gutter } from '@components';
-import { iterate } from 'src/services/iteration-service';
-import { useCountdown, useGameCounterTriggers } from 'src/hooks/game-hooks';
+import {
+  useBatSpawner,
+  useCountdown,
+  useGameCounterTriggers,
+} from 'src/hooks/game-hooks';
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
 import { BatType, Difficulty } from 'src/services/bat-types';
 import { DifficultyPicker } from 'src/features/difficulty-picker';
@@ -19,7 +22,6 @@ type GameModeConfigType = {
   onMatchStart?: () => void;
   onOpenHistory?: () => void;
   onCancel?: () => void;
-  onAddBats?: () => void;
   onChallengeReady?: () => void;
   onChallengeReadyLabel?: string;
 };
@@ -58,6 +60,11 @@ export function MultiPlayerGameDashboardController({
     difficulty,
   });
 
+  useBatSpawner(
+    createControlledBat,
+    currentGameState === GAME_STATES.GAME_IN_PROGRESS
+  );
+
   useEffect(() => {
     if (!isCurrentUserTheHost && remoteGameState) {
       setCurrentGameState(remoteGameState);
@@ -84,12 +91,10 @@ export function MultiPlayerGameDashboardController({
       },
       [GAME_STATES.GAME_IN_PROGRESS]: {
         onStart: () => {
-          iterate(30, createControlledBat);
           setIsScoreEnabled(true);
           playChallengeBackgroundMusic();
           startCountdown(COUNTDOWN_TIME_TOTAL);
         },
-        onAddBats: createControlledBat,
         onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
       },
       [GAME_STATES.GAME_FINISHED]: {
@@ -117,7 +122,6 @@ export function MultiPlayerGameDashboardController({
     [
       onResetScore,
       onOpenHistory,
-      createControlledBat,
       setIsScoreEnabled,
       startCountdown,
       stopCountdown,
@@ -185,11 +189,6 @@ export function MultiPlayerGameDashboardController({
         {currentGameModel.onMatchStart && isCurrentUserTheHost && (
           <Button kind="primary" onClick={currentGameModel.onMatchStart}>
             Start
-          </Button>
-        )}
-        {currentGameModel.onAddBats && (
-          <Button kind="primary" onClick={currentGameModel.onAddBats}>
-            Add bats
           </Button>
         )}
       </ButtonGroup>

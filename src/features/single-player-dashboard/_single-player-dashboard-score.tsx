@@ -7,6 +7,7 @@ type Props = {
   accuracy: number;
   resetDisabled: boolean;
   sendBatDisabled: boolean;
+  sendBatHidden: boolean;
   onCreateBat: () => void;
   onResetScore: () => void;
 };
@@ -17,6 +18,7 @@ export function SinglePlayerDashboardScore({
   accuracy = 100,
   resetDisabled = false,
   sendBatDisabled = false,
+  sendBatHidden = false,
   onCreateBat = () => {},
   onResetScore = () => {},
 }: Props) {
@@ -45,9 +47,16 @@ export function SinglePlayerDashboardScore({
         <Button kind="tertiary" disabled={resetDisabled} onClick={onResetScore}>
           Reset
         </Button>
-        <Button kind="primary" disabled={sendBatDisabled} onClick={onCreateBat}>
-          Send Bats
-        </Button>
+        {/* Bats come on their own during a challenge */}
+        {!sendBatHidden && (
+          <Button
+            kind="primary"
+            disabled={sendBatDisabled}
+            onClick={onCreateBat}
+          >
+            Send Bats
+          </Button>
+        )}
       </ButtonGroup>
     </section>
   );

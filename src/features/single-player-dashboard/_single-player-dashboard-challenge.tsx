@@ -5,8 +5,7 @@ import {
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, GameClock, Gutter, Title } from '@components';
-import { iterate } from 'src/services/iteration-service';
-import { useCountdown } from 'src/hooks/game-hooks';
+import { useBatSpawner, useCountdown } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 import { DifficultyPicker } from 'src/features/difficulty-picker';
 import { Difficulty } from 'src/services/bat-types';
@@ -31,6 +30,11 @@ export function SinglePlayerDashboardChallenge({
   const [currentGameState, setCurrentGameState] = currentGameStateFull;
   const { countdownTime, startCountdown, stopCountdown } = useCountdown(() =>
     setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED)
+  );
+
+  useBatSpawner(
+    onCreateBat,
+    currentGameState === SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
   );
 
   const GAME_MODE = useMemo(
@@ -62,7 +66,6 @@ export function SinglePlayerDashboardChallenge({
       },
       [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
         onStart: () => {
-          iterate(30, onCreateBat);
           setIsScoreEnabled(true);
           playChallengeBackgroundMusic();
           startCountdown(COUNTDOWN_TIME_TOTAL);
@@ -88,7 +91,6 @@ export function SinglePlayerDashboardChallenge({
     }),
     [
       onResetScore,
-      onCreateBat,
       setIsScoreEnabled,
       setCurrentGameState,
       startCountdown,
