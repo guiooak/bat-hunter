@@ -142,21 +142,26 @@ export function MultiPlayerGameDashboardController({
           label={currentGameModel.label}
         />
       </Gutter>
-      {/* The host picks before the game starts, the guest just sees it */}
-      <Gutter size="md" direction="bottom">
-        <DifficultyPicker
-          value={difficulty}
-          onChange={onDifficultyChange}
-          readOnly={
-            !isCurrentUserTheHost || currentGameState !== GAME_STATES.GAME_READY
-          }
-          note={
-            !isCurrentUserTheHost && currentGameState === GAME_STATES.GAME_READY
-              ? 'Host picks'
-              : undefined
-          }
-        />
-      </Gutter>
+      {/* The host picks before the game starts, the guest just sees it.
+          Hidden while playing, the bats need the room. */}
+      {currentGameState !== GAME_STATES.GAME_IN_PROGRESS && (
+        <Gutter size="md" direction="bottom">
+          <DifficultyPicker
+            value={difficulty}
+            onChange={onDifficultyChange}
+            readOnly={
+              !isCurrentUserTheHost ||
+              currentGameState !== GAME_STATES.GAME_READY
+            }
+            note={
+              !isCurrentUserTheHost &&
+              currentGameState === GAME_STATES.GAME_READY
+                ? 'Host picks'
+                : undefined
+            }
+          />
+        </Gutter>
+      )}
       <ButtonGroup flex>
         {currentGameModel.onCancel && isCurrentUserTheHost && (
           <Button

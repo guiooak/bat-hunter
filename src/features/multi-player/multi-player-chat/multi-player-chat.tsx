@@ -8,6 +8,7 @@ import { Gap } from 'src/components/gap';
 import { createMessageInFirebase } from 'src/models/message-model';
 import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
+import { findCurrentGame } from 'src/services/game-service';
 
 export function MultiPlayerChat() {
   const { match, opponentUser } = useMultiPlayerContext();
@@ -35,6 +36,8 @@ export function MultiPlayerChat() {
   }, [chatOpen, messagesArray.length]);
 
   const canChat = Boolean(match?.id && currentUser?.id);
+  // Hidden, not unmounted, so the unread count survives the game
+  const isGameInProgress = findCurrentGame(match)?.state === 'GAME_IN_PROGRESS';
 
   function saveMessage() {
     const message = currentMessage?.trim();
@@ -63,6 +66,7 @@ export function MultiPlayerChat() {
     <div
       className={clsx('multi-player-chat', {
         'multi-player-chat--open': chatOpen,
+        'multi-player-chat--hidden': isGameInProgress,
       })}
     >
       <header onClick={() => setChatOpen(!chatOpen)}>

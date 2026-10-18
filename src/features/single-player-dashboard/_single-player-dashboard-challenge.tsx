@@ -115,16 +115,13 @@ export function SinglePlayerDashboardChallenge({
           label={currentGameModel.label}
         />
       </Gutter>
-      <Gutter size="lg" direction="bottom">
-        <DifficultyPicker
-          value={difficulty}
-          onChange={onDifficultyChange}
-          readOnly={
-            currentGameState ===
-            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
-          }
-        />
-      </Gutter>
+      {/* Locked and out of the way while the challenge runs */}
+      {currentGameState !==
+        SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS && (
+        <Gutter size="lg" direction="bottom">
+          <DifficultyPicker value={difficulty} onChange={onDifficultyChange} />
+        </Gutter>
+      )}
       <ButtonGroup flex>
         {currentGameModel.onCancel && (
           <Button onClick={currentGameModel.onCancel}>Cancel</Button>
