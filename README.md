@@ -98,4 +98,4 @@ Required repository secrets:
 
 ## Brand
 
-The logo, cursors, the owl and the images in this README are drawn from code. See [`brand/README.md`](brand/README.md) and the [style guide](https://guiooak.github.io/bat-hunter-style-guide/).
+The logo, cursors, the owl and the images in this README are drawn from code. See [`brand/README.md`](brand/README.md) and the [logo manual](https://guiooak.github.io/bat-hunter/).
