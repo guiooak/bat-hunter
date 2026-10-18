@@ -4,6 +4,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+// The game screen never scrolls: a drag is aiming, not panning
+body:has(.single-player-page, .multi-player-page) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 // A double tap must shoot twice, not zoom the page
 .single-player-page,
 .multi-player-page {

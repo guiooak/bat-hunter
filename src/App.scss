@@ -18,6 +18,9 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  // On phones 100vh counts the area under the browser bars and the page
+  // scrolls; 100dvh is the visible height
+  height: 100dvh;
   color: var(--bh-fg);
   background-color: var(--bh-bg);
 }
