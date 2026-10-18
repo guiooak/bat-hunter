@@ -159,6 +159,7 @@ export function MultiPlayerGameDashboard() {
                 onStateChange={onStateChange}
                 onResetScore={cleanScore}
                 isCurrentUserTheHost={isCurrentUserTheHost}
+                hasOpponent={Boolean(match?.guestId)}
                 remoteGameState={currentGame?.state}
               />
             </Gutter>

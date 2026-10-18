@@ -34,6 +34,7 @@ export function MultiPlayerGameDashboardController({
   onOpenHistory = () => {},
   onDifficultyChange = () => {},
   difficulty,
+  hasOpponent = false,
   isCurrentUserTheHost,
   remoteGameState,
 }: {
@@ -42,6 +43,8 @@ export function MultiPlayerGameDashboardController({
   onHit: (type: BatType) => void;
   onDifficultyChange: (value: Difficulty) => void;
   difficulty: Difficulty;
+  // No history to show until someone accepts the invitation
+  hasOpponent?: boolean;
   onOpenHistory: () => void;
   onStateChange: (state: GameStateType) => void;
   isCurrentUserTheHost?: boolean;
@@ -177,7 +180,11 @@ export function MultiPlayerGameDashboardController({
           </Button>
         )}
         {currentGameModel.onOpenHistory && (
-          <Button kind="secondary" onClick={currentGameModel.onOpenHistory}>
+          <Button
+            kind="secondary"
+            disabled={!hasOpponent}
+            onClick={currentGameModel.onOpenHistory}
+          >
             History
           </Button>
         )}
