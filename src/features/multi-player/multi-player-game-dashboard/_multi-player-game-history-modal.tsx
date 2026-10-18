@@ -43,16 +43,24 @@ export function MultiPlayerGameHistoryModal({
     };
   }
 
-  const gamesArray = useMemo(() => buildArray(match?.games), [match?.games]);
+  // Only played games count: a game that has not started (or is still
+  // running) has no winner yet
+  const gamesArray = useMemo(
+    () =>
+      buildArray(match?.games).filter((game) =>
+        ['GAME_FINISHED', 'GAME_CLOSED'].includes(game.state || '')
+      ),
+    [match?.games]
+  );
 
   const { currentWins, opponentWins } = useMemo(
     () =>
       gamesArray.reduce(
         (acc, game) => ({
           currentWins:
-            acc.currentWins + (game.winnerId === currentUser?.id ? 1 : 0),
+            acc.currentWins + (isWinner(game, currentUser?.id) ? 1 : 0),
           opponentWins:
-            acc.opponentWins + (game.winnerId === opponentUser?.id ? 1 : 0),
+            acc.opponentWins + (isWinner(game, opponentUser?.id) ? 1 : 0),
         }),
         { currentWins: 0, opponentWins: 0 }
       ),
@@ -61,26 +69,17 @@ export function MultiPlayerGameHistoryModal({
 
   return (
     <Modal open={open} onClose={onClose} header="Games History">
+      {/* Starts at 0 x 0 as soon as the opponent joins */}
+      <FinalRanking
+        opponentWins={opponentWins}
+        currentUserWins={currentWins}
+        opponentName={opponentUser?.firstName}
+        currentUserName={currentUser?.firstName}
+      />
       {gamesArray.length ? (
         <div>
-          <FinalRanking
-            opponentWins={opponentWins}
-            currentUserWins={currentWins}
-            opponentName={opponentUser?.firstName}
-            currentUserName={currentUser?.firstName}
-          />
           <ol>
             {gamesArray.map((game) => {
-              if (
-                !['GAME_FINISHED', 'GAME_CLOSED'].includes(game.state || '')
-              ) {
-                return (
-                  <li key={game?.id}>
-                    This game is still pending. Go play it!
-                  </li>
-                );
-              }
-
               const currentData = getUserData(game, 'MAIN');
               const opponentData = getUserData(game, 'OPPONENT');
               const currentAccuracy = calcAccuracy(
@@ -114,10 +113,19 @@ export function MultiPlayerGameHistoryModal({
           </ol>
         </div>
       ) : (
-        <Text align="center">No games yet to show.</Text>
+        <Gutter size="xl" direction="vertical">
+          <Text align="center" secondary>
+            No games played yet.
+          </Text>
+        </Gutter>
       )}
     </Modal>
   );
+}
+
+// A game without a winner yet must not count for a missing (undefined) player
+function isWinner(game: GameType, userId?: string) {
+  return Boolean(userId && game.winnerId === userId);
 }
 
 function FinalRanking({
