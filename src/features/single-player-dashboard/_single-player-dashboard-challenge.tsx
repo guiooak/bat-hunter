@@ -119,7 +119,7 @@ export function SinglePlayerDashboardChallenge({
         <DifficultyPicker
           value={difficulty}
           onChange={onDifficultyChange}
-          disabled={
+          readOnly={
             currentGameState ===
             SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
           }

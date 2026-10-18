@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Button, ButtonGroup } from '@components';
+import { SegmentedControl } from '@components';
 import {
   BAT_TYPE_NAMES,
   BAT_TYPES,
@@ -17,32 +17,24 @@ const DIFFICULTIES: { value: Difficulty; label: string }[] = [
 export function DifficultyPicker({
   value,
   onChange,
-  disabled = false,
+  readOnly = false,
+  note,
 }: {
   value: Difficulty;
   onChange?: (value: Difficulty) => void;
-  disabled?: boolean;
+  readOnly?: boolean;
+  note?: string;
 }) {
   return (
     <div className="difficulty-picker">
-      <ButtonGroup flex>
-        {DIFFICULTIES.map((difficulty) => {
-          const isActive = difficulty.value === value;
-
-          return (
-            <Button
-              key={difficulty.value}
-              kind={isActive ? 'primary' : 'secondary'}
-              disabled={disabled && !isActive}
-              onClick={() => {
-                if (!disabled && !isActive) onChange?.(difficulty.value);
-              }}
-            >
-              {difficulty.label}
-            </Button>
-          );
-        })}
-      </ButtonGroup>
+      <SegmentedControl
+        label="Difficulty"
+        options={DIFFICULTIES}
+        value={value}
+        onChange={onChange}
+        readOnly={readOnly}
+        note={note}
+      />
       {value === 'hard' && <BatLegend />}
     </div>
   );

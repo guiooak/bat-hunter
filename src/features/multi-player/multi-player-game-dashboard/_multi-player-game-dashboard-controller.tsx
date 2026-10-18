@@ -147,8 +147,13 @@ export function MultiPlayerGameDashboardController({
         <DifficultyPicker
           value={difficulty}
           onChange={onDifficultyChange}
-          disabled={
+          readOnly={
             !isCurrentUserTheHost || currentGameState !== GAME_STATES.GAME_READY
+          }
+          note={
+            !isCurrentUserTheHost && currentGameState === GAME_STATES.GAME_READY
+              ? 'Host picks'
+              : undefined
           }
         />
       </Gutter>
