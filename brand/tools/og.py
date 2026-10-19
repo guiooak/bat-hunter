@@ -26,7 +26,7 @@ def card():
     golden = bat(990, 400, 1.1, fill=MOON, rotate=-10, extra='filter="url(#glow)"')
     target = bat(810, 150, 0.8, rotate=12) + reticle(810, 150, 46)
     # Logo 160.3 x 132 (stacked)
-    logo_w = 430
+    logo_w = 480
     logo_h = logo_w * 132 / 160.3
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {W} {H}" width="{W}" height="{H}">
@@ -55,10 +55,8 @@ def card():
   {golden}
   {target}
   <image href="{owl}" xlink:href="{owl}" x="950" y="220" width="100" height="100"/>
-  <image href="{logo}" xlink:href="{logo}" x="{(W - logo_w) / 2}" y="40" width="{logo_w}" height="{logo_h}" filter="url(#lift)"/>
-  <text x="{W / 2}" y="470" text-anchor="middle" font-family="{FONT}" font-weight="600" font-size="44"
-        fill="{BONE}" letter-spacing="1" filter="url(#lift)">Too many bats, time to drop some.</text>
-  <text x="{W / 2}" y="540" text-anchor="middle" font-family="{FONT}" font-weight="700" font-size="30"
+  <image href="{logo}" xlink:href="{logo}" x="{(W - logo_w) / 2}" y="50" width="{logo_w}" height="{logo_h}" filter="url(#lift)"/>
+  <text x="{W / 2}" y="525" text-anchor="middle" font-family="{FONT}" font-weight="700" font-size="36"
         fill="{MOON}" letter-spacing="4" filter="url(#lift)">▶ PLAY FREE · SOLO OR 1v1</text>
 </svg>'''
 
