@@ -10,6 +10,7 @@ import { AuthContextProvider } from './features/authentication';
 import { LogoutPage } from './pages/logout-page';
 import { Pulse } from './features/authentication/pulse';
 import { InvitationPage } from './pages/invitation-page';
+import { NotFoundPage } from './pages/not-found-page';
 
 export function App() {
   return (
@@ -36,6 +37,7 @@ export function App() {
               <Route path="matches" element={<MatchesPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="logout" element={<LogoutPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
         </BrowserRouter>

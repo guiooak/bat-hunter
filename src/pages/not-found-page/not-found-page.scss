@@ -1,0 +1,110 @@
+.not-found-page {
+  min-height: var(--full-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  // A low moon over the night, like the brand symbol
+  background: radial-gradient(
+      circle at 50% 115%,
+      rgba(232, 118, 43, 0.35),
+      rgba(58, 18, 54, 0.4) 40%,
+      transparent 70%
+    ),
+    var(--bh-bg);
+
+  & .not-found-page__box {
+    padding: 32px 16px 48px;
+    width: min(560px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  & .not-found-page__code {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--bh-font-display);
+    font-size: clamp(96px, 26vw, 168px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--bh-moon);
+    text-shadow: 0 6px 32px rgba(232, 118, 43, 0.45);
+    user-select: none;
+
+    // The zero is the crosshair, still looking for the page
+    & img {
+      width: 0.82em;
+      height: 0.82em;
+      animation: not-found-search 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 6px 24px rgba(232, 118, 43, 0.45));
+    }
+  }
+
+  & .not-found-page__title {
+    margin: 8px 0 0;
+    font-size: clamp(24px, 5vw, 34px);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  & .not-found-page__text {
+    margin: 0;
+    color: var(--bh-muted);
+    text-wrap: balance;
+  }
+
+  & .not-found-page__score {
+    margin: 8px 0;
+    min-height: 1.5em;
+    font-family: var(--bh-font-display);
+    font-weight: 600;
+    color: var(--bh-moon);
+    text-wrap: balance;
+  }
+
+  & .not-found-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+}
+
+@keyframes not-found-search {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  25% {
+    transform: translate(-6px, -4px) rotate(-8deg);
+  }
+
+  50% {
+    transform: translate(5px, 3px) rotate(6deg);
+  }
+
+  75% {
+    transform: translate(-3px, 5px) rotate(-3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-page .not-found-page__code img {
+    animation: none;
+  }
+}
+
+// The bats fly over a dark night here, not the pumpkin moon of the game:
+// rim them with moonlight so they can be seen (and shot)
+body:has(.not-found-page) {
+  .flying-bat--normal img,
+  .flying-bat--small img {
+    filter: drop-shadow(0 0 1.5px rgba(247, 200, 115, 0.95))
+      drop-shadow(0 0 10px rgba(232, 118, 43, 0.6));
+  }
+}

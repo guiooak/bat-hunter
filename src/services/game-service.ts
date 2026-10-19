@@ -17,6 +17,19 @@ export function enableBatGame() {
   bodyEl.style.cursor = getAimCursorRegular();
 }
 
+// The crosshair without a game: no music, no score (e.g. the 404 page)
+export function enableAimOnly() {
+  isGameModeOn = false;
+  pauseAllBackgroundMusic();
+
+  bodyEl.style.cursor = getAimCursorRegular();
+}
+
+// Right away, so the next page (maybe a game) can set its own cursor
+export function disableAimOnly() {
+  bodyEl.style.cursor = '';
+}
+
 export function disableBatGame() {
   isGameModeOn = false;
   pauseAllBackgroundMusic();
