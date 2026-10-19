@@ -4,7 +4,7 @@ import {
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
-import { Button, ButtonGroup, GameClock, Gutter } from '@components';
+import { Button, ButtonGroup, GameClock, Gutter, Text } from '@components';
 import {
   useBatSpawner,
   useCountdown,
@@ -43,7 +43,8 @@ export function MultiPlayerGameDashboardController({
   onHit: (type: BatType) => void;
   onDifficultyChange: (value: Difficulty) => void;
   difficulty: Difficulty;
-  // No history to show until someone accepts the invitation
+  // Until someone accepts the invitation there is no game to start and no
+  // history to show
   hasOpponent?: boolean;
   onOpenHistory: () => void;
   onStateChange: (state: GameStateType) => void;
@@ -194,11 +195,25 @@ export function MultiPlayerGameDashboardController({
           </Button>
         )}
         {currentGameModel.onMatchStart && isCurrentUserTheHost && (
-          <Button kind="primary" onClick={currentGameModel.onMatchStart}>
+          <Button
+            kind="primary"
+            disabled={!hasOpponent}
+            onClick={currentGameModel.onMatchStart}
+          >
             Start
           </Button>
         )}
       </ButtonGroup>
+      {/* A match needs two players */}
+      {currentGameModel.onMatchStart &&
+        isCurrentUserTheHost &&
+        !hasOpponent && (
+          <Gutter size="sm" direction="top">
+            <Text block secondary size="sm" align="center">
+              Waiting for an opponent to join.
+            </Text>
+          </Gutter>
+        )}
     </section>
   );
 }
