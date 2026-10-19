@@ -14,6 +14,7 @@ python3 brand/tools/build_manual.py  # brand/index.html
 python3 brand/tools/cursors.py       # public/images/cursor/*.png (in-game crosshairs)
 python3 brand/tools/owl.py           # public/images/owl.svg (hard mode's innocent owl)
 python3 brand/tools/readme.py        # docs/readme/* (README banner and play button)
+python3 brand/tools/og.py            # public/og-image.jpg (link preview card)
 ```
 
 Pushing changes under `brand/` to `main` publishes the manual to GitHub Pages (`.github/workflows/pages.yml`).

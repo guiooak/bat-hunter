@@ -117,6 +117,7 @@ def render(svg, name, scale=1, jpg=False):
     print('wrote', os.path.relpath(out, ROOT))
 
 
-os.makedirs(OUT, exist_ok=True)
-render(banner(), 'banner.png')
-render(button(), 'play-button.png', scale=2)
+if __name__ == '__main__':
+    os.makedirs(OUT, exist_ok=True)
+    render(banner(), 'banner.png')
+    render(button(), 'play-button.png', scale=2)
