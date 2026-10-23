@@ -55,6 +55,28 @@
   }
 }
 
+.home-page .home-page__legal {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+
+  & a,
+  & a:visited {
+    color: var(--bh-muted);
+    text-decoration: none;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  }
+
+  & a:hover,
+  & a:focus-visible {
+    color: var(--bh-moon);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-page .home-page-bg {
     transition: none;

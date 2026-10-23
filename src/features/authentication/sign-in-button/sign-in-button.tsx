@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button, Text } from '@components';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { useAuthContext } from 'src/features/authentication';
+import { NavLink } from 'react-router';
+import { MIN_MULTIPLAYER_AGE } from 'src/services/legal-service';
 
 export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
   const { signIn } = useAuthContext();
@@ -39,6 +41,12 @@ export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
           {error}
         </Text>
       )}
+      {/* Transparency, not consent: the legal basis is the game itself */}
+      <p className="sign-in-button__notice">
+        By signing in you accept the <NavLink to="/terms">Terms</NavLink> and
+        confirm you are {MIN_MULTIPLAYER_AGE} or older. See how we handle your
+        data in the <NavLink to="/privacy">Privacy Policy</NavLink>.
+      </p>
     </div>
   );
 }

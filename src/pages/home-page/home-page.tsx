@@ -32,6 +32,10 @@ export function HomePage() {
           </NavLink>
         </div>
       </div>
+      <footer className="home-page__legal">
+        <NavLink to="/privacy">Privacy</NavLink>
+        <NavLink to="/terms">Terms</NavLink>
+      </footer>
     </div>
   );
 }

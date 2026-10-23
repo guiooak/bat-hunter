@@ -9,6 +9,7 @@ import { createMessageInFirebase } from 'src/models/message-model';
 import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 import { findCurrentGame } from 'src/services/game-service';
+import { mailtoPrivacy } from 'src/services/legal-service';
 
 export function MultiPlayerChat() {
   const { match, opponentUser } = useMultiPlayerContext();
@@ -104,6 +105,11 @@ export function MultiPlayerChat() {
                     authorName={name?.split(' ')[0]}
                     text={message?.message || ''}
                     timestamp={message?.createdAt || 0}
+                    reportUrl={
+                      isSelf
+                        ? undefined
+                        : buildReportUrl(match?.id, message.id, message)
+                    }
                   />
                 );
               })}
@@ -141,16 +147,39 @@ function scrollTopBottom(container: HTMLElement | null) {
   }
 }
 
+// Opens an email to the privacy channel with what is needed to review it
+function buildReportUrl(
+  matchId?: string,
+  messageId?: string,
+  message?: { message?: string; createdAt?: number }
+) {
+  return mailtoPrivacy(
+    'Bat Hunter: chat report',
+    [
+      'I want to report this chat message.',
+      '',
+      `Match: ${matchId}`,
+      `Message: ${messageId}`,
+      `Sent at: ${new Date(message?.createdAt || 0).toISOString()}`,
+      `Text: ${message?.message}`,
+      '',
+      'Why (optional):',
+    ].join('\n')
+  );
+}
+
 function ChatMessage({
   text,
   authorName,
   timestamp,
   self,
+  reportUrl,
 }: {
   text: string;
   timestamp: number;
   authorName?: string;
   self?: boolean;
+  reportUrl?: string;
 }) {
   const datetime = new Date(timestamp);
   const fullDatetimeHumanized = datetime.toLocaleString();
@@ -165,6 +194,14 @@ function ChatMessage({
       </Text>
       <Text secondary size="xxs" align={align}>
         {name}, <span title={fullDatetimeHumanized}>{timeHumanized}</span>
+        {reportUrl && (
+          <>
+            {' · '}
+            <a className="chat-message__report" href={reportUrl}>
+              Report
+            </a>
+          </>
+        )}
       </Text>
     </div>
   );

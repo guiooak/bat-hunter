@@ -61,6 +61,12 @@
     width: 100%;
   }
 
+  .chat-message__report,
+  .chat-message__report:visited {
+    color: var(--bh-muted);
+    font-weight: 400;
+  }
+
   .multi-player-chat__error {
     margin-top: 6px;
     color: var(--bh-red);

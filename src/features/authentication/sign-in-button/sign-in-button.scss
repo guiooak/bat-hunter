@@ -4,4 +4,14 @@
   align-items: center;
   gap: 8px;
   color: var(--bh-red);
+
+  .sign-in-button__notice {
+    margin: 8px 0 0;
+    max-width: 320px;
+    font-size: 13px;
+    line-height: 1.45;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--bh-muted);
+  }
 }

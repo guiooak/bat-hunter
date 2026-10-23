@@ -33,6 +33,12 @@ export function Navbar() {
             <NavLink to="/matches" className="dropdown-popover__item">
               Matches
             </NavLink>
+            <NavLink to="/account" className="dropdown-popover__item">
+              My data
+            </NavLink>
+            <NavLink to="/privacy" className="dropdown-popover__item">
+              Privacy
+            </NavLink>
             <NavLink to="/logout" className="dropdown-popover__item">
               Sign out
             </NavLink>
