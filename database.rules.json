@@ -32,6 +32,52 @@
       }
     },
 
+    "publicProfiles": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid",
+
+        "firstName": { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "picture": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "away": { ".validate": "newData.isBoolean()" },
+        "lastPulseAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "userMatches": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && !newData.exists()",
+
+        "$matchId": {
+          ".write": "auth != null && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)",
+          ".validate": "newData.hasChildren(['matchId', 'hostId', 'guestId', 'createdAt'])",
+
+          "matchId": { ".validate": "newData.val() === $matchId" },
+          "hostId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/hostId').val()" },
+          "guestId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/guestId').val()" },
+          "hostName": { ".validate": "newData.isString() && newData.val().length <= 200" },
+          "guestName": { ".validate": "newData.isString() && newData.val().length <= 200" },
+          "createdAt": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+
+    "invitations": {
+      "$matchId": {
+        ".read": "auth != null",
+        ".write": "auth != null && ((!data.exists() && newData.child('hostId').val() === auth.uid) || (data.exists() && !data.child('guestId').exists() && data.child('hostId').val() !== auth.uid && newData.child('guestId').val() === auth.uid) || (data.exists() && !newData.exists() && data.child('hostId').val() === auth.uid))",
+        ".validate": "!newData.exists() || newData.hasChildren(['hostId', 'createdAt'])",
+
+        "hostId": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+        "guestId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/guestId').val()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+
     "matches": {
       "$matchId": {
         ".read": "auth != null",
