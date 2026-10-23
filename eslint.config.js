@@ -27,5 +27,12 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // Node scripts: data migrations and maintenance jobs
+    files: ['scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
   eslintConfigPrettier
 );
