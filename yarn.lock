@@ -788,6 +788,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/barlow@npm:5":
+  version: 5.3.0
+  resolution: "@fontsource/barlow@npm:5.3.0"
+  checksum: 10c0/2efe5abb3dac2ef2eb3ae9a3fd5acdc6955daf85efc1b5439081003e2d67ea90d62aae1d54fd1dcf6fc0eccfc815174bb77e70120a4973c0142431827d0b9c6d
+  languageName: node
+  linkType: hard
+
+"@fontsource/chakra-petch@npm:5":
+  version: 5.3.0
+  resolution: "@fontsource/chakra-petch@npm:5.3.0"
+  checksum: 10c0/51f6cbc690dd349afb87593705406acd2e18267ca02f0ddfba57522658e5daa2804b2d0df2bd5624fcadadb68c6a88069b09e2d7b91e5c45b644d704634e8fe8
+  languageName: node
+  linkType: hard
+
+"@fontsource/jetbrains-mono@npm:5":
+  version: 5.3.0
+  resolution: "@fontsource/jetbrains-mono@npm:5.3.0"
+  checksum: 10c0/1351b2350e893f5da39559ed90ff0e5e60bcc876b1f40531ad081ad4bf2f3cda3fa9e8940364aef5a7430ae3140685c9cd4819c36d8ad62bcd3fa37e3cc66b1d
+  languageName: node
+  linkType: hard
+
 "@grpc/grpc-js@npm:~1.9.0":
   version: 1.9.15
   resolution: "@grpc/grpc-js@npm:1.9.15"
@@ -1465,6 +1486,9 @@ __metadata:
   resolution: "bat-hunter@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.13.0"
+    "@fontsource/barlow": "npm:5"
+    "@fontsource/chakra-petch": "npm:5"
+    "@fontsource/jetbrains-mono": "npm:5"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@vitejs/plugin-react-swc": "npm:^3.5.0"

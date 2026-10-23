@@ -1,8 +1,32 @@
-"""Builds brand/index.html (the logo manual). Run: python3 brand/tools/build_manual.py"""
-import os
+"""Builds brand/index.html (the logo manual). Run: python3 brand/tools/build_manual.py
+
+The fonts are copied from node_modules/@fontsource (run `yarn install` first) into
+brand/fonts and served with the manual, so no visitor IP goes to Google Fonts.
+"""
+import os, shutil
 import re, itertools
 import gen
 from gen import C, symbol, wordmark, horizontal, stacked, favicon
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+FONTS = [('Barlow', 'barlow', (400, 500, 600)),
+         ('Chakra Petch', 'chakra-petch', (500, 600, 700)),
+         ('JetBrains Mono', 'jetbrains-mono', (400, 500))]
+
+def self_hosted_fonts():
+    """Copies the Latin woff2 files into brand/fonts and returns their @font-face rules."""
+    out_dir = os.path.join(ROOT, 'brand', 'fonts')
+    os.makedirs(out_dir, exist_ok=True)
+    faces = []
+    for family, pkg, weights in FONTS:
+        for w in weights:
+            name = f'{pkg}-latin-{w}-normal.woff2'
+            shutil.copy(os.path.join(ROOT, 'node_modules', '@fontsource', pkg, 'files', name), out_dir)
+            faces.append(f"@font-face {{ font-family: '{family}'; font-style: normal; font-weight: {w}; "
+                         f"font-display: swap; src: url('fonts/{name}') format('woff2'); }}")
+    return '\n'.join(faces)
+
+FONT_FACES = self_hosted_fonts()
 
 _n = itertools.count()
 def inline(svg_text, cls='', label=''):
@@ -129,10 +153,8 @@ html = f'''<!doctype html>
 <meta name="description" content="Manual da logo do Bat Hunter: conceito, versões, cores, letreiro, área de proteção e usos incorretos.">
 <link rel="icon" href="logo/favicon.svg" type="image/svg+xml">
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
+{FONT_FACES}
 /* Layout: a night-sky field guide; one dark world, with "daylight" plates where the light versions are shown. */
 :root {{
   --night: {C['night']}; --plum: {C['plum']}; --ember: {C['ember']}; --moon: {C['moon']};
