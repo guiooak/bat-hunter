@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "firebase-admin": "^13.10.0",
+    "firebase-admin": "^14.5.0",
     "globals": "^15.11.0",
     "prettier": "^3.3.3",
     "sass-embedded": "^1.81.0",
