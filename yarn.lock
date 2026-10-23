@@ -1866,7 +1866,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.0.0"
     eslint-plugin-react-refresh: "npm:^0.4.14"
     firebase: "npm:^12.19.0"
-    firebase-admin: "npm:13"
+    firebase-admin: "npm:^13.10.0"
     globals: "npm:^15.11.0"
     prettier: "npm:^3.3.3"
     react: "npm:^18.3.1"
@@ -1875,7 +1875,7 @@ __metadata:
     sass-embedded: "npm:^1.81.0"
     typescript: "npm:~5.6.2"
     typescript-eslint: "npm:^8.11.0"
-    uuid: "npm:^12.0.0"
+    uuid: "npm:^12.0.1"
     vite: "npm:^6.4.5"
   languageName: unknown
   linkType: soft
@@ -2585,7 +2585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-admin@npm:13":
+"firebase-admin@npm:^13.10.0":
   version: 13.10.0
   resolution: "firebase-admin@npm:13.10.0"
   dependencies:
@@ -4465,12 +4465,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "uuid@npm:12.0.0"
+"uuid@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "uuid@npm:12.0.1"
   bin:
     uuid: dist/bin/uuid
-  checksum: 10c0/242db6735d15a187a0d7f22576db02668f974ffc65d0806b23fe4237cbb0db3153442cb3082c7550784acb6272e5c6c931532916f9604bd814dfab1edf2dac40
+  checksum: 10c0/d053d98b7b8913e3719b9580e057368f7cf63b2848cde01d26f1c84c3787155927ef9935e8374d9bec470fbea2e989affd8d86f02ea8f05aabedae914b4be75e
   languageName: node
   linkType: hard
 
