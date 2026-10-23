@@ -1,5 +1,9 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
-import { setUserDataInFirebase } from 'src/models/user-model';
+import {
+  PresenceType,
+  setPrivateUserInFirebase,
+  setPublicProfileInFirebase,
+} from 'src/models/user-model';
 import {
   AuthStatusType,
   observeAuth,
@@ -10,6 +14,10 @@ import {
 
 import { AuthContext } from './_auth-context-definition';
 
+function logError(e: unknown) {
+  console.error('AuthContextProvider::ERROR: user not saved', e);
+}
+
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const [currentUser, setCurrentUser] = useState<UserSessionType | null>(null);
   const [status, setStatus] = useState<AuthStatusType>('loading');
@@ -17,31 +25,36 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   useEffect(
     () =>
       observeAuth((user) => {
-        setCurrentUser(
-          user && { ...user, away: false, lastPulseAt: Date.now() }
-        );
+        setCurrentUser(user);
         setStatus(user ? 'authenticated' : 'unauthenticated');
       }),
     []
   );
 
-  const updatePresence = useCallback(
-    (presence: Pick<UserSessionType, 'away' | 'lastPulseAt'>) => {
-      setCurrentUser((prevCurrentUser) =>
-        prevCurrentUser ? { ...prevCurrentUser, ...presence } : null
-      );
-    },
-    []
-  );
+  // Only the first name and the photo are stored: they are all the game
+  // shows. The full name from Google stays in memory.
+  const userId = currentUser?.id;
+  const firstName = currentUser?.firstName || '';
+  const picture = currentUser?.picture || '';
 
-  // Update Firebase DB
   useEffect(() => {
-    if (currentUser?.id) {
-      setUserDataInFirebase({ ...currentUser, id: currentUser.id }).catch((e) =>
-        console.error('AuthContextProvider::ERROR: user not saved', e)
-      );
-    }
-  }, [currentUser]);
+    if (!userId) return;
+
+    setPrivateUserInFirebase({ id: userId, firstName, picture }).catch(
+      logError
+    );
+    setPublicProfileInFirebase(userId, { firstName, picture }).catch(logError);
+  }, [userId, firstName, picture]);
+
+  // Presence is only published while playing multiplayer (see Pulse)
+  const updatePresence = useCallback(
+    (presence: PresenceType) => {
+      if (!userId) return;
+
+      setPublicProfileInFirebase(userId, presence).catch(logError);
+    },
+    [userId]
+  );
 
   return (
     <AuthContext.Provider

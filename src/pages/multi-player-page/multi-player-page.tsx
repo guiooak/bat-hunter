@@ -8,7 +8,12 @@ import { useAuthContext } from 'src/features/authentication';
 import { MultiPlayerGameDashboard } from 'src/features/multi-player/multi-player-game-dashboard';
 import { MultiPlayerChat } from 'src/features/multi-player/multi-player-chat';
 import { SignInModal } from 'src/features/sign-in-modal/sign-in-modal';
-import { MultiPlayerContextProvider } from 'src/features/multi-player/multi-player-context';
+import {
+  MultiPlayerContextProvider,
+  useMultiPlayerContext,
+} from 'src/features/multi-player/multi-player-context';
+import { useNavigate, useParams } from 'react-router';
+import { Pulse } from 'src/features/authentication/pulse';
 
 export function MultiPlayerPage() {
   const { status } = useAuthContext();
@@ -24,11 +29,13 @@ export function MultiPlayerPage() {
 
   return (
     <div className="multi-player-page">
+      <Pulse />
       <MultiPlayerContextProvider>
         <SignInModal
           open={signInModalOpen}
           onClose={() => setSignInModalOpen(false)}
         />
+        <PrivateMatchRedirect />
         <MultiPlayerMainDashboard />
         <MultiPlayerOpponentDashboard />
         <MultiPlayerGameDashboard />
@@ -37,4 +44,20 @@ export function MultiPlayerPage() {
       </MultiPlayerContextProvider>
     </div>
   );
+}
+
+// Someone who is not one of the players cannot read the match: the invitation
+// page tells them whether they can still join or the match is private.
+function PrivateMatchRedirect() {
+  const { isMatchPrivate } = useMultiPlayerContext();
+  const { matchId } = useParams<{ matchId?: string }>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isMatchPrivate && matchId) {
+      navigate(`/invitation-link/${matchId}`, { replace: true });
+    }
+  }, [isMatchPrivate, matchId, navigate]);
+
+  return null;
 }

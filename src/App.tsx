@@ -8,14 +8,12 @@ import { Navbar } from './components/navbar';
 import './App.scss';
 import { AuthContextProvider } from './features/authentication';
 import { LogoutPage } from './pages/logout-page';
-import { Pulse } from './features/authentication/pulse';
 import { InvitationPage } from './pages/invitation-page';
 import { NotFoundPage } from './pages/not-found-page';
 
 export function App() {
   return (
     <AuthContextProvider>
-      <Pulse />
       <div className="app-container">
         <BrowserRouter>
           <header>

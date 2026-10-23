@@ -5,23 +5,58 @@ import {
   updateData,
 } from 'src/services/firebase-service';
 
-export function getUserDataFromFirebase(id: string) {
-  return getData<UserSessionType>('users/' + id);
-}
+// Private to the user (users/$uid): only the owner reads it.
+export type PrivateUserType = {
+  id: string;
+  firstName: string;
+  picture: string;
+};
 
-export function setUserDataInFirebase(data: UserSessionType & { id: string }) {
+// What other players see (publicProfiles/$uid): first name, photo, presence.
+export type PublicProfileType = {
+  firstName?: string;
+  picture?: string;
+  away?: boolean;
+  lastPulseAt?: number;
+};
+
+export type PresenceType = Pick<PublicProfileType, 'away' | 'lastPulseAt'>;
+
+export function setPrivateUserInFirebase(data: PrivateUserType) {
   return updateData('users/' + data.id, data);
 }
 
-// Returns the unsubscribe function.
-export function getUserDataReactivelyFromFirebase(
+export function setPublicProfileInFirebase(
   id: string,
-  cb: (userData: UserSessionType | null) => void
+  data: PublicProfileType
 ) {
-  return getReactively('users/' + id, cb);
+  return updateData('publicProfiles/' + id, data);
 }
 
-// -- User Matches --
+export function getPublicProfileFromFirebase(id: string) {
+  return getData<PublicProfileType>('publicProfiles/' + id);
+}
+
+// Returns the unsubscribe function. The profile comes as a session-like user,
+// with the first name as the name: that is all other players get to see.
+export function getPublicProfileReactivelyFromFirebase(
+  id: string,
+  cb: (user: UserSessionType | null) => void
+) {
+  return getReactively<PublicProfileType | null>(
+    'publicProfiles/' + id,
+    (profile) =>
+      cb(
+        profile && {
+          ...profile,
+          id,
+          name: profile.firstName,
+        }
+      )
+  );
+}
+
+// -- User Matches (userMatches/$uid, readable by the owner only) --
 
 export type UserMatchType = {
   matchId: string;
@@ -33,14 +68,14 @@ export type UserMatchType = {
 };
 
 export function setUserMatchInFirebase(userId: string, match: UserMatchType) {
-  return updateData(`users/${userId}/matches/${match.matchId}`, match);
+  return updateData(`userMatches/${userId}/${match.matchId}`, match);
 }
 
 export async function getUserMatchesFromFirebase(
   userId: string
 ): Promise<UserMatchType[]> {
   const data = await getData<Record<string, UserMatchType>>(
-    `users/${userId}/matches`
+    `userMatches/${userId}`
   );
 
   return data ? Object.values(data) : [];

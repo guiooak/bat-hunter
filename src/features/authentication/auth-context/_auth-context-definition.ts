@@ -1,7 +1,6 @@
 import { createContext } from 'react';
+import { PresenceType } from 'src/models/user-model';
 import { AuthStatusType, UserSessionType } from 'src/services/auth-service';
-
-type PresenceType = Pick<UserSessionType, 'away' | 'lastPulseAt'>;
 
 export const AuthContext = createContext({
   currentUser: null,

@@ -5,6 +5,7 @@ import {
   getDatabase,
   onValue,
   ref,
+  remove,
   set,
   update,
 } from 'firebase/database';
@@ -31,14 +32,25 @@ export async function getData<T>(path: string): Promise<T | null> {
 }
 
 // Returns the unsubscribe function. Always call it on cleanup.
-export function getReactively<T>(path: string, cb: (data: T) => void) {
+export function getReactively<T>(
+  path: string,
+  cb: (data: T) => void,
+  onError?: (error: Error) => void
+) {
   const theRef = ref(database, path);
 
   return onValue(
     theRef,
     (snapshot) => cb(snapshot.val() as T),
-    (error) => console.error(`getReactively::ERROR on "${path}"`, error)
+    (error) => {
+      if (onError) onError(error);
+      else console.error(`getReactively::ERROR on "${path}"`, error);
+    }
   );
+}
+
+export function removeData(path: string) {
+  return remove(ref(database, path));
 }
 
 export function setData(path: string, data: unknown) {

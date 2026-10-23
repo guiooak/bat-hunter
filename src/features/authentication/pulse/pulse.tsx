@@ -3,6 +3,8 @@ import { useAuthContext } from '../auth-context';
 
 const DELAY_IN_MS = 20 * 1000;
 
+// Publishes presence (online/away) for the opponent. Mounted only on the
+// multiplayer pages: outside a match nobody needs to know.
 export function Pulse() {
   const { status, updatePresence } = useAuthContext();
   const isAuthenticated = status === 'authenticated';
@@ -11,6 +13,7 @@ export function Pulse() {
     if (!isAuthenticated) return;
 
     let lastPulseAt = Date.now();
+    updatePresence({ away: false, lastPulseAt });
 
     const onPulse = () => {
       const now = Date.now();
@@ -27,13 +30,14 @@ export function Pulse() {
     };
 
     window.addEventListener('mouseover', onPulse);
-    window.addEventListener('click', onPulse);
+    window.addEventListener('pointerdown', onPulse);
     window.addEventListener('blur', onBlur);
     window.addEventListener('focus', onFocus);
 
     return () => {
+      updatePresence({ away: true });
       window.removeEventListener('mouseover', onPulse);
-      window.removeEventListener('click', onPulse);
+      window.removeEventListener('pointerdown', onPulse);
       window.removeEventListener('blur', onBlur);
       window.removeEventListener('focus', onFocus);
     };

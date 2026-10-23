@@ -2,32 +2,12 @@
   "rules": {
     "users": {
       "$uid": {
-        ".read": "auth != null",
+        ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid",
 
         "id": { ".validate": "newData.val() === $uid" },
-        "name": { ".validate": "newData.isString() && newData.val().length <= 200" },
         "firstName": { ".validate": "newData.isString() && newData.val().length <= 100" },
-        "lastName": { ".validate": "newData.isString() && newData.val().length <= 100" },
         "picture": { ".validate": "newData.isString() && newData.val().length <= 2000" },
-        "away": { ".validate": "newData.isBoolean()" },
-        "lastPulseAt": { ".validate": "newData.isNumber()" },
-
-        "matches": {
-          "$matchId": {
-            ".write": "auth != null && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)",
-            ".validate": "newData.hasChildren(['matchId', 'hostId', 'guestId', 'createdAt'])",
-
-            "matchId": { ".validate": "newData.val() === $matchId" },
-            "hostId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/hostId').val()" },
-            "guestId": { ".validate": "newData.val() === root.child('matches/' + $matchId + '/guestId').val()" },
-            "hostName": { ".validate": "newData.isString() && newData.val().length <= 200" },
-            "guestName": { ".validate": "newData.isString() && newData.val().length <= 200" },
-            "createdAt": { ".validate": "newData.isNumber()" },
-            "$other": { ".validate": false }
-          }
-        },
-
         "$other": { ".validate": false }
       }
     },
@@ -80,7 +60,7 @@
 
     "matches": {
       "$matchId": {
-        ".read": "auth != null",
+        ".read": "auth != null && (data.child('hostId').val() === auth.uid || data.child('guestId').val() === auth.uid)",
         ".write": "auth != null && ((!data.exists() && newData.child('hostId').val() === auth.uid) || (data.exists() && !data.child('guestId').exists() && data.child('hostId').val() !== auth.uid && newData.child('guestId').val() === auth.uid))",
 
         "id": { ".validate": "newData.val() === $matchId" },
@@ -122,7 +102,7 @@
 
         "messages": {
           "$messageId": {
-            ".write": "auth != null && !data.exists() && newData.child('authorId').val() === auth.uid && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)",
+            ".write": "auth != null && ((!data.exists() && newData.child('authorId').val() === auth.uid && (root.child('matches/' + $matchId + '/hostId').val() === auth.uid || root.child('matches/' + $matchId + '/guestId').val() === auth.uid)) || (data.exists() && !newData.exists() && data.child('authorId').val() === auth.uid))",
             ".validate": "newData.hasChildren(['id', 'authorId', 'message', 'createdAt'])",
 
             "id": { ".validate": "newData.val() === $messageId" },

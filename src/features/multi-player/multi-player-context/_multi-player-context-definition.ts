@@ -5,7 +5,9 @@ import { UserSessionType } from 'src/services/auth-service';
 export const MultiPlayerContext = createContext({
   opponentUser: null,
   match: undefined,
+  isMatchPrivate: false,
 } as {
   opponentUser: UserSessionType | null;
   match: MatchType | undefined;
+  isMatchPrivate: boolean;
 });
