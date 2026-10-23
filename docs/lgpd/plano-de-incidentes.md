@@ -24,4 +24,9 @@ Quais dados, de quantas pessoas, por quanto tempo, se há menores, se o dado é 
 Corrigir a causa, testar as regras de novo e anotar o incidente neste arquivo (data, resumo, medidas). Guardar o registro por pelo menos 5 anos.
 
 ## Registro de incidentes
-Nenhum até agora.
+
+### Campos antigos legíveis por outros jogadores (corrigido em 23 e 24/10/2026)
+- **O que era:** perfis em `users/$uid` guardavam campos de uma versão antiga do login: e-mail (8 contas), ID token do Google e suas datas, nome completo e presença. Até 23/10/2026, as regras deixavam qualquer usuário logado ler `users/$uid` sabendo o UID, o que na prática alcançava oponentes e quem seguisse a cadeia de partidas.
+- **Exposição:** só usuários logados com o UID exato; não há listagem de usuários. Sem indício de acesso indevido (o banco não guarda log de leituras). Os tokens já tinham expirado (o mais recente em 25/07/2026).
+- **Medidas:** em 23/10/2026, `users/$uid` passou a ser legível só pelo dono; em 24/10/2026, os campos foram apagados, ficando só `id`, primeiro nome e foto.
+- **Avaliação:** a decisão sobre comunicar a ANPD e os titulares é do controlador. Os fatos acima indicam risco baixo: dados de contato de 8 pessoas, acessíveis só a quem já jogou com elas, e tokens expirados.
