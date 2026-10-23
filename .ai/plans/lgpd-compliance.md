@@ -12,9 +12,9 @@ Decisões tomadas: contato **game.bat.hunter@gmail.com**, controlador Guilherme 
 | 2.1 Regras | Feita: nós privados, regras restritas, migração e aviso de partida privada |
 | 2.2 Menos dados | Feita: o app grava só primeiro nome e foto, e os campos antigos foram apagados do banco em 24/10/2026, incluindo e-mail e tokens de uma versão antiga do login |
 | 2.3 Fontes | Feita: app e manual da marca sem Google Fonts |
-| 2.4 App Check | **Pendente:** exige configurar o reCAPTCHA Enterprise no console |
+| 2.4 App Check | Descartado: o reCAPTCHA mandaria sinais de todo visitante ao Google (tratamento novo), e o ganho seria só contra trapaça, risco já aceito. As regras já garantem a privacidade |
 | 3. Direitos do titular | Feita: `/account` com ver, baixar e excluir |
-| 4. Retenção | Feita: job diário às 06:17 UTC, apagando de verdade desde que `RETENTION_APPLY` passou a `true` |
+| 4. Retenção | Feita: primeira limpeza aplicada em 24/10/2026 (3 partidas, 7 convites, 192 mensagens) e job diário às 06:17 UTC |
 | 5. Governança | Feita: [`docs/lgpd/`](../../docs/lgpd/README.md) |
 | 6. Menores | Feita: 13+ nos termos e no login, botão de denúncia no chat |
 
@@ -22,8 +22,7 @@ Decisões tomadas: contato **game.bat.hunter@gmail.com**, controlador Guilherme 
 - [x] Testar logado, com duas contas: convite, partida, chat, denúncia, "My Matches", exportar e excluir conta.
 - [x] Apagar do banco os campos antigos de `users/$uid`.
 - [x] Liberar a retenção (`RETENTION_APPLY=true`).
-- [ ] Conferir os termos de tratamento de dados do Google Cloud (ver `docs/lgpd/transferencia-internacional.md`).
-- [ ] App Check (2.4).
+- [ ] Conferir no console os termos de tratamento de dados do Google Cloud (passo a passo em `docs/lgpd/transferencia-internacional.md`).
 - [ ] Revisão jurídica da política e dos termos.
 
 ## Contexto

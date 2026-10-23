@@ -7,7 +7,11 @@ Atualizado em 23/10/2026.
 - **Base (art. 33 da LGPD):** os termos de proteção de dados do Google Cloud/Firebase (Data Processing and Security Terms), aceitos no projeto.
 
 ## Pendente
-- [ ] Conferir, no console do Google Cloud (Configurações de privacidade e segurança do projeto `bat-hunter-game`), que os termos de tratamento de dados estão aceitos e se já incorporam as cláusulas-padrão contratuais da ANPD (Res. CD/ANPD nº 19/2024). Registrar aqui a data e o resultado.
+- [ ] Conferir os termos de tratamento de dados no console:
+  1. Abrir https://console.cloud.google.com e escolher o projeto **bat-hunter-game** (não o "Bat Hunter" antigo).
+  2. Ir em IAM e administrador → Privacidade e segurança.
+  3. Ver se os "Termos de tratamento de dados do Cloud" (Cloud Data Processing Addendum) aparecem como aceitos e se citam as cláusulas-padrão contratuais da ANPD (Res. CD/ANPD nº 19/2024).
+  4. Registrar aqui a data e o resultado.
 - [ ] Se não incorporarem, avaliar migrar o banco para `southamerica-east1` ou registrar outra salvaguarda.
 
 ## Redução da transferência já feita
