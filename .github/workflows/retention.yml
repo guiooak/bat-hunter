@@ -41,5 +41,7 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME }}
           FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
-          # Scheduled runs delete; manual runs only report unless asked to
-          APPLY_FLAG: ${{ (github.event_name == 'schedule' || inputs.apply) && '--apply' || '' }}
+          # Scheduled runs delete only once the repository variable
+          # RETENTION_APPLY is "true"; until then they report. Manual runs
+          # report unless asked to apply.
+          APPLY_FLAG: ${{ ((github.event_name == 'schedule' && vars.RETENTION_APPLY == 'true') || inputs.apply) && '--apply' || '' }}
