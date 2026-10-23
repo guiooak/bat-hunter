@@ -81,6 +81,10 @@ To try the rules locally (requires Java):
 npx firebase-tools emulators:start --only auth,database
 ```
 
+## Privacy (LGPD)
+
+The game keeps only what multiplayer needs, readable only by the players involved. The [privacy policy](https://bat-hunter-game.web.app/privacy), the [My data](https://bat-hunter-game.web.app/account) page and the compliance documents in [`docs/lgpd/`](docs/lgpd/README.md) cover the rest. Data past its retention period is deleted by a daily job ([`scripts/retention.mjs`](scripts/retention.mjs)).
+
 ## Deploy
 
 Done by GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) once lint, typecheck, format and build pass:

@@ -2,6 +2,30 @@
 
 > Plano técnico e de produto, **não é parecer jurídico**. As decisões marcadas como "decisão" e os textos legais (política, termos) devem passar por revisão de alguém da área antes de publicar.
 
+## Status (23/10/2026)
+
+Decisões tomadas: contato **game.bat.hunter@gmail.com**, controlador Guilherme Carvalho, sem plano Blaze, os prazos de retenção sugeridos, multiplayer 13+ e o banco nos EUA com a transferência documentada.
+
+| Fase | Situação |
+|---|---|
+| 1. Transparência e canal | Feita: `/privacy` e `/terms` em PT e EN, aviso no login, links na home e no menu |
+| 2.1 Regras | Feita: nós privados, regras restritas, migração e aviso de partida privada |
+| 2.2 Menos dados | Feita no app (só primeiro nome e foto). **Falta** apagar os campos antigos do banco |
+| 2.3 Fontes | Feita: app e manual da marca sem Google Fonts |
+| 2.4 App Check | **Pendente:** exige configurar o reCAPTCHA Enterprise no console |
+| 3. Direitos do titular | Feita: `/account` com ver, baixar e excluir |
+| 4. Retenção | Feita: job diário. **Só apaga depois que a variável `RETENTION_APPLY` for `true`** |
+| 5. Governança | Feita: [`docs/lgpd/`](../../docs/lgpd/README.md) |
+| 6. Menores | Feita: 13+ nos termos e no login, botão de denúncia no chat |
+
+**Ainda falta:**
+- [ ] Testar logado, com duas contas: convite, partida, chat, denúncia, "My Matches", exportar e excluir conta.
+- [ ] Depois do teste, apagar do banco os campos antigos: `users/$uid/{name,lastName,away,lastPulseAt,matches}`.
+- [ ] Liberar a retenção: `gh variable set RETENTION_APPLY --body true`. O primeiro run apaga 3 partidas antigas, 7 convites e 192 mensagens.
+- [ ] Conferir os termos de tratamento de dados do Google Cloud (ver `docs/lgpd/transferencia-internacional.md`).
+- [ ] App Check (2.4).
+- [ ] Revisão jurídica da política e dos termos.
+
 ## Contexto
 
 O Bat Hunter trata dados pessoais de quem entra com Google para jogar o multiplayer. O single-player e a home funcionam sem login e não guardam nada pessoal no servidor.
