@@ -1,0 +1,83 @@
+.account-page {
+  min-height: var(--full-height);
+  cursor: initial;
+
+  & .account-page__container {
+    padding: 32px 16px 64px;
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    line-height: 1.55;
+  }
+
+  & h1 {
+    margin: 0;
+  }
+
+  & .account-page__intro {
+    margin: 0;
+    color: var(--bh-muted);
+  }
+
+  & .account-page__card {
+    padding: 20px;
+    background-color: var(--bh-surface);
+    border: 1px solid var(--bh-line);
+    border-radius: var(--bh-radius);
+
+    & h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    & p {
+      margin: 0 0 16px;
+    }
+
+    & ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+    }
+
+    & li + li {
+      margin-top: 6px;
+    }
+
+    &--danger {
+      border-color: rgba(230, 57, 70, 0.5);
+    }
+  }
+
+  & .account-page__profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    & .bh-avatar {
+      width: 48px;
+    }
+  }
+
+  & .account-page__name {
+    font-family: var(--bh-font-display);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  & .account-page__muted {
+    color: var(--bh-muted);
+    font-size: 13px;
+    word-break: break-all;
+  }
+
+  & .account-page__warning {
+    color: var(--bh-moon);
+  }
+
+  & .account-page__error {
+    margin: 0;
+    color: var(--bh-red);
+  }
+}
