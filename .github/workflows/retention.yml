@@ -1,0 +1,45 @@
+# Deletes data past its retention period (LGPD plan, phase 4): chat messages
+# after 90 days, matches after 12 months, unaccepted invitations after 7 days
+# and accounts without a sign-in for 24 months. See scripts/retention.mjs.
+name: Data retention
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Delete for real (otherwise only report)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: retention
+  cancel-in-progress: false
+
+jobs:
+  retention:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: corepack enable
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --immutable
+      - name: Apply retention
+        run: |
+          echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/service-account.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/service-account.json" \
+            node scripts/retention.mjs $APPLY_FLAG \
+            || { rm "$RUNNER_TEMP/service-account.json"; exit 1; }
+          rm "$RUNNER_TEMP/service-account.json"
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME }}
+          FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
+          # Scheduled runs delete; manual runs only report unless asked to
+          APPLY_FLAG: ${{ (github.event_name == 'schedule' || inputs.apply) && '--apply' || '' }}
