@@ -10,11 +10,11 @@ Decisões tomadas: contato **game.bat.hunter@gmail.com**, controlador Guilherme 
 |---|---|
 | 1. Transparência e canal | Feita: `/privacy` e `/terms` em PT e EN, aviso no login, links na home e no menu |
 | 2.1 Regras | Feita: nós privados, regras restritas, migração e aviso de partida privada |
-| 2.2 Menos dados | Feita: o app grava só primeiro nome e foto, e os campos antigos foram apagados do banco em 24/10/2026, incluindo e-mail e tokens de uma versão antiga do login |
+| 2.2 Menos dados | Feita: o app grava só primeiro nome e foto, e os campos antigos foram apagados do banco em 23/10/2026, incluindo e-mail e tokens de uma versão antiga do login |
 | 2.3 Fontes | Feita: app e manual da marca sem Google Fonts |
 | 2.4 App Check | Descartado: o reCAPTCHA mandaria sinais de todo visitante ao Google (tratamento novo), e o ganho seria só contra trapaça, risco já aceito. As regras já garantem a privacidade |
 | 3. Direitos do titular | Feita: `/account` com ver, baixar e excluir |
-| 4. Retenção | Feita: primeira limpeza aplicada em 24/10/2026 (3 partidas, 7 convites, 192 mensagens) e job diário às 06:17 UTC |
+| 4. Retenção | Feita: primeira limpeza aplicada em 23/10/2026 (3 partidas, 7 convites, 192 mensagens) e job diário às 06:17 UTC |
 | 5. Governança | Feita: [`docs/lgpd/`](../../docs/lgpd/README.md) |
 | 6. Menores | Feita: 13+ nos termos e no login, botão de denúncia no chat |
 
