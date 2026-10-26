@@ -381,31 +381,4 @@ describe('MultiPlayerGameDashboardController', () => {
     expect(screen.getByText('Game Closed')).toBeInTheDocument();
     expect(screen.queryByRole('button')).toBeNull();
   });
-
-  it('works without callbacks', () => {
-    renderWithContext(
-      <MultiPlayerGameDashboardController
-        difficulty="easy"
-        isCurrentUserTheHost
-        hasOpponent
-        onResetScore={undefined!}
-        onShot={undefined!}
-        onHit={undefined!}
-        onOpenHistory={undefined!}
-        onStateChange={undefined!}
-        onDifficultyChange={undefined!}
-      />
-    );
-
-    vi.spyOn(gameService, 'getIsGameModeOn').mockReturnValue(true);
-    vi.spyOn(shotService, 'isShotEnabled').mockReturnValue(true);
-    act(() => fireEvent.click(screen.getByRole('radio', { name: 'Hard' })));
-    click('History');
-    click('Start');
-    act(() => bats.created[0].onHit('normal'));
-    act(() =>
-      document.body.onpointerdown?.(new MouseEvent('pointerdown') as never)
-    );
-    expect(screen.getByText('60s')).toBeInTheDocument();
-  });
 });

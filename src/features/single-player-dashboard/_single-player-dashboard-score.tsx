@@ -1,5 +1,4 @@
-import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
-import { Gap } from 'src/components/gap';
+import { Button, ButtonGroup, ScoreSummary } from '@components';
 
 type Props = {
   killCounter: number;
@@ -13,36 +12,24 @@ type Props = {
 };
 
 export function SinglePlayerDashboardScore({
-  killCounter = 0,
-  finalScore = 0,
-  accuracy = 100,
-  resetDisabled = false,
-  sendBatDisabled = false,
-  sendBatHidden = false,
-  onCreateBat = () => {},
-  onResetScore = () => {},
+  killCounter,
+  finalScore,
+  accuracy,
+  resetDisabled,
+  sendBatDisabled,
+  sendBatHidden,
+  onCreateBat,
+  onResetScore,
 }: Props) {
   return (
-    <section className="bat-game-score-section">
-      <div>
-        <Title>Your Score</Title>
-        <div className="text-center">
-          <Gutter size="lg">
-            <Text size="xxl">{killCounter}</Text>
-          </Gutter>
-        </div>
-        <Gap justify="space-around">
-          <div className="text-center">
-            <div>Final Score</div>
-            <div>{finalScore}</div>
-          </div>
-          <div className="text-center">
-            <div>Accuracy</div>
-            <div>{accuracy}%</div>
-          </div>
-        </Gap>
-        <br />
-      </div>
+    <div>
+      <ScoreSummary
+        title="Your Score"
+        killCounter={killCounter}
+        finalScore={finalScore}
+        accuracy={accuracy}
+      />
+      <br />
       <ButtonGroup flex>
         <Button kind="tertiary" disabled={resetDisabled} onClick={onResetScore}>
           Reset
@@ -58,6 +45,6 @@ export function SinglePlayerDashboardScore({
           </Button>
         )}
       </ButtonGroup>
-    </section>
+    </div>
   );
 }

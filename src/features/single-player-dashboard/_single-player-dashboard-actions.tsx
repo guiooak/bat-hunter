@@ -3,8 +3,11 @@ import { ButtonGroup } from '@components/button-group';
 import { NavLink } from 'react-router';
 
 export function SinglePlayerDashboardActions({
-  buttonsDisabled = false,
-  onCleanBats = () => {},
+  buttonsDisabled,
+  onCleanBats,
+}: {
+  buttonsDisabled: boolean;
+  onCleanBats: () => void;
 }) {
   return (
     <section>

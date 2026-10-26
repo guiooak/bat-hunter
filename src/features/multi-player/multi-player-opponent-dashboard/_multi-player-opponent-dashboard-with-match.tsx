@@ -1,6 +1,5 @@
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Card, Divider, Gutter, ScoreChip } from '@components';
-import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
+import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from '@components';
 import { ProfileSection } from '@components/profile-section';
 import { GuestStatus } from 'src/components/guest-status';
 import { MatchType } from 'src/models/match-model';
@@ -34,8 +33,9 @@ export function MultiPlayerOpponentDashboardWithMatch({
       <Card className="multi-player-guest-dashboard-with-match">
         <div className="status-slot">{status}</div>
         <Gutter size="md">
-          <MultiPlayerOpponentDashboardScore
-            opponentName={firstName}
+          <ScoreSummary
+            title={firstName ? 'Score' : 'Loading...'}
+            titleSize="h4"
             killCounter={killCounter}
             accuracy={accuracy}
             finalScore={finalScore}

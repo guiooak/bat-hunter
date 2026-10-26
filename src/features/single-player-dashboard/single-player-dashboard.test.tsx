@@ -157,52 +157,7 @@ describe('single-player parts on their own', () => {
     expect(summary()).toBe('0Kills0Score0%Accuracy');
   });
 
-  it('the parts work without their callbacks', async () => {
-    const { SinglePlayerDashboardActions } = await import(
-      './_single-player-dashboard-actions'
-    );
-    const { SinglePlayerDashboardScore } = await import(
-      './_single-player-dashboard-score'
-    );
-    const { SinglePlayerDashboardChallenge } = await import(
-      './_single-player-dashboard-challenge'
-    );
-
-    const actions = renderWithContext(<SinglePlayerDashboardActions />);
-    click('Clean Bats');
-    actions.unmount();
-
-    const score = renderWithContext(
-      <SinglePlayerDashboardScore
-        killCounter={1}
-        finalScore={100}
-        accuracy={100}
-        resetDisabled={false}
-        sendBatDisabled={false}
-        sendBatHidden={false}
-        onCreateBat={undefined!}
-        onResetScore={undefined!}
-      />
-    );
-    click('Reset');
-    click('Send Bats');
-    score.unmount();
-
-    renderWithContext(
-      <SinglePlayerDashboardChallenge
-        difficulty="easy"
-        onDifficultyChange={vi.fn()}
-        currentGameStateFull={undefined!}
-        onCreateBat={undefined!}
-        setIsScoreEnabled={undefined!}
-        onResetScore={undefined!}
-      />
-    );
-    click('Challenge');
-    expect(screen.getByText('Free Play!')).toBeInTheDocument();
-  });
-
-  it('a running challenge spawns bats even without onCreateBat', async () => {
+  it('a running challenge spawns bats', async () => {
     const { SinglePlayerDashboardChallenge } = await import(
       './_single-player-dashboard-challenge'
     );
@@ -212,7 +167,7 @@ describe('single-player parts on their own', () => {
         difficulty="easy"
         onDifficultyChange={vi.fn()}
         currentGameStateFull={['CHALLENGE_IN_PROGRESS', vi.fn()]}
-        onCreateBat={undefined!}
+        onCreateBat={vi.fn()}
         setIsScoreEnabled={vi.fn()}
         onResetScore={vi.fn()}
       />

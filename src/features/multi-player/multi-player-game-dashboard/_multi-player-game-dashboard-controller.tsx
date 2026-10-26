@@ -29,12 +29,12 @@ type GameModeConfigType = {
 };
 
 export function MultiPlayerGameDashboardController({
-  onResetScore = () => {},
-  onShot = () => {},
-  onHit = () => {},
-  onStateChange = () => {},
-  onOpenHistory = () => {},
-  onDifficultyChange = () => {},
+  onResetScore,
+  onShot,
+  onHit,
+  onStateChange,
+  onOpenHistory,
+  onDifficultyChange,
   difficulty,
   hasOpponent = false,
   isCurrentUserTheHost,

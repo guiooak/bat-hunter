@@ -15,3 +15,4 @@ export * from './game-clock';
 export * from './game-panel';
 export * from './score-chip';
 export * from './segmented-control';
+export * from './score-summary';

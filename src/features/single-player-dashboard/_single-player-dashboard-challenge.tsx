@@ -12,10 +12,10 @@ import { Difficulty } from 'src/services/bat-types';
 const COUNTDOWN_TIME_TOTAL = 60;
 
 export function SinglePlayerDashboardChallenge({
-  currentGameStateFull = [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY, () => {}],
-  onCreateBat = () => {},
-  setIsScoreEnabled = () => {},
-  onResetScore = () => {},
+  currentGameStateFull,
+  onCreateBat,
+  setIsScoreEnabled,
+  onResetScore,
   difficulty,
   onDifficultyChange,
 }: {

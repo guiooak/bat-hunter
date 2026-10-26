@@ -1,7 +1,6 @@
 import './multi-player-main-dashboard.scss';
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Card, Divider, Gutter, ScoreChip } from '@components';
-import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
+import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from '@components';
 import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from '@components/profile-section';
 import { useGameCounters } from 'src/hooks/game-hooks';
@@ -23,7 +22,9 @@ export function MultiPlayerMainDashboard() {
     <div className="multi-player-main-dashboard">
       <Card>
         <Gutter size="md">
-          <MultiPlayerMainDashboardScore
+          <ScoreSummary
+            title="Score"
+            titleSize="h4"
             killCounter={killCounter}
             accuracy={accuracy}
             finalScore={finalScore}
