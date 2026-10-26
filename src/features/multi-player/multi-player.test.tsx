@@ -5,6 +5,7 @@ import {
   render,
   renderHook,
   screen,
+  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
@@ -385,8 +386,11 @@ describe('match setup (no opponent yet)', () => {
     expect(matchModel.createMatchInFirebase).toHaveBeenCalledWith({
       hostId: ME.id,
     });
-    expect(screen.getByTestId('path')).toHaveTextContent(
-      '/multi-player/new-match'
+    // The navigation happens after the match is created (an await)
+    await waitFor(() =>
+      expect(screen.getByTestId('path')).toHaveTextContent(
+        '/multi-player/new-match'
+      )
     );
   });
 
