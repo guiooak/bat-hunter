@@ -26,6 +26,16 @@ export function setPrivateUserInFirebase(data: PrivateUserType) {
   return updateData('users/' + data.id, data);
 }
 
+// The language the player picked, kept in the private node so it follows them
+// to any browser. Returns null when they never picked one.
+export function getPrivateUserLanguage(id: string) {
+  return getData<string>(`users/${id}/language`);
+}
+
+export function setPrivateUserLanguage(id: string, language: string) {
+  return updateData('users/' + id, { language });
+}
+
 export function setPublicProfileInFirebase(
   id: string,
   data: PublicProfileType

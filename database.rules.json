@@ -8,6 +8,7 @@
         "id": { ".validate": "newData.val() === $uid" },
         "firstName": { ".validate": "newData.isString() && newData.val().length <= 100" },
         "picture": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "language": { ".validate": "newData.val() === 'pt-BR' || newData.val() === 'en-US'" },
         "$other": { ".validate": false }
       }
     },

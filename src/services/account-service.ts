@@ -15,7 +15,11 @@ import { getData, removeData } from 'src/services/firebase-service';
 import { calcFinalScore } from 'src/services/game-service';
 import { CONTROLLER_NAME, PRIVACY_CONTACT } from 'src/services/legal-service';
 
-const LOCAL_PREFERENCE_KEYS = ['bh-background-music-muted', 'bh-difficulty'];
+export const LOCAL_PREFERENCE_KEYS = [
+  'bh-background-music-muted',
+  'bh-difficulty',
+  'bh-language',
+] as const;
 export const REMOVED_PLAYER_NAME = 'Removed player';
 
 type MatchWithEntry = { entry: UserMatchType; match: MatchType | null };

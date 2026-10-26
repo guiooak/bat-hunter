@@ -56,7 +56,15 @@ describe('private profile (users)', () => {
     await assertSucceeds(db(HOST).ref(`users/${HOST}/firstName`).set('Ana'));
   });
 
-  it('keeps only id, first name and photo', async () => {
+  it('keeps the language the owner picked, and only a known one', async () => {
+    await assertSucceeds(db(HOST).ref(`users/${HOST}/language`).set('pt-BR'));
+    await assertSucceeds(db(HOST).ref(`users/${HOST}/language`).set('en-US'));
+    await assertFails(db(HOST).ref(`users/${HOST}/language`).set('fr-FR'));
+    await assertFails(db(OTHER).ref(`users/${HOST}/language`).set('pt-BR'));
+    await assertFails(db(OTHER).ref(`users/${HOST}/language`).get());
+  });
+
+  it('keeps only id, first name, photo and language', async () => {
     await assertFails(db(HOST).ref(`users/${HOST}/email`).set('a@b.c'));
     await assertFails(db(HOST).ref(`users/${HOST}/id`).set('someone-else'));
   });

@@ -23,10 +23,12 @@ import {
 } from './match-model';
 import { createMessageInFirebase } from './message-model';
 import {
+  getPrivateUserLanguage,
   getPublicProfileFromFirebase,
   getPublicProfileReactivelyFromFirebase,
   getUserMatchesFromFirebase,
   setPrivateUserInFirebase,
+  setPrivateUserLanguage,
   setPublicProfileInFirebase,
   setUserMatchInFirebase,
 } from './user-model';
@@ -183,6 +185,18 @@ describe('user model', () => {
     expect(fb.updateData).toHaveBeenCalledWith('publicProfiles/u1', {
       away: true,
     });
+  });
+
+  // An update, not a set: saving the name and photo keeps the language
+  it('reads and writes the language in the private user', () => {
+    getPrivateUserLanguage('u1');
+    setPrivateUserLanguage('u1', 'pt-BR');
+
+    expect(fb.getData).toHaveBeenCalledWith('users/u1/language');
+    expect(fb.updateData).toHaveBeenCalledWith('users/u1', {
+      language: 'pt-BR',
+    });
+    expect(fb.setData).not.toHaveBeenCalled();
   });
 
   it('reads a public profile', () => {

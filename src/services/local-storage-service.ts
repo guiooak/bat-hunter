@@ -1,4 +1,7 @@
-type ValidLocalStorageKeysType = 'bh-background-music-muted' | 'bh-difficulty';
+type ValidLocalStorageKeysType =
+  | 'bh-background-music-muted'
+  | 'bh-difficulty'
+  | 'bh-language';
 
 export function getLocalStorageValue(key: ValidLocalStorageKeysType) {
   try {

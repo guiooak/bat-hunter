@@ -5,6 +5,8 @@ import { vi } from 'vitest';
 import { AuthContext } from 'src/features/authentication/auth-context/_auth-context-definition';
 import { MultiPlayerContext } from 'src/features/multi-player/multi-player-context/_multi-player-context-definition';
 import type { MatchType } from 'src/models/match-model';
+import { buildI18nValue, I18nContext } from 'src/i18n/_i18n-context-definition';
+import type { Language } from 'src/i18n';
 import type {
   AuthStatusType,
   UserSessionType,
@@ -25,6 +27,8 @@ export type TestContext = {
   opponentUser?: UserSessionType | null;
   isMatchPrivate?: boolean;
   route?: string;
+  // English by default, so the texts in the tests are the English ones
+  language?: Language;
 };
 
 export function buildAuth(context: TestContext = {}) {
@@ -41,7 +45,7 @@ export function buildAuth(context: TestContext = {}) {
   } as const;
 }
 
-// Renders inside a router and the auth and multiplayer contexts
+// Renders inside a router and the auth, language and multiplayer contexts
 export function renderWithContext(ui: ReactElement, context: TestContext = {}) {
   const auth = buildAuth(context);
   const Wrapper = makeWrapper(context, auth);
@@ -69,15 +73,19 @@ function makeWrapper(context: TestContext, auth: ReturnType<typeof buildAuth>) {
     return (
       <MemoryRouter initialEntries={[context.route ?? '/']}>
         <AuthContext.Provider value={auth}>
-          <MultiPlayerContext.Provider
-            value={{
-              match: context.match,
-              opponentUser: context.opponentUser ?? null,
-              isMatchPrivate: context.isMatchPrivate ?? false,
-            }}
+          <I18nContext.Provider
+            value={buildI18nValue(context.language ?? 'en-US', vi.fn())}
           >
-            {children}
-          </MultiPlayerContext.Provider>
+            <MultiPlayerContext.Provider
+              value={{
+                match: context.match,
+                opponentUser: context.opponentUser ?? null,
+                isMatchPrivate: context.isMatchPrivate ?? false,
+              }}
+            >
+              {children}
+            </MultiPlayerContext.Provider>
+          </I18nContext.Provider>
         </AuthContext.Provider>
       </MemoryRouter>
     );
