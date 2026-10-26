@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [lint, typecheck, 'format:check', build]
+        script: [lint, typecheck, 'format:check', build, 'test:coverage']
     steps:
       - uses: actions/checkout@v7
       - run: corepack enable
@@ -32,11 +32,29 @@ jobs:
       - run: yarn install --immutable
       - run: yarn ${{ matrix.script }}
 
+  # The database rules against the Firebase emulator, which needs Java
+  rules:
+    name: test:rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: corepack enable
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: yarn
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: yarn install --immutable
+      - run: yarn test:rules
+
   # Only ships once every check above has passed. Pushes to main go to the live
   # channel (and publish the database rules); PRs get an ephemeral preview
   # channel. PRs from forks are skipped, since they don't receive the secrets.
   deploy:
-    needs: [checks]
+    needs: [checks, rules]
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:

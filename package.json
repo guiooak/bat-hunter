@@ -14,7 +14,8 @@
     "format:check": "prettier --check ./src",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:rules": "npx --yes firebase-tools@15 emulators:exec --only database --project demo-bat-hunter 'vitest run -c vitest.rules.config.ts'"
   },
   "dependencies": {
     "@fontsource/barlow": "5",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@firebase/rules-unit-testing": "5.0.2",
     "@fontsource/jetbrains-mono": "5",
     "@testing-library/dom": "^10",
     "@testing-library/jest-dom": "^7.0.1",
