@@ -55,7 +55,15 @@ cp .env.example .env.local # fill with the Firebase web app config
 yarn dev
 ```
 
-Scripts: `yarn lint`, `yarn typecheck`, `yarn format` / `yarn format:check`, `yarn build`.
+Scripts: `yarn lint`, `yarn typecheck`, `yarn format` / `yarn format:check`, `yarn build`, and the tests:
+
+```bash
+yarn test            # unit and component tests
+yarn test:coverage   # fails under 100% coverage
+yarn test:rules      # database rules on the Firebase emulator (needs Java 21)
+```
+
+Conventions, layout and testing rules are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Project layout
 
@@ -65,7 +73,8 @@ Scripts: `yarn lint`, `yarn typecheck`, `yarn format` / `yarn format:check`, `ya
 | `src/features/` | Game features: single-player dashboard, multiplayer, difficulty picker. |
 | `src/services/` | The game engine (`fly-engine-service.ts`), bat types, shots, audio, Firebase. |
 | `brand/` | Logo manual and the scripts that draw every brand asset. |
-| `.ai/plans/` | Implementation plans. |
+| `.ai/plans/` | Plans and the history of what was done. |
+| `scripts/`, `rules/` | Maintenance jobs and the database rules tests. |
 
 ## Firebase
 
@@ -87,7 +96,7 @@ The game keeps only what multiplayer needs, readable only by the players involve
 
 ## Deploy
 
-Done by GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) once lint, typecheck, format and build pass:
+Done by GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) once lint, typecheck, format, build, the tests (100% coverage) and the database rules tests pass:
 
 - Push to `main` → database rules + Hosting live channel.
 - Pull request → Hosting preview channel (Google sign-in doesn't work there, since preview domains aren't authorized).
