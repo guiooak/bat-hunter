@@ -13,9 +13,10 @@ import { getAuth } from 'firebase-admin/auth';
 import { getDatabase } from 'firebase-admin/database';
 // The same periods the app shows in its privacy policy
 import RETENTION_DAYS from '../src/services/retention-days.json' with { type: 'json' };
+// The same marker the app writes when an account is deleted
+import REMOVED_PLAYER_NAME from '../src/services/removed-player-name.json' with { type: 'json' };
 
 const DAY = 24 * 60 * 60 * 1000;
-const REMOVED_PLAYER_NAME = 'Removed player';
 
 const apply = process.argv.includes('--apply');
 const now = Date.now();

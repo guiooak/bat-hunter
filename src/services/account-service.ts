@@ -14,13 +14,14 @@ import {
 import { getData, removeData } from 'src/services/firebase-service';
 import { calcFinalScore } from 'src/services/game-service';
 import { CONTROLLER_NAME, PRIVACY_CONTACT } from 'src/services/legal-service';
+import { REMOVED_PLAYER_NAME } from 'src/services/removed-player';
 
 export const LOCAL_PREFERENCE_KEYS = [
   'bh-background-music-muted',
   'bh-difficulty',
   'bh-language',
 ] as const;
-export const REMOVED_PLAYER_NAME = 'Removed player';
+export { REMOVED_PLAYER_NAME };
 
 type MatchWithEntry = { entry: UserMatchType; match: MatchType | null };
 

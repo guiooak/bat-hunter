@@ -166,6 +166,9 @@ export const en = {
       `The account was not deleted. Try again, or write to ${contact}.`,
     contact: (contact: string) => `Anything else about your data: ${contact}.`,
   },
+  player: {
+    removed: 'Removed player',
+  },
   login: {
     title: 'Ready to hunt?',
     text: 'Sign in to challenge friends and keep your match history.',

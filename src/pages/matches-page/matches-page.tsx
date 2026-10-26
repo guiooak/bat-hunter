@@ -8,6 +8,7 @@ import {
 } from 'src/models/user-model';
 import { SignInModal } from 'src/features/sign-in-modal';
 import { useI18n } from 'src/i18n';
+import { REMOVED_PLAYER_NAME } from 'src/services/removed-player';
 import './matches-page.scss';
 
 export function MatchesPage() {
@@ -28,6 +29,10 @@ export function MatchesPage() {
       .catch((e) => console.error('MatchesPage::ERROR: matches not loaded', e))
       .finally(() => setLoading(false));
   }, [currentUser?.id]);
+
+  // A deleted player is stored as a marker, shown in the player's language
+  const showName = (name: string) =>
+    name === REMOVED_PLAYER_NAME ? t.player.removed : name;
 
   // Matches are only for signed-in players: closing the sign-in goes home
   if (status === 'unauthenticated') {
@@ -76,8 +81,8 @@ export function MatchesPage() {
             {matches.map((match, index) => (
               <tr key={match.matchId}>
                 <td>{index + 1}</td>
-                <td>{match.hostName}</td>
-                <td>{match.guestName}</td>
+                <td>{showName(match.hostName)}</td>
+                <td>{showName(match.guestName)}</td>
                 <td>{formatDate(match.createdAt)}</td>
                 <td>
                   <Button

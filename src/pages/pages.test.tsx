@@ -854,6 +854,24 @@ describe('in Portuguese', () => {
     expect(screen.getByRole('link', { name: '← Início' })).toBeInTheDocument();
   });
 
+  it('a removed player, in Portuguese', async () => {
+    userModel.getUserMatchesFromFirebase.mockResolvedValueOnce([
+      {
+        matchId: 'a',
+        hostId: 'h',
+        hostName: 'Removed player',
+        guestId: 'g',
+        guestName: 'Caio',
+        createdAt: 1,
+      },
+    ]);
+    renderAt('/matches', '/matches', <MatchesPage />, pt);
+
+    const [, row] = await screen.findAllByRole('row');
+    expect(row).toHaveTextContent('Jogador removido');
+    expect(row).toHaveTextContent('Caio');
+  });
+
   it('my data', async () => {
     accountService.getAccountSummary.mockResolvedValueOnce({
       matches: 2,

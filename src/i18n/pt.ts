@@ -163,6 +163,9 @@ export const pt: Messages = {
     contact: (contact) =>
       `Qualquer outra questão sobre seus dados: ${contact}.`,
   },
+  player: {
+    removed: 'Jogador removido',
+  },
   login: {
     title: 'Pronto para caçar?',
     text: 'Entre para desafiar amigos e guardar seu histórico de partidas.',
