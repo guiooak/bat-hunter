@@ -1,7 +1,7 @@
 // Deletes data past its retention period (LGPD plan, phase 4). Runs every day
 // on GitHub Actions (.github/workflows/retention.yml) with the CI service
-// account. The periods match src/services/legal-service.ts and the privacy
-// policy: change them together.
+// account. The periods come from src/services/retention-days.json, which the
+// privacy policy reads too.
 //
 // Usage: node scripts/retention.mjs [--apply]
 //   Without --apply it only reports what it would delete (dry run).
@@ -11,14 +11,10 @@
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getDatabase } from 'firebase-admin/database';
+// The same periods the app shows in its privacy policy
+import RETENTION_DAYS from '../src/services/retention-days.json' with { type: 'json' };
 
 const DAY = 24 * 60 * 60 * 1000;
-const RETENTION_DAYS = {
-  chatMessages: 90,
-  matches: 365,
-  inactiveAccounts: 730,
-  unjoinedMatches: 7,
-};
 const REMOVED_PLAYER_NAME = 'Removed player';
 
 const apply = process.argv.includes('--apply');
