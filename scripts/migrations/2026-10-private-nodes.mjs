@@ -13,6 +13,9 @@ const users = db.users ?? {};
 const matches = db.matches ?? {};
 const update = {};
 
+// The ?? is dead (split always returns an item): removed in the refactor that
+// follows the test suite.
+/* v8 ignore next */
 const firstNameOf = (name = '') => name.trim().split(' ')[0] ?? '';
 
 for (const [uid, user] of Object.entries(users)) {
