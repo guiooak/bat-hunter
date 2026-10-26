@@ -183,6 +183,32 @@ describe('buildAccountExport', () => {
   });
 });
 
+describe('the language (LGPD)', () => {
+  it('is in the export, from the account and from this browser', async () => {
+    fb.getData.mockImplementation((path: string) =>
+      Promise.resolve(
+        path === `users/${ME}` ? { id: ME, language: 'pt-BR' } : null
+      )
+    );
+    localStorage.setItem('bh-language', '"pt-BR"');
+
+    const data = await buildAccountExport(ME);
+
+    expect(data.account).toEqual({ id: ME, language: 'pt-BR' });
+    expect(data.browserPreferences).toEqual({ 'bh-language': 'pt-BR' });
+  });
+
+  it('goes with the account and the browser preferences', async () => {
+    localStorage.setItem('bh-language', '"pt-BR"');
+
+    await deleteAccount(ME);
+
+    // users/$uid holds the language: the whole node is removed
+    expect(fb.removeData).toHaveBeenCalledWith(`users/${ME}`);
+    expect(localStorage.getItem('bh-language')).toBeNull();
+  });
+});
+
 describe('deleteAccount', () => {
   it('erases messages, profile, list, preferences and the sign-in', async () => {
     localStorage.setItem('bh-difficulty', '"hard"');

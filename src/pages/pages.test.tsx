@@ -175,7 +175,7 @@ describe('legal pages', () => {
       'Política de Privacidade'
     );
     expect(
-      screen.getByText(/Última atualização: 23 de outubro de 2026/)
+      screen.getByText(/Última atualização: 26 de outubro de 2026/)
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole('link', { name: 'game.bat.hunter@gmail.com' }).length
@@ -187,7 +187,7 @@ describe('legal pages', () => {
       'Privacy Policy'
     );
     expect(
-      screen.getByText(/Last updated: October 23, 2026/)
+      screen.getByText(/Last updated: October 26, 2026/)
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Terms of Use' })).toHaveAttribute(
       'href',

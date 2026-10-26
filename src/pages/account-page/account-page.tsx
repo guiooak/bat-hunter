@@ -125,6 +125,7 @@ export function AccountPage() {
                 summary ? summary.messages : '…'
               )}
             </li>
+            <li>{t.account.keepLanguage}</li>
             <li>{t.account.keepPresence}</li>
             <li>{t.account.keepEmail}</li>
             <li>

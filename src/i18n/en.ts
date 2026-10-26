@@ -135,6 +135,8 @@ export const en = {
       'Your first name and photo, from Google. To correct them, change them in your Google account and sign in again.',
     keepMatches: (matches: number | string, messages: number | string) =>
       `${matches} matches with their scores, and ${messages} chat messages you sent.`,
+    keepLanguage:
+      'The language you picked, so the game opens in it on any device.',
     keepPresence:
       'Your presence (online or away), only while you play multiplayer.',
     keepEmail:

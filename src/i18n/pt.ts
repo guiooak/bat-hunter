@@ -132,6 +132,8 @@ export const pt: Messages = {
       'Seu primeiro nome e sua foto, vindos do Google. Para corrigi-los, altere-os na sua conta Google e entre de novo.',
     keepMatches: (matches, messages) =>
       `${matches} partidas com os placares, e ${messages} mensagens que você enviou no chat.`,
+    keepLanguage:
+      'O idioma que você escolheu, para o jogo abrir nele em qualquer aparelho.',
     keepPresence:
       'Sua presença (online ou ausente), só enquanto você joga multiplayer.',
     keepEmail:

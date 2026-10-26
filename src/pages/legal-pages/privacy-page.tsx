@@ -45,7 +45,7 @@ function PrivacyPt() {
         </li>
         <li>
           Você pode baixar seus dados e excluir sua conta a qualquer momento na
-          página <NavLink to="/account">My data</NavLink>.
+          página <NavLink to="/account">Meus dados</NavLink>.
         </li>
       </ul>
 
@@ -77,6 +77,11 @@ function PrivacyPt() {
               <td>Execução de contrato (art. 7º, V)</td>
             </tr>
             <tr>
+              <td>Idioma escolhido (português ou inglês), na sua conta</td>
+              <td>Abrir o jogo no seu idioma em qualquer aparelho</td>
+              <td>Execução de contrato (art. 7º, V)</td>
+            </tr>
+            <tr>
               <td>
                 E-mail e dados de login guardados pelo Firebase Authentication
               </td>
@@ -105,8 +110,8 @@ function PrivacyPt() {
             </tr>
             <tr>
               <td>
-                Preferências (música ligada ou não, dificuldade), salvas só no
-                seu navegador
+                Preferências (música ligada ou não, dificuldade, idioma), salvas
+                no seu navegador
               </td>
               <td>Lembrar suas escolhas</td>
               <td>Necessárias ao funcionamento; não saem do seu aparelho</td>
@@ -185,7 +190,7 @@ function PrivacyPt() {
         <li>oposição a um tratamento baseado em legítimo interesse.</li>
       </ul>
       <p>
-        Na página <NavLink to="/account">My data</NavLink> você vê o que está
+        Na página <NavLink to="/account">Meus dados</NavLink> você vê o que está
         guardado, baixa uma cópia em JSON e exclui sua conta. O nome e a foto
         vêm da sua conta Google: para corrigi-los, altere-os lá e entre de novo
         no jogo. Para qualquer outro pedido, escreva para {mail}. Respondemos em
@@ -282,6 +287,13 @@ function PrivacyEn() {
               <td>Performance of a contract (art. 7, V)</td>
             </tr>
             <tr>
+              <td>
+                The language you picked (Portuguese or English), in your account
+              </td>
+              <td>Open the game in your language on any device</td>
+              <td>Performance of a contract (art. 7, V)</td>
+            </tr>
+            <tr>
               <td>Email and sign-in data kept by Firebase Authentication</td>
               <td>Signing in. The game never reads or shows your email.</td>
               <td>Performance of a contract (art. 7, V)</td>
@@ -308,8 +320,8 @@ function PrivacyEn() {
             </tr>
             <tr>
               <td>
-                Preferences (music on or off, difficulty), stored only in your
-                browser
+                Preferences (music on or off, difficulty, language), stored in
+                your browser
               </td>
               <td>Remember your choices</td>
               <td>Needed for the game to work; they never leave your device</td>
