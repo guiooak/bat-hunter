@@ -248,3 +248,46 @@ describe('I18nProvider', () => {
     expect(screen.getByText('inside')).toBeInTheDocument();
   });
 });
+
+// Every leaf of a dictionary, as path → text (functions called with a sample)
+function flatten(messages: object, prefix = ''): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(messages).flatMap(([key, value]) => {
+      const path = prefix ? `${prefix}.${key}` : key;
+
+      if (typeof value === 'function') return [[path, String(value(7, 7))]];
+      if (typeof value === 'string') return [[path, value]];
+
+      return Object.entries(flatten(value, path));
+    })
+  );
+}
+
+// Same in both languages on purpose: names, symbols, loanwords
+const SAME_IN_BOTH = new Set<string>(['signIn.noticeEnd']);
+
+describe('dictionaries', () => {
+  const enTexts = flatten(en);
+  const ptTexts = flatten(pt);
+
+  it('have the same keys', () => {
+    expect(Object.keys(ptTexts).sort()).toEqual(Object.keys(enTexts).sort());
+  });
+
+  it('have every Portuguese text translated', () => {
+    const untranslated = Object.keys(enTexts).filter(
+      (path) =>
+        !SAME_IN_BOTH.has(path) && ptTexts[path].trim() === enTexts[path].trim()
+    );
+
+    expect(untranslated).toEqual([]);
+  });
+
+  it('have no empty text', () => {
+    expect(
+      Object.entries({ ...enTexts, ...ptTexts }).filter(
+        ([, text]) => !text.trim()
+      )
+    ).toEqual([]);
+  });
+});

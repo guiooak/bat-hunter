@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactElement } from 'react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
@@ -11,6 +17,7 @@ import {
 } from 'src/test/render';
 import { AuthContext } from 'src/features/authentication/auth-context/_auth-context-definition';
 import * as gameService from 'src/services/game-service';
+import { TestI18n } from 'src/test/test-i18n';
 
 const matchModel = vi.hoisted(() => ({
   getInvitationFromFirebase: vi.fn(),
@@ -90,11 +97,13 @@ function renderAt(
   const view = render(
     <MemoryRouter initialEntries={[route]}>
       <AuthContext.Provider value={auth}>
-        <Routes>
-          <Route path={path} element={element} />
-          <Route path="*" element={<Path />} />
-        </Routes>
-        <Path />
+        <TestI18n language={context.language ?? 'en-US'}>
+          <Routes>
+            <Route path={path} element={element} />
+            <Route path="*" element={<Path />} />
+          </Routes>
+          <Path />
+        </TestI18n>
       </AuthContext.Provider>
     </MemoryRouter>
   );
@@ -762,5 +771,46 @@ describe('AccountPage', () => {
     ).toBeDisabled();
 
     await act(async () => finish());
+  });
+});
+
+describe('in Portuguese', () => {
+  const pt = { language: 'pt-BR' as const };
+
+  it('home, login and the sign out', () => {
+    renderWithContext(<HomePage />, pt);
+    expect(
+      screen.getByText('Morcego demais. Hora de derrubar alguns.')
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Jogar solo' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Termos' })).toBeInTheDocument();
+    cleanup();
+
+    renderWithContext(<LoginPage />, pt);
+    expect(screen.getByText('Pronto para caçar?')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Continuar com o Google' })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/13 anos ou mais/)).toBeInTheDocument();
+    cleanup();
+
+    renderWithContext(<LogoutPage />, pt);
+    expect(screen.getByText('Carregando...')).toBeInTheDocument();
+  });
+
+  it('the 404 page', () => {
+    renderWithContext(<NotFoundPage />, pt);
+
+    expect(
+      screen.getByText('Esta página voou noite adentro.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Já que está aqui, que tal derrubar um ou dois morcegos?'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Soltar mais morcegos' })
+    ).toBeInTheDocument();
   });
 });

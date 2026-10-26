@@ -1,6 +1,7 @@
 import { SignInButton } from 'src/features/authentication/sign-in-button';
 import { Gutter, Modal } from 'src/components';
 import { Gap } from 'src/components/gap';
+import { useI18n } from 'src/i18n';
 
 export function SignInModal({
   open,
@@ -9,9 +10,11 @@ export function SignInModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const { t } = useI18n();
+
   return (
     <Modal
-      header="Come and play!"
+      header={t.signIn.modalTitle}
       className="sign-in-modal"
       open={open}
       onClose={onClose}

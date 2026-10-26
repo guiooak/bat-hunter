@@ -4,8 +4,10 @@ import { Button } from 'src/components';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import './home-page.scss';
 import clsx from 'clsx';
+import { useI18n } from 'src/i18n';
 
 export function HomePage() {
+  const { t } = useI18n();
   const [showBg, setShowBg] = useState(false);
 
   useEffect(() => {
@@ -22,19 +24,19 @@ export function HomePage() {
         alt=""
       />
       <div className="home-page__box">
-        <p className="home-page__tagline">Too many bats, time to drop some.</p>
+        <p className="home-page__tagline">{t.home.tagline}</p>
         <div className="home-page__actions">
           <NavLink to="/single-player">
-            <Button kind="secondary">Play Single</Button>
+            <Button kind="secondary">{t.home.playSingle}</Button>
           </NavLink>
           <NavLink to="/multi-player">
-            <Button kind="secondary">Play Multi</Button>
+            <Button kind="secondary">{t.home.playMulti}</Button>
           </NavLink>
         </div>
       </div>
       <footer className="home-page__legal">
-        <NavLink to="/privacy">Privacy</NavLink>
-        <NavLink to="/terms">Terms</NavLink>
+        <NavLink to="/privacy">{t.home.privacy}</NavLink>
+        <NavLink to="/terms">{t.home.terms}</NavLink>
       </footer>
     </div>
   );

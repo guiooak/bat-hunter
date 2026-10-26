@@ -27,6 +27,31 @@ describe('Navbar', () => {
   });
 });
 
+describe('Navbar without a first name', () => {
+  it('greets the player anyway', () => {
+    renderWithContext(<Navbar />, { currentUser: { id: 'x' } });
+
+    expect(screen.getByText('Hi player!')).toBeInTheDocument();
+  });
+});
+
+describe('Navbar in Portuguese', () => {
+  it('greets and links in Portuguese', () => {
+    renderWithContext(<Navbar />, { language: 'pt-BR' });
+
+    expect(screen.getByText(`Oi, ${ME.firstName}!`)).toBeInTheDocument();
+    for (const name of ['Partidas', 'Meus dados', 'Privacidade', 'Sair']) {
+      expect(screen.getByRole('link', { name })).toBeInTheDocument();
+    }
+  });
+
+  it('offers to sign in', () => {
+    renderWithContext(<Navbar />, { currentUser: null, language: 'pt-BR' });
+
+    expect(screen.getByRole('link', { name: 'Entrar' })).toBeInTheDocument();
+  });
+});
+
 describe('Navbar language picker', () => {
   it('switches the language for guests and players alike', async () => {
     renderWithContext(<Navbar />, { currentUser: null });

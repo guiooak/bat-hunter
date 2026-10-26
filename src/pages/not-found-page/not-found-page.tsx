@@ -9,6 +9,7 @@ import {
 import { createBat } from 'src/services/fly-engine-service';
 import { BatType, pickBatType } from 'src/services/bat-types';
 import { iterate } from 'src/services/iteration-service';
+import { Messages, useI18n } from 'src/i18n';
 import symbolUrl from '../../../brand/logo/symbol.svg';
 import './not-found-page.scss';
 
@@ -16,6 +17,7 @@ const FLOCK_SIZE = 8;
 
 // The page is gone, but the bats are not: shoot them while you are lost.
 export function NotFoundPage() {
+  const { t } = useI18n();
   const [kills, setKills] = useState(0);
   const [shotTheOwl, setShotTheOwl] = useState(false);
 
@@ -52,22 +54,17 @@ export function NotFoundPage() {
           <img src={symbolUrl} alt="" draggable={false} />
           <span>4</span>
         </div>
-        <h1 className="not-found-page__title">
-          This page flew off into the night.
-        </h1>
-        <p className="not-found-page__text">
-          We searched every belfry and every attic. Something with wings took
-          it.
-        </p>
+        <h1 className="not-found-page__title">{t.notFound.title}</h1>
+        <p className="not-found-page__text">{t.notFound.text}</p>
         <p className="not-found-page__score" aria-live="polite">
-          {buildScoreMessage(kills, shotTheOwl)}
+          {buildScoreMessage(t.notFound, kills, shotTheOwl)}
         </p>
         <div className="not-found-page__actions">
           <NavLink to="/">
-            <Button kind="primary">Take me home</Button>
+            <Button kind="primary">{t.notFound.takeMeHome}</Button>
           </NavLink>
           <Button kind="secondary" onClick={releaseBats}>
-            Release more bats
+            {t.notFound.releaseMore}
           </Button>
         </div>
       </div>
@@ -75,15 +72,16 @@ export function NotFoundPage() {
   );
 }
 
-function buildScoreMessage(kills: number, shotTheOwl: boolean) {
-  if (shotTheOwl) {
-    return 'You shot the owl. It was the only one who knew the way back. 🦉';
-  }
+function buildScoreMessage(
+  texts: Messages['notFound'],
+  kills: number,
+  shotTheOwl: boolean
+) {
+  if (shotTheOwl) return texts.shotTheOwl;
+  if (kills === 0) return texts.noKills;
+  if (kills === 1) return texts.oneKill;
+  if (kills < 10) return texts.fewKills(kills);
+  if (kills < 25) return texts.manyKills(kills);
 
-  if (kills === 0) return 'While you are here, why not drop a bat or two?';
-  if (kills === 1) return '1 bat dropped. Still no page, though.';
-  if (kills < 10) return `${kills} bats dropped. The page is still missing.`;
-  if (kills < 25) return `${kills} bats! Are you even looking for that page?`;
-
-  return `${kills} bats. Forget the page, you found your calling.`;
+  return texts.lotsOfKills(kills);
 }
