@@ -23,6 +23,7 @@ export function InvitationPage() {
   const signInModal = useSignInModal();
   const [gameHost, setGameHost] = useState<PublicProfileType | null>(null);
   const [isJoining, setIsJoining] = useState(false);
+  const [joinError, setJoinError] = useState(false);
 
   // Invitations are only readable by signed in users. The match itself is
   // private to its players, so the guest reads only the invitation.
@@ -85,6 +86,7 @@ export function InvitationPage() {
     };
 
     setIsJoining(true);
+    setJoinError(false);
 
     try {
       // The guest must be set first: the database rules only allow the guest
@@ -98,7 +100,7 @@ export function InvitationPage() {
       navigate(`/multi-player/${matchId}`);
     } catch (e) {
       console.error('InvitationPage::ERROR: could not join the match', e);
-      alert('Ops! It was not possible to join this battle.');
+      setJoinError(true);
     } finally {
       setIsJoining(false);
     }
@@ -132,6 +134,13 @@ export function InvitationPage() {
               </Button>
             )}
           </ButtonGroup>
+          {joinError && (
+            <Gutter direction="top" size="md">
+              <Text block secondary>
+                Ops! It was not possible to join this battle. Try again.
+              </Text>
+            </Gutter>
+          )}
         </div>
       </Gutter>
     </>

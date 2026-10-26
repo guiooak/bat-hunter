@@ -370,7 +370,6 @@ describe('InvitationPage', () => {
 
   it('says when joining fails', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {});
     matchModel.getInvitationFromFirebase.mockResolvedValue({
       hostId: 'bia',
       createdAt: 5,
@@ -382,10 +381,15 @@ describe('InvitationPage', () => {
       await screen.findByRole('button', { name: 'Join battle' })
     );
 
-    expect(alert).toHaveBeenCalledWith(
-      'Ops! It was not possible to join this battle.'
-    );
+    expect(
+      screen.getByText(/It was not possible to join this battle/)
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Join battle' })).toBeEnabled();
+
+    // Trying again clears the message
+    matchModel.joinMatchInFirebase.mockReturnValueOnce(new Promise(() => {}));
+    await userEvent.click(screen.getByRole('button', { name: 'Join battle' }));
+    expect(screen.queryByText(/It was not possible/)).toBeNull();
   });
 
   it('sends players of the match straight to it', async () => {
@@ -504,20 +508,22 @@ describe('InvitationPage', () => {
 
 describe('MatchesPage', () => {
   it('waits for the sign-in state', () => {
-    renderAt('/matches', '/matches', <MatchesPage />, { status: 'loading' });
+    renderAt('/matches', '/matches', <MatchesPage />, {
+      currentUser: null,
+      status: 'loading',
+    });
 
     expect(screen.getByText('Loading matches...')).toBeInTheDocument();
     expect(userModel.getUserMatchesFromFirebase).not.toHaveBeenCalled();
   });
 
-  it('sends signed-out visitors home', () => {
-    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {});
+  it('asks signed-out visitors to sign in, and closing goes home', async () => {
     renderAt('/matches', '/matches', <MatchesPage />, { currentUser: null });
 
-    expect(alert).toHaveBeenCalledWith(
-      'You must be signed in to view your matches.'
-    );
+    expect(screen.getByText('Come and play!')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: '✕' }));
     expect(screen.getAllByTestId('path')[0]).toHaveTextContent('/');
+    expect(userModel.getUserMatchesFromFirebase).not.toHaveBeenCalled();
   });
 
   it('lists my matches, oldest first, and opens one', async () => {

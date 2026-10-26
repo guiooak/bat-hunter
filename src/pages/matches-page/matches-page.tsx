@@ -6,6 +6,7 @@ import {
   getUserMatchesFromFirebase,
   UserMatchType,
 } from 'src/models/user-model';
+import { SignInModal } from 'src/features/sign-in-modal';
 import './matches-page.scss';
 
 export function MatchesPage() {
@@ -15,13 +16,7 @@ export function MatchesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === 'loading') return;
-
-    if (!currentUser?.id) {
-      alert('You must be signed in to view your matches.');
-      navigate('/');
-      return;
-    }
+    if (!currentUser?.id) return;
 
     getUserMatchesFromFirebase(currentUser.id)
       .then((data) => {
@@ -30,7 +25,16 @@ export function MatchesPage() {
       })
       .catch((e) => console.error('MatchesPage::ERROR: matches not loaded', e))
       .finally(() => setLoading(false));
-  }, [currentUser?.id, status, navigate]);
+  }, [currentUser?.id]);
+
+  // Matches are only for signed-in players: closing the sign-in goes home
+  if (status === 'unauthenticated') {
+    return (
+      <div className="matches-page">
+        <SignInModal open onClose={() => navigate('/')} />
+      </div>
+    );
+  }
 
   if (loading) {
     return (
