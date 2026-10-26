@@ -46,11 +46,14 @@ async function run(apply = false) {
   process.argv = ['node', 'retention.mjs', ...(apply ? ['--apply'] : [])];
   const log = vi.spyOn(console, 'log').mockImplementation(() => {});
   const table = vi.spyOn(console, 'table').mockImplementation(() => {});
-  vi.spyOn(process, 'exit').mockImplementation((() => undefined) as never);
+  const exit = vi
+    .spyOn(process, 'exit')
+    .mockImplementation((() => undefined) as never);
 
   await import('./retention.mjs');
 
   return {
+    exitCode: exit.mock.calls[0]?.[0],
     counts: table.mock.calls[0][0],
     logs: log.mock.calls.map((call) => String(call[0])),
     update: (admin.update.mock.calls[0] as unknown[] | undefined)?.[0],
@@ -101,6 +104,12 @@ describe('retention', () => {
 
     expect(admin.update).not.toHaveBeenCalled();
     expect(logs.at(-1)).toBe('Done: 0 paths updated.');
+  });
+
+  it('exits with success when every step ran', async () => {
+    const { exitCode } = await run(true);
+
+    expect(exitCode).toBe(0);
   });
 
   it('deletes old matches, unjoined invitations and old messages', async () => {
@@ -213,5 +222,18 @@ describe('retention', () => {
     admin.listError = { message: 'network down' };
     const second = await run();
     expect(second.logs).toContain('Inactive accounts skipped: network down');
+  });
+
+  it('still applies the rest, then fails the job, when accounts were skipped', async () => {
+    admin.listError = { message: 'no' };
+    admin.data = {
+      matches: { unjoinedOld: { hostId: 'h', createdAt: daysAgo(8) } },
+    };
+
+    const { exitCode, update } = await run(true);
+
+    expect(update).toHaveProperty('matches/unjoinedOld', null);
+    expect(admin.deleteUser).not.toHaveBeenCalled();
+    expect(exitCode).toBe(1);
   });
 });

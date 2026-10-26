@@ -146,4 +146,6 @@ if (apply) {
   console.log(`Done: ${Object.keys(update).length} paths updated.`);
 }
 
-process.exit(0);
+// Everything else was applied, but fail the job so the skipped accounts are
+// noticed
+process.exit(authError ? 1 : 0);
