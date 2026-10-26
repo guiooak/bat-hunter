@@ -12,6 +12,7 @@ As decisões tomadas, e por quem, estão em [../decisions.md](../decisions.md).
 | [game-improvements.md](game-improvements.md) | Dificuldade Fácil/Difícil e novos tipos de morcego | Concluído (17/10) |
 | [lgpd-compliance.md](lgpd-compliance.md) | Conformidade com a LGPD | Concluído (23/10), com pendências manuais |
 | [engineering-quality.md](engineering-quality.md) | Testes com 100% de cobertura e refatorações | Concluído (25/10) |
+| [i18n.md](i18n.md) | App bilíngue: pt-BR e en-US | Proposto (26/10) |
 
 ## Histórico
 
