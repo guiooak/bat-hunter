@@ -5,6 +5,14 @@ import { buildArray } from './array-service';
 import { BAT_TYPES, BatType } from './bat-types';
 
 let isGameModeOn = false;
+// The cursor is cleared a moment after a game ends; a game starting in that
+// moment (e.g. home, then straight into a game) must not lose its crosshair
+let clearCursorTimeout: ReturnType<typeof setTimeout> | undefined;
+
+function setCursor(cursor: string) {
+  clearTimeout(clearCursorTimeout);
+  document.body.style.cursor = cursor;
+}
 
 export const getIsGameModeOn = () => isGameModeOn;
 
@@ -12,7 +20,7 @@ export function enableBatGame() {
   isGameModeOn = true;
   playBackgroundMusic();
 
-  document.body.style.cursor = getAimCursorRegular();
+  setCursor(getAimCursorRegular());
 }
 
 // The crosshair without a game: no music, no score (e.g. the 404 page)
@@ -20,19 +28,20 @@ export function enableAimOnly() {
   isGameModeOn = false;
   pauseAllBackgroundMusic();
 
-  document.body.style.cursor = getAimCursorRegular();
+  setCursor(getAimCursorRegular());
 }
 
 // Right away, so the next page (maybe a game) can set its own cursor
 export function disableAimOnly() {
-  document.body.style.cursor = '';
+  setCursor('');
 }
 
 export function disableBatGame() {
   isGameModeOn = false;
   pauseAllBackgroundMusic();
 
-  setTimeout(() => {
+  clearTimeout(clearCursorTimeout);
+  clearCursorTimeout = setTimeout(() => {
     document.body.style.cursor = '';
   }, 200);
 }

@@ -37,6 +37,17 @@ describe('game mode', () => {
     expect(document.body.style.cursor).toBe('');
   });
 
+  it('a game started right after another one ended keeps its crosshair', async () => {
+    const game = await loadGame();
+
+    game.disableBatGame();
+    vi.advanceTimersByTime(50);
+    game.enableBatGame();
+    vi.advanceTimersByTime(200);
+
+    expect(document.body.style.cursor).toContain('aim.png');
+  });
+
   it('shows only the crosshair, with no music or score', async () => {
     const game = await loadGame();
     game.enableBatGame();
