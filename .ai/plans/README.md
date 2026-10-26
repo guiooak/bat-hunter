@@ -2,6 +2,8 @@
 
 Os planos de trabalho do Bat Hunter e o histórico do que foi feito, para que o repositório guarde não só o código, mas o porquê de cada mudança. Cada plano tem um status no topo.
 
+As decisões tomadas, e por quem, estão em [../decisions.md](../decisions.md).
+
 ## Planos
 
 | Plano | Assunto | Status |
@@ -53,6 +55,7 @@ Em ordem. Os commits estão na `main`; itens em itálico foram operações fora 
 - **Refatorações** com os testes como rede de proteção (`07ff44c` a `cab83e4`) e o `CONTRIBUTING.md` (`2038bff`).
 - **Dois bugs de produção** encontrados e corrigidos: o loop de escrita do host (`712165d`) e a mira sumindo ao entrar rápido num jogo (`0d5570c`).
 - Detalhes em [engineering-quality.md](engineering-quality.md).
+- *Três arquivos locais sem uso (cópias antigas, fora do git) tirados de `src/` e movidos para a Lixeira.*
 
 ## Pendências
 
