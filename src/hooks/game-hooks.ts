@@ -99,6 +99,22 @@ export function useGameCounterTriggers({
   };
 }
 
+// A game is a small state machine: each state has an onStart, run when the
+// game enters that state (not when the modes object is rebuilt), plus its own
+// actions and label. Returns the current state's mode.
+export function useGameMode<
+  State extends string,
+  Mode extends { onStart: () => void },
+>(modes: Record<State, Mode>, state: State) {
+  const modesRef = useLatestRef(modes);
+
+  useEffect(() => {
+    modesRef.current[state].onStart();
+  }, [state, modesRef]);
+
+  return modes[state];
+}
+
 export function useCountdown(onFinish: () => void) {
   const [countdownTime, setCountdownTime] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval>>();

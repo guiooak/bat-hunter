@@ -49,13 +49,19 @@ export function renderWithContext(ui: ReactElement, context: TestContext = {}) {
   return { auth, ...render(ui, { wrapper: Wrapper }) };
 }
 
-export function renderHookWithContext<T>(
-  hook: () => T,
-  context: TestContext = {}
+export function renderHookWithContext<T, Props = undefined>(
+  hook: (props: Props) => T,
+  context: TestContext & { initialProps?: Props } = {}
 ) {
   const auth = buildAuth(context);
 
-  return { auth, ...renderHook(hook, { wrapper: makeWrapper(context, auth) }) };
+  return {
+    auth,
+    ...renderHook(hook, {
+      wrapper: makeWrapper(context, auth),
+      initialProps: context.initialProps,
+    }),
+  };
 }
 
 function makeWrapper(context: TestContext, auth: ReturnType<typeof buildAuth>) {

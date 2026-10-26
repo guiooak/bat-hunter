@@ -13,6 +13,7 @@ import {
   useCountdown,
   useGameCounters,
   useGameCounterTriggers,
+  useGameMode,
   useIsCurrentUserTheHost,
 } from './game-hooks';
 
@@ -143,6 +144,34 @@ describe('useGameCounterTriggers', () => {
 
     unmount();
     expect(document.body.onpointerdown).toBeNull();
+  });
+});
+
+describe('useGameMode', () => {
+  it('runs onStart when the state changes, not when the modes are rebuilt', () => {
+    const ready = vi.fn();
+    const play = vi.fn();
+    const { result, rerender } = renderHookWithContext(
+      ({ state }: { state: 'ready' | 'play' }) =>
+        useGameMode(
+          {
+            ready: { onStart: ready, label: 'Ready' },
+            play: { onStart: play, label: 'Go' },
+          },
+          state
+        ),
+      { initialProps: { state: 'ready' as 'ready' | 'play' } }
+    );
+
+    expect(result.current.label).toBe('Ready');
+    expect(ready).toHaveBeenCalledTimes(1);
+
+    rerender({ state: 'ready' });
+    expect(ready).toHaveBeenCalledTimes(1);
+
+    rerender({ state: 'play' });
+    expect(play).toHaveBeenCalledTimes(1);
+    expect(result.current.label).toBe('Go');
   });
 });
 

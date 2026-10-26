@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, GameClock, Gutter, Title } from '@components';
-import { useBatSpawner, useCountdown } from 'src/hooks/game-hooks';
+import { useBatSpawner, useCountdown, useGameMode } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 import { DifficultyPicker } from 'src/features/difficulty-picker';
 import { Difficulty } from 'src/services/bat-types';
@@ -37,76 +36,58 @@ export function SinglePlayerDashboardChallenge({
     currentGameState === SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
   );
 
-  const GAME_MODE = useMemo(
-    () => ({
-      [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY]: {
-        label: 'Free Play!',
-        onStart: () => {
-          stopCountdown();
-          onResetScore();
-          setIsScoreEnabled(true);
-        },
-        onChallengeReady: () =>
-          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
+  const GAME_MODE = {
+    [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY]: {
+      label: 'Free Play!',
+      onStart: () => {
+        stopCountdown();
+        onResetScore();
+        setIsScoreEnabled(true);
       },
-      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY]: {
-        label: 'Get Ready!',
-        onStart: () => {
-          stopCountdown();
-          onResetScore();
-          killAllBats();
-          setIsScoreEnabled(false);
-        },
-        onFreePlay: () =>
-          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
-        onChallengeStart: () =>
-          setCurrentGameState(
-            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
-          ),
+      onChallengeReady: () =>
+        setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
+    },
+    [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY]: {
+      label: 'Get Ready!',
+      onStart: () => {
+        stopCountdown();
+        onResetScore();
+        killAllBats();
+        setIsScoreEnabled(false);
       },
-      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
-        onStart: () => {
-          setIsScoreEnabled(true);
-          playChallengeBackgroundMusic();
-          startCountdown(COUNTDOWN_TIME_TOTAL);
-        },
-        onCancel: () =>
-          setCurrentGameState(
-            SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED
-          ),
+      onFreePlay: () =>
+        setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
+      onChallengeStart: () =>
+        setCurrentGameState(
+          SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS
+        ),
+    },
+    [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_IN_PROGRESS]: {
+      onStart: () => {
+        setIsScoreEnabled(true);
+        playChallengeBackgroundMusic();
+        startCountdown(COUNTDOWN_TIME_TOTAL);
       },
-      [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED]: {
-        label: "Time's Up!",
-        onStart: () => {
-          stopCountdown();
-          killAllBats();
-          playBackgroundMusic();
-          setIsScoreEnabled(false);
-        },
-        onFreePlay: () =>
-          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
-        onChallengeReady: () =>
-          setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
+      onCancel: () =>
+        setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED),
+    },
+    [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED]: {
+      label: "Time's Up!",
+      onStart: () => {
+        stopCountdown();
+        killAllBats();
+        playBackgroundMusic();
+        setIsScoreEnabled(false);
       },
-    }),
-    [
-      onResetScore,
-      setIsScoreEnabled,
-      setCurrentGameState,
-      startCountdown,
-      stopCountdown,
-    ]
-  );
+      onFreePlay: () =>
+        setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY),
+      onChallengeReady: () =>
+        setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
+    },
+  };
 
-  // Only a state change starts a mode, not a new GAME_MODE reference
-  const gameModeRef = useRef(GAME_MODE);
-  gameModeRef.current = GAME_MODE;
-
-  useEffect(() => {
-    gameModeRef.current[currentGameState].onStart();
-  }, [currentGameState]);
-
-  const currentGameModel = GAME_MODE[currentGameState];
+  // Each state runs its onStart when the game enters it
+  const currentGameModel = useGameMode(GAME_MODE, currentGameState);
 
   return (
     <section>

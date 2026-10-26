@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
@@ -9,6 +9,7 @@ import {
   useBatSpawner,
   useCountdown,
   useGameCounterTriggers,
+  useGameMode,
 } from 'src/hooks/game-hooks';
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
 import { BatType, Difficulty } from 'src/services/bat-types';
@@ -79,68 +80,52 @@ export function MultiPlayerGameDashboardController({
     onStateChange(currentGameState);
   }, [currentGameState, onStateChange]);
 
-  const GAME_MODE: Record<GameStateType, GameModeConfigType> = useMemo(
-    () => ({
-      [GAME_STATES.GAME_READY]: {
-        label: 'Get Ready!',
-        onStart: () => {
-          onResetScore();
-          killAllBats();
-          setIsScoreEnabled(false);
-          stopCountdown();
-        },
-        onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
-        onOpenHistory,
-        onCancel: undefined,
+  const GAME_MODE: Record<GameStateType, GameModeConfigType> = {
+    [GAME_STATES.GAME_READY]: {
+      label: 'Get Ready!',
+      onStart: () => {
+        onResetScore();
+        killAllBats();
+        setIsScoreEnabled(false);
+        stopCountdown();
       },
-      [GAME_STATES.GAME_IN_PROGRESS]: {
-        onStart: () => {
-          setIsScoreEnabled(true);
-          playChallengeBackgroundMusic();
-          startCountdown(COUNTDOWN_TIME_TOTAL);
-        },
-        onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
-      },
-      [GAME_STATES.GAME_FINISHED]: {
-        label: "Time's Up!",
-        onStart: () => {
-          stopCountdown();
-          killAllBats();
-          playBackgroundMusic();
-          setIsScoreEnabled(false);
-        },
-        onChallengeReady: () => setCurrentGameState(GAME_STATES.GAME_READY),
-        onChallengeReadyLabel: 'Play again',
-        onOpenHistory,
-        onCancel: undefined,
-      },
-      [GAME_STATES.GAME_CLOSED]: {
-        label: 'Game Closed',
-        onStart: () => {
-          stopCountdown();
-          killAllBats();
-          setIsScoreEnabled(false);
-        },
-      },
-    }),
-    [
-      onResetScore,
+      onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
       onOpenHistory,
-      setIsScoreEnabled,
-      startCountdown,
-      stopCountdown,
-    ]
-  );
+      onCancel: undefined,
+    },
+    [GAME_STATES.GAME_IN_PROGRESS]: {
+      onStart: () => {
+        setIsScoreEnabled(true);
+        playChallengeBackgroundMusic();
+        startCountdown(COUNTDOWN_TIME_TOTAL);
+      },
+      onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
+    },
+    [GAME_STATES.GAME_FINISHED]: {
+      label: "Time's Up!",
+      onStart: () => {
+        stopCountdown();
+        killAllBats();
+        playBackgroundMusic();
+        setIsScoreEnabled(false);
+      },
+      onChallengeReady: () => setCurrentGameState(GAME_STATES.GAME_READY),
+      onChallengeReadyLabel: 'Play again',
+      onOpenHistory,
+      onCancel: undefined,
+    },
+    [GAME_STATES.GAME_CLOSED]: {
+      label: 'Game Closed',
+      onStart: () => {
+        stopCountdown();
+        killAllBats();
+        setIsScoreEnabled(false);
+      },
+    },
+  };
 
-  // Only a state change starts a mode, not a new GAME_MODE reference
-  const gameModeRef = useRef(GAME_MODE);
-  gameModeRef.current = GAME_MODE;
-
-  useEffect(() => {
-    gameModeRef.current[currentGameState].onStart();
-  }, [currentGameState]);
-
-  const currentGameModel = GAME_MODE[currentGameState];
+  // Each state runs its onStart when the game enters it
+  const currentGameModel = useGameMode(GAME_MODE, currentGameState);
 
   return (
     <section>
