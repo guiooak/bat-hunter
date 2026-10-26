@@ -12,7 +12,7 @@ As decisões tomadas, e por quem, estão em [../decisions.md](../decisions.md).
 | [game-improvements.md](game-improvements.md) | Dificuldade Fácil/Difícil e novos tipos de morcego | Concluído (17/10) |
 | [lgpd-compliance.md](lgpd-compliance.md) | Conformidade com a LGPD | Concluído (23/10), com pendências manuais |
 | [engineering-quality.md](engineering-quality.md) | Testes com 100% de cobertura e refatorações | Concluído (25/10) |
-| [i18n.md](i18n.md) | App bilíngue: pt-BR e en-US | Proposto (26/10) |
+| [i18n.md](i18n.md) | App bilíngue: pt-BR e en-US | Concluído (26/10) |
 
 ## Histórico
 
@@ -57,6 +57,11 @@ Em ordem. Os commits estão na `main`; itens em itálico foram operações fora 
 - **Dois bugs de produção** encontrados e corrigidos: o loop de escrita do host (`712165d`) e a mira sumindo ao entrar rápido num jogo (`0d5570c`).
 - Detalhes em [engineering-quality.md](engineering-quality.md).
 - *Três arquivos locais sem uso (cópias antigas, fora do git) tirados de `src/` e movidos para a Lixeira.*
+
+### 26/10: revisão e app bilíngue
+
+- **Revisão do repositório:** teste instável (`08fd461`), partida criada já com convidado bloqueada nas regras (`b870a2c`), retenção que falha quando pula contas (`d6e4c29`), bundle dividido (`dc7f881`) e quarentena de 3 dias para pacotes do npm (`1791e24`).
+- **Plano de i18n** (`3e4f7fb`) e a implementação: infraestrutura com o idioma salvo na conta (`571044f`), seletor na navbar (`69b78a7`), telas traduzidas por área (`207967f` a `f3483af`), LGPD (`c496880`) e lint contra texto fixo (`1130cd3`).
 
 ## Pendências
 
