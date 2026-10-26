@@ -14,6 +14,13 @@ Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
   value: vi.fn(),
 });
 
+// jsdom has no layout: a ResizeObserver that never fires
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 afterEach(() => {
   cleanup();
   document.body.innerHTML = '';
