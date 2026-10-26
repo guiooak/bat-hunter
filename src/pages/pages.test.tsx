@@ -798,6 +798,41 @@ describe('in Portuguese', () => {
     expect(screen.getByText('Carregando...')).toBeInTheDocument();
   });
 
+  it('an invitation, and one that is gone', async () => {
+    const at = () =>
+      renderAt(
+        '/invitation-link/:matchId',
+        '/invitation-link/m1',
+        <InvitationPage />,
+        pt
+      );
+    matchModel.getInvitationFromFirebase.mockResolvedValueOnce({
+      hostId: 'bia',
+      createdAt: 5,
+    });
+    const { unmount } = at();
+
+    expect(
+      await screen.findByText('Bia te convidou para uma batalha. Bora jogar?')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Entrar na batalha' })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Agora não' })).toBeVisible();
+    unmount();
+
+    matchModel.getInvitationFromFirebase.mockResolvedValueOnce(null);
+    at();
+    expect(
+      await screen.findByText(
+        'Este convite não existe (ou a partida foi removida).'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Voltar ao início' })
+    ).toBeInTheDocument();
+  });
+
   it('the 404 page', () => {
     renderWithContext(<NotFoundPage />, pt);
 

@@ -5,11 +5,13 @@ import { Gap } from 'src/components/gap';
 import { createMatchInFirebase } from 'src/models/match-model';
 import { useAuthContext } from 'src/features/authentication';
 import { SignInModal } from 'src/features/sign-in-modal';
+import { useI18n } from 'src/i18n';
 
 export function MultiPlayerOpponentDashboardInvitation() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId?: string }>();
   const { currentUser } = useAuthContext();
+  const { t } = useI18n();
   const [signInModalOpen, setSignInModalOpen] = useState(false);
 
   async function onCreateGame() {
@@ -36,7 +38,7 @@ export function MultiPlayerOpponentDashboardInvitation() {
       />
       <div className="multi-player-opponent-dashboard-invitation">
         <Gutter size="md">
-          <Title>Match Setup</Title>
+          <Title>{t.multi.matchSetup}</Title>
 
           <Gutter size="lg" direction="vertical">
             <div>
@@ -48,13 +50,13 @@ export function MultiPlayerOpponentDashboardInvitation() {
                   size="md"
                   className="text-center"
                 >
-                  <div>Share the invitation link.</div>
+                  <div>{t.multi.shareInvite}</div>
                   <UrlCopyButton invitationUrl={buildInvitationUrl(matchId)} />
                 </Gap>
               ) : (
                 <Gap justify="center">
                   <Button kind="primary" onClick={onCreateGame}>
-                    Create a Game
+                    {t.multi.createGame}
                   </Button>
                 </Gap>
               )}
@@ -67,6 +69,7 @@ export function MultiPlayerOpponentDashboardInvitation() {
 }
 
 function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -86,7 +89,7 @@ function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
     <>
       <Input value={invitationUrl} name="match-url" readOnly />
       <Button kind="primary" onClick={_onCopy}>
-        {copied ? 'Copied!' : 'Copy invite link'}
+        {copied ? t.multi.copied : t.multi.copyInvite}
       </Button>
     </>
   );

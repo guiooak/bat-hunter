@@ -491,7 +491,7 @@ describe('game modals', () => {
       'Bia: 1 kills | 50% accuracy | score: 50'
     );
     expect(items[1]).toHaveTextContent('Winner: Bia 🎉');
-    expect(items[2]).toHaveTextContent('Winner: Same Score! 🤝');
+    expect(items[2]).toHaveTextContent('Winner: Same score! 🤝');
     expect(items[3]).toHaveTextContent('Winner: N/A');
 
     const ranking = screen.getAllByRole('heading');
@@ -520,6 +520,17 @@ describe('game modals', () => {
       '0',
       '0',
     ]);
+  });
+
+  it('history with no names: an opponent whose account is gone', () => {
+    renderWithContext(
+      <MultiPlayerGameHistoryModal open onClose={vi.fn()} match={finished} />,
+      { currentUser: { id: ME.id }, opponentUser: null }
+    );
+
+    const [first] = screen.getAllByRole('listitem');
+    expect(first).toHaveTextContent(': 3 kills | 75% accuracy | score: 675');
+    expect(first).toHaveTextContent(': 1 kills | 50% accuracy | score: 50');
   });
 
   it('result: win, loss and draw, with both scores', () => {
@@ -555,5 +566,113 @@ describe('game modals', () => {
       />
     );
     expect(screen.getByText('Same score! 🤝')).toBeInTheDocument();
+  });
+});
+
+describe('multiplayer in Portuguese', () => {
+  const pt = { language: 'pt-BR' as const };
+
+  it('chat: names, placeholder and a report in Portuguese', async () => {
+    renderWithContext(<MultiPlayerChat />, {
+      ...pt,
+      match,
+      opponentUser: BIA,
+    });
+
+    expect(screen.getByText('Chat (2)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Mensagens não lidas')).toBeInTheDocument();
+    expect(screen.getByText('hi').nextSibling).toHaveTextContent(/^Você, /);
+    expect(
+      screen.getByPlaceholderText(
+        'Enter para enviar, Shift+Enter para nova linha'
+      )
+    ).toBeInTheDocument();
+
+    const report = screen.getByRole('link', { name: 'Denunciar' });
+    const href = decodeURIComponent(report.getAttribute('href')!);
+    expect(href).toContain('Bat Hunter: denúncia no chat');
+    expect(href).toContain('Partida: m1');
+    expect(href).toContain('Texto: hey');
+    expect(href).toContain('Motivo (opcional):');
+  });
+
+  it('chat: the time follows the language', () => {
+    renderWithContext(<MultiPlayerChat />, { ...pt, match, opponentUser: BIA });
+
+    const time = (
+      screen.getByText('hi').nextSibling as HTMLElement
+    ).querySelector('span')!;
+    const sentAt = match.messages!.a.createdAt!;
+    expect(time).toHaveTextContent(
+      new Date(sentAt).toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    );
+    expect(time).toHaveAttribute(
+      'title',
+      new Date(sentAt).toLocaleString('pt-BR')
+    );
+  });
+
+  it('history and result', () => {
+    const finished: MatchType = {
+      id: 'm1',
+      hostId: ME.id,
+      guestId: 'bia',
+      games: {
+        g1: {
+          id: 'g1',
+          createdAt: 1,
+          state: 'GAME_CLOSED',
+          winnerId: 'DRAW',
+          hostData: { shotCounter: 4, killCounter: 3, points: 9 },
+        },
+      },
+    };
+    const { unmount } = renderWithContext(
+      <MultiPlayerGameHistoryModal open onClose={vi.fn()} match={finished} />,
+      { ...pt, opponentUser: BIA }
+    );
+    expect(screen.getByText('Histórico de rodadas')).toBeInTheDocument();
+    const [item] = screen.getAllByRole('listitem');
+    expect(item).toHaveTextContent('Vencedor: Empate! 🤝');
+    expect(item).toHaveTextContent(
+      'Ana: 3 abates | 75% de precisão | pontos: 675'
+    );
+    unmount();
+
+    renderWithContext(
+      <MultiPlayerGameResultModal
+        open
+        onClose={vi.fn()}
+        match={finished}
+        game={{ ...finished.games!.g1, winnerId: 'bia' }}
+      />,
+      { ...pt, opponentUser: BIA }
+    );
+    expect(screen.getByText('Você perdeu! 💔')).toBeInTheDocument();
+    expect(screen.getByText('Sua pontuação')).toBeInTheDocument();
+    expect(screen.getByText('Pontuação de Bia')).toBeInTheDocument();
+  });
+
+  it('dashboards and the match setup', () => {
+    const { unmount } = renderWithContext(
+      <>
+        <MultiPlayerMainDashboard />
+        <MultiPlayerOpponentDashboard />
+      </>,
+      { ...pt, match, opponentUser: { ...BIA, away: true } }
+    );
+    expect(screen.getAllByText('Pontos')).toHaveLength(2);
+    expect(screen.getAllByText('Você').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('ausente').length).toBeGreaterThan(0);
+    unmount();
+
+    renderWithContext(<MultiPlayerOpponentDashboard />, pt);
+    expect(screen.getByText('Preparar partida')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Criar partida' })
+    ).toBeInTheDocument();
   });
 });

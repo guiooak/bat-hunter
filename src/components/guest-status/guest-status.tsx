@@ -1,3 +1,4 @@
+import { useI18n } from 'src/i18n';
 import './guest-status.scss';
 
 export function GuestStatus({
@@ -7,12 +8,13 @@ export function GuestStatus({
   lastPulseAt?: number;
   away?: boolean;
 }) {
+  const { t } = useI18n();
   const status = calcStatus(lastPulseAt, away);
 
   return (
     <span className="bh-guest-status">
       <span className={`bh-guest-status-circle ${status}`} />
-      <span>{status}</span>
+      <span>{t.presence[status]}</span>
     </span>
   );
 }

@@ -10,10 +10,12 @@ import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 import { findCurrentGame } from 'src/services/game-service';
 import { mailtoPrivacy } from 'src/services/legal-service';
+import { Messages, useI18n } from 'src/i18n';
 
 export function MultiPlayerChat() {
   const { match, opponentUser } = useMultiPlayerContext();
   const { currentUser } = useAuthContext();
+  const { t } = useI18n();
   const chatScrollContainerRef = useRef<HTMLElement | null>(null);
 
   const [chatOpen, setChatOpen] = useState(false);
@@ -63,7 +65,7 @@ export function MultiPlayerChat() {
       })
       .catch((e) => {
         console.error('MultiPlayerChat::Error: Message could not be saved', e);
-        setSendError('Message not sent. Press Enter to try again.');
+        setSendError(t.chat.sendError);
       })
       .finally(() => setIsSubmitting(false));
   }
@@ -78,13 +80,14 @@ export function MultiPlayerChat() {
       <header onClick={toggleChat}>
         <Gap justify="space-between" align="center">
           <div>
-            Chat {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
+            {t.chat.title}{' '}
+            {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
           </div>
           <div>
             {!!unreadMessagesCounter && (
               <span
                 className="multi-player-chat__unread"
-                aria-label="Unread messages"
+                aria-label={t.chat.unread}
               />
             )}
           </div>
@@ -113,7 +116,7 @@ export function MultiPlayerChat() {
                     reportUrl={
                       isSelf
                         ? undefined
-                        : buildReportUrl(match?.id, message.id, message)
+                        : buildReportUrl(t.chat, match?.id, message.id, message)
                     }
                   />
                 );
@@ -124,9 +127,7 @@ export function MultiPlayerChat() {
         <footer>
           <TextArea
             placeholder={
-              canChat
-                ? 'Enter to send, Shift+Enter for a new line'
-                : 'Create or join a match to chat'
+              canChat ? t.chat.placeholder : t.chat.placeholderDisabled
             }
             className="chat-input"
             name="chat-input"
@@ -154,21 +155,22 @@ function scrollTopBottom(container: HTMLElement | null) {
 
 // Opens an email to the privacy channel with what is needed to review it
 function buildReportUrl(
+  texts: Messages['chat'],
   matchId?: string,
   messageId?: string,
   message?: { message?: string; createdAt?: number }
 ) {
   return mailtoPrivacy(
-    'Bat Hunter: chat report',
+    texts.reportSubject,
     [
-      'I want to report this chat message.',
+      texts.reportIntro,
       '',
-      `Match: ${matchId}`,
-      `Message: ${messageId}`,
-      `Sent at: ${new Date(message?.createdAt || 0).toISOString()}`,
-      `Text: ${message?.message}`,
+      `${texts.reportMatch}: ${matchId}`,
+      `${texts.reportMessage}: ${messageId}`,
+      `${texts.reportSentAt}: ${new Date(message?.createdAt || 0).toISOString()}`,
+      `${texts.reportText}: ${message?.message}`,
       '',
-      'Why (optional):',
+      texts.reportWhy,
     ].join('\n')
   );
 }
@@ -186,10 +188,8 @@ function ChatMessage({
   self?: boolean;
   reportUrl?: string;
 }) {
-  const datetime = new Date(timestamp);
-  const fullDatetimeHumanized = datetime.toLocaleString();
-  const timeHumanized = fullDatetimeHumanized.split(', ')[1];
-  const name = self ? 'You' : authorName;
+  const { t, formatDateTime, formatTime } = useI18n();
+  const name = self ? t.multi.you : authorName;
   const align = self ? 'right' : 'left';
 
   return (
@@ -198,12 +198,13 @@ function ChatMessage({
         {text}
       </Text>
       <Text secondary size="xxs" align={align}>
-        {name}, <span title={fullDatetimeHumanized}>{timeHumanized}</span>
+        {name},{' '}
+        <span title={formatDateTime(timestamp)}>{formatTime(timestamp)}</span>
         {reportUrl && (
           <>
             {' · '}
             <a className="chat-message__report" href={reportUrl}>
-              Report
+              {t.chat.report}
             </a>
           </>
         )}

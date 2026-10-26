@@ -5,9 +5,11 @@ import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from 'src/components/profile-section';
 import { useGameCounters } from 'src/hooks/game-hooks';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
+import { useI18n } from 'src/i18n';
 
 export function MultiPlayerMainDashboard() {
   const { currentUser } = useAuthContext();
+  const { t } = useI18n();
   const { match } = useMultiPlayerContext();
 
   const { shotCounter, killCounter, points } = useGameCounters({
@@ -23,7 +25,7 @@ export function MultiPlayerMainDashboard() {
       <Card>
         <Gutter size="md">
           <ScoreSummary
-            title="Score"
+            title={t.game.score}
             titleSize="h4"
             killCounter={killCounter}
             accuracy={accuracy}
@@ -32,11 +34,11 @@ export function MultiPlayerMainDashboard() {
         </Gutter>
         <Divider />
         <Gutter size="md">
-          <ProfileSection image={currentUser?.picture} name="You" />
+          <ProfileSection image={currentUser?.picture} name={t.multi.you} />
         </Gutter>
       </Card>
       <ScoreChip
-        name="You"
+        name={t.multi.you}
         killCounter={killCounter}
         finalScore={finalScore}
         accuracy={accuracy}

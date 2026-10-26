@@ -13,9 +13,11 @@ import {
   PublicProfileType,
   setUserMatchInFirebase,
 } from 'src/models/user-model';
+import { useI18n } from 'src/i18n';
 
 export function InvitationPage() {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const { matchId } = useParams<{ matchId: string }>();
   const { currentUser, status } = useAuthContext();
   const [match, setMatch] = useState<InvitationType | null>(null);
@@ -113,16 +115,16 @@ export function InvitationPage() {
         <Gutter direction="vertical" size="xxl" className="text-center">
           <Text>
             {isMissing
-              ? 'This invitation does not exist (or the match was removed).'
+              ? t.invitation.missing
               : isPrivate
-                ? 'This match already has two players, and its games and chat are private to them.'
-                : `You're invited to a battle with ${gameHost?.firstName || '…'}. Wanna join the game?`}
+                ? t.invitation.private
+                : t.invitation.invited(gameHost?.firstName || '…')}
           </Text>
         </Gutter>
         <div className="text-center">
           <ButtonGroup>
             <Button onClick={() => navigate('/')}>
-              {isClosed ? 'Back home' : 'Nope'}
+              {isClosed ? t.invitation.backHome : t.invitation.nope}
             </Button>
             {joinable && !isPrivate && (
               <Button
@@ -130,14 +132,14 @@ export function InvitationPage() {
                 onClick={() => onJoinBattle(joinable)}
                 disabled={isJoining}
               >
-                Join battle
+                {t.invitation.join}
               </Button>
             )}
           </ButtonGroup>
           {joinError && (
             <Gutter direction="top" size="md">
               <Text block secondary>
-                Ops! It was not possible to join this battle. Try again.
+                {t.invitation.joinError}
               </Text>
             </Gutter>
           )}

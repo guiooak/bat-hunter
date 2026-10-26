@@ -7,6 +7,7 @@ import { GameType } from 'src/models/game-model';
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
+import { useI18n } from 'src/i18n';
 
 export function MultiPlayerGameHistoryModal({
   open,
@@ -18,14 +19,15 @@ export function MultiPlayerGameHistoryModal({
   match?: MatchType;
 }) {
   const { currentUser } = useAuthContext();
+  const { t } = useI18n();
   const { opponentUser } = useMultiPlayerContext();
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
 
   function retrieveWinnerName(winnerId?: string) {
-    if (winnerId === 'DRAW') return 'Same Score! 🤝';
+    if (winnerId === 'DRAW') return t.multi.sameScore;
     if (winnerId === currentUser?.id) return `${currentUser?.firstName} 🎉`;
     if (winnerId === opponentUser?.id) return `${opponentUser?.firstName} 🎉`;
-    return 'N/A';
+    return t.multi.noWinner;
   }
 
   function getUserData(game: GameType, userType: 'MAIN' | 'OPPONENT') {
@@ -68,7 +70,7 @@ export function MultiPlayerGameHistoryModal({
   );
 
   return (
-    <Modal open={open} onClose={onClose} header="Games History">
+    <Modal open={open} onClose={onClose} header={t.multi.historyTitle}>
       {/* Starts at 0 x 0 as soon as the opponent joins */}
       <FinalRanking
         opponentWins={opponentWins}
@@ -95,15 +97,24 @@ export function MultiPlayerGameHistoryModal({
                 <li key={game?.id}>
                   <Gutter direction="bottom" size="xl">
                     <Gap vertical>
-                      <div>Winner: {retrieveWinnerName(game?.winnerId)}</div>
                       <div>
-                        {currentUser?.firstName}: {currentData.kills} kills |{' '}
-                        {currentAccuracy}% accuracy | score: {currentData.score}
+                        {t.multi.winner}: {retrieveWinnerName(game?.winnerId)}
                       </div>
                       <div>
-                        {opponentUser?.firstName}: {opponentData.kills} kills |{' '}
-                        {opponentAccuracy}% accuracy | score:{' '}
-                        {opponentData.score}
+                        {t.multi.gameLine(
+                          currentUser?.firstName || '',
+                          currentData.kills,
+                          currentAccuracy,
+                          currentData.score
+                        )}
+                      </div>
+                      <div>
+                        {t.multi.gameLine(
+                          opponentUser?.firstName || '',
+                          opponentData.kills,
+                          opponentAccuracy,
+                          opponentData.score
+                        )}
                       </div>
                     </Gap>
                   </Gutter>
@@ -115,7 +126,7 @@ export function MultiPlayerGameHistoryModal({
       ) : (
         <Gutter size="xl" direction="vertical">
           <Text align="center" secondary>
-            No games played yet.
+            {t.multi.noGames}
           </Text>
         </Gutter>
       )}

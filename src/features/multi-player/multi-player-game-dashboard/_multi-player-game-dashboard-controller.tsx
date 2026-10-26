@@ -15,6 +15,7 @@ import {
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
 import { BatType, Difficulty } from 'src/services/bat-types';
 import { DifficultyPicker } from 'src/features/difficulty-picker';
+import { useI18n } from 'src/i18n';
 
 const COUNTDOWN_TIME_TOTAL = 60;
 
@@ -53,6 +54,7 @@ export function MultiPlayerGameDashboardController({
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
+  const { t } = useI18n();
   const [localGameState, setCurrentGameState] = useState<GameStateType>(
     GAME_STATES.GAME_READY
   );
@@ -84,7 +86,7 @@ export function MultiPlayerGameDashboardController({
 
   const GAME_MODE: Record<GameStateType, GameModeConfigType> = {
     [GAME_STATES.GAME_READY]: {
-      label: 'Get Ready!',
+      label: t.game.getReady,
       onStart: () => {
         onResetScore();
         killAllBats();
@@ -104,7 +106,7 @@ export function MultiPlayerGameDashboardController({
       onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
     },
     [GAME_STATES.GAME_FINISHED]: {
-      label: "Time's Up!",
+      label: t.game.timesUp,
       onStart: () => {
         stopCountdown();
         killAllBats();
@@ -112,12 +114,12 @@ export function MultiPlayerGameDashboardController({
         setIsScoreEnabled(false);
       },
       onChallengeReady: () => setCurrentGameState(GAME_STATES.GAME_READY),
-      onChallengeReadyLabel: 'Play again',
+      onChallengeReadyLabel: t.multi.playAgain,
       onOpenHistory,
       onCancel: undefined,
     },
     [GAME_STATES.GAME_CLOSED]: {
-      label: 'Game Closed',
+      label: t.multi.gameClosed,
       onStart: () => {
         stopCountdown();
         killAllBats();
@@ -151,7 +153,7 @@ export function MultiPlayerGameDashboardController({
             note={
               !isCurrentUserTheHost &&
               currentGameState === GAME_STATES.GAME_READY
-                ? 'Host picks'
+                ? t.difficulty.hostPicks
                 : undefined
             }
           />
@@ -164,7 +166,7 @@ export function MultiPlayerGameDashboardController({
               currentGameModel.onCancel?.();
             }}
           >
-            Cancel
+            {t.game.cancel}
           </Button>
         )}
         {currentGameModel.onOpenHistory && (
@@ -173,7 +175,7 @@ export function MultiPlayerGameDashboardController({
             disabled={!hasOpponent}
             onClick={currentGameModel.onOpenHistory}
           >
-            History
+            {t.multi.history}
           </Button>
         )}
         {currentGameModel.onChallengeReady && isCurrentUserTheHost && (
@@ -187,7 +189,7 @@ export function MultiPlayerGameDashboardController({
             disabled={!hasOpponent}
             onClick={currentGameModel.onMatchStart}
           >
-            Start
+            {t.game.start}
           </Button>
         )}
       </ButtonGroup>
@@ -197,7 +199,7 @@ export function MultiPlayerGameDashboardController({
         !hasOpponent && (
           <Gutter size="sm" direction="top">
             <Text block secondary size="sm" align="center">
-              Waiting for an opponent to join.
+              {t.multi.waitingOpponent}
             </Text>
           </Gutter>
         )}
