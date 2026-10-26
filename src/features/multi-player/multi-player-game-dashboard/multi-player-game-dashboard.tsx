@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import './multi-player-game-dashboard.scss';
 import { MultiPlayerGameDashboardController } from './_multi-player-game-dashboard-controller';
 import { Card, Gutter } from '@components';
@@ -30,71 +30,32 @@ import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-co
 export function MultiPlayerGameDashboard() {
   const { match } = useMultiPlayerContext();
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
-  const [openResultModal, setOpenResultModal] = useState(false);
   const [openHistoryModal, setOpenHistoryModal] = useState(false);
-  const isCreatingGameRef = useRef(false);
+  const [dismissedResultOf, setDismissedResultOf] = useState<string>();
   const dockRef = useRef<HTMLDivElement>(null);
   useDockHeight(dockRef);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const [points, dispatchPoints] = useReducer(pointsReducer, 0);
 
-  const currentGame = useMemo(() => {
-    if (!match) return;
-
-    return findCurrentGame(match);
-  }, [match]);
-
+  const currentGame = findCurrentGame(match);
   const difficulty: Difficulty = currentGame?.difficulty ?? 'easy';
+  const isGameInProgress = currentGame?.state === 'GAME_IN_PROGRESS';
 
-  const isGameInProgress = useMemo(
-    () => currentGame?.state === 'GAME_IN_PROGRESS',
-    [currentGame?.state]
+  useHostGameLifecycle(match, currentGame, isCurrentUserTheHost);
+  usePlayerScoreSync({
+    matchId: match?.id,
+    gameId: isGameInProgress ? currentGame?.id : undefined,
+    player: isCurrentUserTheHost ? 'host' : 'guest',
+    score: { shotCounter, killCounter, points },
+  });
+
+  // The result shows once a winner is set, until the player closes it
+  const openResultModal = Boolean(
+    currentGame?.winnerId &&
+      !isGameClosed(currentGame) &&
+      dismissedResultOf !== currentGame.id
   );
-
-  // Finish game with winner when the page loads
-  useEffect(() => {
-    if (!isCurrentUserTheHost) return;
-
-    if (currentGame?.winnerId && !isGameClosed(currentGame)) {
-      finishGameWithWinner(currentGame, match?.id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCurrentUserTheHost]);
-
-  // Create a new game once there is no unfinished game
-  useEffect(() => {
-    if (!isCurrentUserTheHost) return;
-
-    if (match?.id && !currentGame && !isCreatingGameRef.current) {
-      isCreatingGameRef.current = true;
-      // A new round keeps the difficulty of the last one
-      createGameInFirebase(match.id, findLastGame(match)?.difficulty)
-        .catch((e) =>
-          console.error('ERROR: could not register new game in Firebase.', e)
-        )
-        .finally(() => {
-          isCreatingGameRef.current = false;
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCurrentUserTheHost, currentGame]);
-
-  // Save score data in database
-  useEffect(() => {
-    if (match?.id && currentGame?.id && isGameInProgress)
-      setPlayerDataInFirebase({
-        matchId: match.id,
-        gameId: currentGame.id,
-        player: isCurrentUserTheHost ? 'host' : 'guest',
-        data: {
-          shotCounter,
-          killCounter,
-          points,
-        },
-      }).catch(logFirebaseError);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shotCounter, killCounter, points]);
 
   function cleanScore() {
     dispatchKillCounter('reset');
@@ -110,13 +71,6 @@ export function MultiPlayerGameDashboard() {
       data: { id: currentGame.id, difficulty: value },
     }).catch(logFirebaseError);
   }
-
-  useEffect(() => {
-    if (currentGame?.winnerId && !isGameClosed(currentGame)) {
-      setOpenResultModal(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentGame?.winnerId, currentGame?.state]);
 
   const onStateChange = (state: GameStateType) => {
     if (isCurrentUserTheHost && !currentGame?.winnerId) {
@@ -168,7 +122,7 @@ export function MultiPlayerGameDashboard() {
       </div>
       <MultiPlayerGameResultModal
         open={openResultModal}
-        onClose={() => setOpenResultModal(false)}
+        onClose={() => setDismissedResultOf(currentGame?.id)}
         match={match}
         game={currentGame}
       />
@@ -179,6 +133,68 @@ export function MultiPlayerGameDashboard() {
       />
     </>
   );
+}
+
+// The host owns the game lifecycle in Firebase: it closes a decided game left
+// open (the page was reloaded after the result) and creates the next game
+// whenever none is open.
+function useHostGameLifecycle(
+  match: MatchType | undefined,
+  currentGame: GameType | undefined,
+  isHost: boolean
+) {
+  const hasClosedLeftoverRef = useRef(false);
+  const isCreatingGameRef = useRef(false);
+
+  useEffect(() => {
+    if (!isHost || !match || hasClosedLeftoverRef.current) return;
+
+    hasClosedLeftoverRef.current = true;
+    finishGameWithWinner(currentGame, match.id);
+  }, [isHost, match, currentGame]);
+
+  useEffect(() => {
+    if (!isHost || !match?.id || currentGame || isCreatingGameRef.current) {
+      return;
+    }
+
+    isCreatingGameRef.current = true;
+    // A new round keeps the difficulty of the last one
+    createGameInFirebase(match.id, findLastGame(match)?.difficulty)
+      .catch((e) =>
+        console.error('ERROR: could not register new game in Firebase.', e)
+      )
+      .finally(() => {
+        isCreatingGameRef.current = false;
+      });
+  }, [isHost, match, currentGame]);
+}
+
+// Saves the player's score while a game runs, once per change.
+function usePlayerScoreSync({
+  matchId,
+  gameId,
+  player,
+  score,
+}: {
+  matchId?: string;
+  gameId?: string;
+  player: 'host' | 'guest';
+  score: { shotCounter: number; killCounter: number; points: number };
+}) {
+  const { shotCounter, killCounter, points } = score;
+
+  // Primitive dependencies: Firebase echoes (new match objects) do not rerun it
+  useEffect(() => {
+    if (!matchId || !gameId) return;
+
+    setPlayerDataInFirebase({
+      matchId,
+      gameId,
+      player,
+      data: { shotCounter, killCounter, points },
+    }).catch(logFirebaseError);
+  }, [matchId, gameId, player, shotCounter, killCounter, points]);
 }
 
 function isGameClosed(game?: GameType) {
