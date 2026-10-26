@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router';
 import './navbar.scss';
-import { Avatar, DropdownPopover } from '@components';
+import { Avatar, DropdownPopover } from 'src/components';
 import { useAuthContext } from 'src/features/authentication';
 import logoUrl from '../../../brand/logo/logo-horizontal-dark.svg';
 

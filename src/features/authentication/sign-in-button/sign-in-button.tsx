@@ -1,6 +1,6 @@
 import './sign-in-button.scss';
 import { useEffect, useState } from 'react';
-import { Button, Text } from '@components';
+import { Button, Text } from 'src/components';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { useAuthContext } from 'src/features/authentication';
 import { NavLink } from 'react-router';

@@ -4,7 +4,7 @@ import {
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
-import { Button, ButtonGroup, GameClock, Gutter, Text } from '@components';
+import { Button, ButtonGroup, GameClock, Gutter, Text } from 'src/components';
 import {
   useBatSpawner,
   useCountdown,

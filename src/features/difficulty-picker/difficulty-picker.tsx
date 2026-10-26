@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { SegmentedControl } from '@components';
+import { SegmentedControl } from 'src/components';
 import {
   BAT_TYPE_NAMES,
   BAT_TYPES,

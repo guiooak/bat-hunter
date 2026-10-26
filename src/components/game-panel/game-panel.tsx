@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import clsx from 'clsx';
-import { Button } from '../button';
-import { Card } from '../card';
+import { Button } from 'src/components/button';
+import { Card } from 'src/components/card';
 import './game-panel.scss';
 
 // A Card on desktop. On phones it folds into a bar with the summary, and the

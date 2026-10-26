@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ScoreSummary } from '@components';
+import { Button, ButtonGroup, ScoreSummary } from 'src/components';
 
 type Props = {
   killCounter: number;

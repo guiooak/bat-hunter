@@ -20,6 +20,23 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
+      // One way to import across folders: src/... (relative only within a
+      // folder, and for assets outside src)
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@components',
+              message: "Import from 'src/components' instead.",
+            },
+            {
+              regex: '^\\.\\./(?!.*\\.(scss|svg)$)(?!(\\.\\./)*brand/)',
+              message: "Import from 'src/...' instead of a parent folder.",
+            },
+          ],
+        },
+      ],
       // Includes the React Compiler rules (no setState in effects, no refs
       // during render...)
       ...reactHooks.configs.recommended.rules,

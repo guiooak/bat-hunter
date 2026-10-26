@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Text } from '../text';
+import { Text } from 'src/components/text';
 import './game-clock.scss';
 
 // Shows the countdown while a challenge runs, otherwise the game state label.

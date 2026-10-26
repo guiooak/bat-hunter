@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ME, renderWithContext } from 'src/test/render';
 import { Navbar } from '.';
-import { DropdownPopover } from '../dropdown-popover';
+import { DropdownPopover } from 'src/components/dropdown-popover';
 
 describe('Navbar', () => {
   it('offers sign in to guests', () => {

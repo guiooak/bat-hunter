@@ -1,8 +1,8 @@
 import './multi-player-main-dashboard.scss';
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from '@components';
+import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from 'src/components';
 import { useAuthContext } from 'src/features/authentication';
-import { ProfileSection } from '@components/profile-section';
+import { ProfileSection } from 'src/components/profile-section';
 import { useGameCounters } from 'src/hooks/game-hooks';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 

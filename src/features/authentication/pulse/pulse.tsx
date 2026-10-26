@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAuthContext } from '../auth-context';
+import { useAuthContext } from 'src/features/authentication/auth-context';
 
 const DELAY_IN_MS = 20 * 1000;
 

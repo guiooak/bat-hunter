@@ -1,4 +1,4 @@
-import { Button, Gutter, Input, Title } from '@components';
+import { Button, Gutter, Input, Title } from 'src/components';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Gap } from 'src/components/gap';

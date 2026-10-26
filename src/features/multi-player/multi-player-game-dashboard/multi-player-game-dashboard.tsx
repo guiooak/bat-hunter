@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import './multi-player-game-dashboard.scss';
 import { MultiPlayerGameDashboardController } from './_multi-player-game-dashboard-controller';
-import { Card, Gutter } from '@components';
+import { Card, Gutter } from 'src/components';
 import { MatchType } from 'src/models/match-model';
 import {
   createGameInFirebase,

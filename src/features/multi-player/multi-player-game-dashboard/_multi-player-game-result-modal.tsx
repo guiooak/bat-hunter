@@ -4,7 +4,7 @@ import { useAuthContext } from 'src/features/authentication';
 import { MatchType } from 'src/models/match-model';
 import { GameType } from 'src/models/game-model';
 import { calcFinalScore } from 'src/services/game-service';
-import { useMultiPlayerContext } from '../multi-player-context';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerGameResultModal({
   open,

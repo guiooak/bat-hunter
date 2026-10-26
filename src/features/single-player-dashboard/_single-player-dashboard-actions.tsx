@@ -1,5 +1,5 @@
-import { Button } from '@components/button';
-import { ButtonGroup } from '@components/button-group';
+import { Button } from 'src/components/button';
+import { ButtonGroup } from 'src/components/button-group';
 import { NavLink } from 'react-router';
 
 export function SinglePlayerDashboardActions({

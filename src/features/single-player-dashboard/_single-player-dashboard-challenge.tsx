@@ -3,7 +3,7 @@ import {
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
-import { Button, ButtonGroup, GameClock, Gutter, Title } from '@components';
+import { Button, ButtonGroup, GameClock, Gutter, Title } from 'src/components';
 import { useBatSpawner, useCountdown, useGameMode } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 import { DifficultyPicker } from 'src/features/difficulty-picker';

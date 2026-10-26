@@ -14,7 +14,7 @@ import {
   setLocalStorageValue,
 } from 'src/services/local-storage-service';
 import { SinglePlayerDashboardChallenge } from './_single-player-dashboard-challenge';
-import { Divider, GamePanel, GamePanelStat, Gutter } from '@components';
+import { Divider, GamePanel, GamePanelStat, Gutter } from 'src/components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
 import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';

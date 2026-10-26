@@ -1,10 +1,10 @@
 import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
-import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from '@components';
-import { ProfileSection } from '@components/profile-section';
+import { Card, Divider, Gutter, ScoreChip, ScoreSummary } from 'src/components';
+import { ProfileSection } from 'src/components/profile-section';
 import { GuestStatus } from 'src/components/guest-status';
 import { MatchType } from 'src/models/match-model';
 import { useGameCounters } from 'src/hooks/game-hooks';
-import { useMultiPlayerContext } from '../multi-player-context';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerOpponentDashboardWithMatch({
   match,

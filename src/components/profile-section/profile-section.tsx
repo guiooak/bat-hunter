@@ -1,4 +1,4 @@
-import { Avatar } from '@components/avatar';
+import { Avatar } from 'src/components/avatar';
 import { Gutter } from 'src/components';
 
 export function ProfileSection({

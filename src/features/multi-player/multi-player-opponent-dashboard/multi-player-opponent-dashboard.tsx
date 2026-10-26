@@ -1,7 +1,7 @@
 import './multi-player-opponent-dashboard.scss';
 import { useMemo } from 'react';
 import clsx from 'clsx';
-import { Card } from '@components';
+import { Card } from 'src/components';
 import { MultiPlayerOpponentDashboardWithMatch } from './_multi-player-opponent-dashboard-with-match';
 import { MultiPlayerOpponentDashboardInvitation } from './_multi-player-opponent-dashboard-invitation';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';

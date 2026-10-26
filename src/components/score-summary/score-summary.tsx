@@ -1,7 +1,7 @@
-import { Gap } from '../gap';
-import { Gutter } from '../gutter';
-import { Text } from '../text';
-import { Title } from '../title';
+import { Gap } from 'src/components/gap';
+import { Gutter } from 'src/components/gutter';
+import { Text } from 'src/components/text';
+import { Title } from 'src/components/title';
 
 // A player's kills, final score and accuracy: the single-player panel and
 // both multiplayer score cards.
