@@ -10,28 +10,35 @@ import { UserSessionType } from 'src/services/auth-service';
 import { MultiPlayerContext } from './_multi-player-context-definition';
 
 export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
-  const [opponentUser, setOpponentUser] = useState<UserSessionType | null>(
-    null
-  );
-  const [match, setMatch] = useState<MatchType | undefined>(undefined);
-  // Matches are private to their two players
-  const [isMatchPrivate, setIsMatchPrivate] = useState(false);
   const { currentUser } = useAuthContext();
   const { matchId } = useParams<{ matchId?: string }>();
   const currentUserId = currentUser?.id;
 
+  // Each piece of state remembers which match (or opponent) it belongs to, so
+  // switching match or user shows nothing stale without resetting it in an
+  // effect
+  const matchKey =
+    matchId && currentUserId ? `${matchId}/${currentUserId}` : undefined;
+  const [matchState, setMatchState] = useState<{
+    key?: string;
+    match?: MatchType;
+    isPrivate?: boolean;
+  }>({});
+
   useEffect(() => {
-    setIsMatchPrivate(false);
+    if (!matchKey || !matchId) return;
 
-    if (!matchId || !currentUserId) {
-      setMatch(undefined);
-      return;
-    }
-
-    return getMatchDataReactivelyFromFirebase(matchId, setMatch, () =>
-      setIsMatchPrivate(true)
+    return getMatchDataReactivelyFromFirebase(
+      matchId,
+      (match) => setMatchState({ key: matchKey, match }),
+      // Matches are private to their two players
+      () => setMatchState({ key: matchKey, isPrivate: true })
     );
-  }, [matchId, currentUserId]);
+  }, [matchKey, matchId]);
+
+  const current = matchState.key === matchKey ? matchState : {};
+  const match = current.match;
+  const isMatchPrivate = Boolean(current.isPrivate);
 
   const opponentUserId =
     match && currentUserId
@@ -39,18 +46,23 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
         ? match.guestId
         : match.hostId
       : undefined;
+  const [opponentState, setOpponentState] = useState<{
+    id?: string;
+    user: UserSessionType | null;
+  }>({ user: null });
 
   useEffect(() => {
-    if (!opponentUserId) {
-      setOpponentUser(null);
-      return;
-    }
+    if (!opponentUserId) return;
 
-    return getPublicProfileReactivelyFromFirebase(
-      opponentUserId,
-      setOpponentUser
+    return getPublicProfileReactivelyFromFirebase(opponentUserId, (user) =>
+      setOpponentState({ id: opponentUserId, user })
     );
   }, [opponentUserId]);
+
+  const opponentUser =
+    opponentUserId && opponentState.id === opponentUserId
+      ? opponentState.user
+      : null;
 
   return (
     <MultiPlayerContext.Provider

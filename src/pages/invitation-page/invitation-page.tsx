@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Button, ButtonGroup, Gutter, Text } from 'src/components';
 import { useAuthContext } from 'src/features/authentication';
-import { SignInModal } from 'src/features/sign-in-modal';
+import { SignInModal, useSignInModal } from 'src/features/sign-in-modal';
 import {
   getInvitationFromFirebase,
   InvitationType,
@@ -20,15 +20,13 @@ export function InvitationPage() {
   const { currentUser, status } = useAuthContext();
   const [match, setMatch] = useState<InvitationType | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [signInModalOpen, setSignInModalOpen] = useState(false);
+  const signInModal = useSignInModal();
   const [gameHost, setGameHost] = useState<PublicProfileType | null>(null);
   const [isJoining, setIsJoining] = useState(false);
 
   // Invitations are only readable by signed in users. The match itself is
   // private to its players, so the guest reads only the invitation.
   useEffect(() => {
-    setSignInModalOpen(status === 'unauthenticated');
-
     if (matchId && status === 'authenticated') {
       getInvitationFromFirebase(matchId)
         .then((invitation) => {
@@ -73,7 +71,7 @@ export function InvitationPage() {
     createdAt,
   }: NonNullable<typeof joinable>) {
     if (!currentUser?.id) {
-      setSignInModalOpen(true);
+      signInModal.request();
       return;
     }
 
@@ -108,10 +106,7 @@ export function InvitationPage() {
 
   return (
     <>
-      <SignInModal
-        open={signInModalOpen}
-        onClose={() => setSignInModalOpen(false)}
-      />
+      <SignInModal open={signInModal.open} onClose={signInModal.close} />
       <Gutter size="xxl">
         <Gutter direction="vertical" size="xxl" className="text-center">
           <Text>

@@ -348,11 +348,12 @@ describe('MultiPlayerGameDashboard as guest', () => {
     expect(screen.queryByRole('button', { name: 'Play again' })).toBeNull();
     expect(gameModel.setGameWinner).not.toHaveBeenCalled();
 
-    // A closed game is no longer the current one: the guest keeps the result
+    // A closed game is no longer the current one: the guest gets ready for
+    // the next game the host creates
     update(
       buildMatch({ g1: game({ state: 'GAME_CLOSED', winnerId: ME.id }) }, 'bia')
     );
-    expect(screen.getByText("Time's Up!")).toBeInTheDocument();
+    expect(screen.getByText('Get Ready!')).toBeInTheDocument();
   });
 
   it('shows nothing to do without a match', () => {

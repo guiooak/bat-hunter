@@ -53,9 +53,12 @@ export function MultiPlayerGameDashboardController({
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
-  const [currentGameState, setCurrentGameState] = useState<GameStateType>(
+  const [localGameState, setCurrentGameState] = useState<GameStateType>(
     GAME_STATES.GAME_READY
   );
+  // The host drives the game; the guest follows the state from Firebase
+  const currentGameState =
+    !isCurrentUserTheHost && remoteGameState ? remoteGameState : localGameState;
   const { countdownTime, startCountdown, stopCountdown } = useCountdown(() =>
     setCurrentGameState(GAME_STATES.GAME_FINISHED)
   );
@@ -70,12 +73,6 @@ export function MultiPlayerGameDashboardController({
     createControlledBat,
     currentGameState === GAME_STATES.GAME_IN_PROGRESS
   );
-
-  useEffect(() => {
-    if (!isCurrentUserTheHost && remoteGameState) {
-      setCurrentGameState(remoteGameState);
-    }
-  }, [isCurrentUserTheHost, remoteGameState]);
 
   // Only on state changes: the parent recreates onStateChange on every render,
   // and it writes to Firebase, whose echo renders again

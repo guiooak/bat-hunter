@@ -18,6 +18,7 @@ export function MultiPlayerChat() {
 
   const [chatOpen, setChatOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Messages seen up to the last time the chat was closed
   const [readMessagesCounter, setReadMessagesCounter] = useState(0);
   const [currentMessage, setCurrentMessage] = useState<string | undefined>();
   const [sendError, setSendError] = useState<string | null>(null);
@@ -26,15 +27,19 @@ export function MultiPlayerChat() {
     () => buildArray(match?.messages),
     [match?.messages]
   );
-  const unreadMessagesCounter = messagesArray.length - readMessagesCounter;
+  const unreadMessagesCounter = chatOpen
+    ? 0
+    : messagesArray.length - readMessagesCounter;
 
   useEffect(() => {
     scrollTopBottom(chatScrollContainerRef.current);
-
-    if (chatOpen) {
-      setReadMessagesCounter(messagesArray.length);
-    }
   }, [chatOpen, messagesArray.length]);
+
+  function toggleChat() {
+    // Closing marks everything shown so far as read
+    if (chatOpen) setReadMessagesCounter(messagesArray.length);
+    setChatOpen(!chatOpen);
+  }
 
   const canChat = Boolean(match?.id && currentUser?.id);
   // Hidden, not unmounted, so the unread count survives the game
@@ -70,7 +75,7 @@ export function MultiPlayerChat() {
         'multi-player-chat--hidden': isGameInProgress,
       })}
     >
-      <header onClick={() => setChatOpen(!chatOpen)}>
+      <header onClick={toggleChat}>
         <Gap justify="space-between" align="center">
           <div>
             Chat {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
