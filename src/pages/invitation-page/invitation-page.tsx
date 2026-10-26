@@ -62,6 +62,9 @@ export function InvitationPage() {
   }, [isPlayer, matchId, navigate]);
 
   async function onJoinBattle() {
+    // Unreachable: Join is disabled without a host. Removed in the refactor
+    // that follows the test suite.
+    /* v8 ignore next */
     if (!matchId || !match?.hostId) return;
 
     if (!currentUser?.id) {
