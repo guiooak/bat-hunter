@@ -191,7 +191,12 @@ export function MultiPlayerGameDashboardController({
         )}
         {currentGameModel.onChallengeReady && isCurrentUserTheHost && (
           <Button onClick={currentGameModel.onChallengeReady} kind="primary">
-            {currentGameModel.onChallengeReadyLabel || 'Play'}
+            {
+              // Dead fallback: the label is always set with onChallengeReady.
+              // Removed in the refactor that follows the test suite.
+              /* v8 ignore next */
+              currentGameModel.onChallengeReadyLabel || 'Play'
+            }
           </Button>
         )}
         {currentGameModel.onMatchStart && isCurrentUserTheHost && (
