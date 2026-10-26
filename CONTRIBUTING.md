@@ -10,6 +10,7 @@ How the Bat Hunter code is organized and the rules every change follows. The REA
 | `src/features/` | Game features: auth, single-player, multiplayer, difficulty picker, sign-in modal. |
 | `src/pages/` | One folder per route, wired in `App.tsx`. |
 | `src/hooks/` | Reusable hooks: game modes, counters, spawner, countdown, layout. |
+| `src/i18n/` | Every text the player reads, in en-US (`en.ts`, the source) and pt-BR (`pt.ts`), plus the language provider and `useI18n`. |
 | `src/models/` | Firebase data access, one file per kind of record (users, matches, games, messages). |
 | `src/services/` | Everything else that is not UI: scoring and bat types (pure), the flight engine, shots and audio (DOM), Firebase and auth wrappers, the account (LGPD) and legal constants. |
 | `src/test/` | Test setup and helpers (`renderWithContext`, `firebaseMock`). |
@@ -25,6 +26,7 @@ How the Bat Hunter code is organized and the rules every change follows. The REA
 - **Files starting with `_`** are internal to their folder; the folder's `index.ts` exports its public API.
 - **No `setState` in effects and no refs read during render**: derive state instead (the React Compiler lint rules are on). For values that long-lived callbacks need, use `useLatestRef`.
 - **No `alert()`**: show messages in the page.
+- **Every text the player reads goes in `src/i18n/en.ts` and `pt.ts`** and is shown with `const { t } = useI18n()`; dates go through `formatDate`/`formatDateTime`/`formatTime`. Texts with a variable are functions (`greeting: (name) => ...`). The typecheck fails if pt-BR misses a key, a test fails if a Portuguese text is left equal to the English one (list real exceptions in `SAME_IN_BOTH`), and lint blocks text written straight in JSX. The legal pages are the exception: one reviewed JSX block per language. Tests render in English by default; pass `{ language: 'pt-BR' }` to `renderWithContext` to check the Portuguese.
 - **Personal data**: store only what the game shows (first name, photo), keep the database rules private to the players involved, and update `docs/lgpd/` and the privacy policy when something new is processed. The retention periods live in `src/services/retention-days.json`, read by both the policy and the cleanup job.
 
 ## Tests

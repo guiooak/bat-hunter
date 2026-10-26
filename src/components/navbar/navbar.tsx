@@ -21,6 +21,7 @@ export function Navbar() {
     <div className="bh-navbar">
       <div className="bh-navbar__left">
         <NavLink to="/">
+          {/* eslint-disable-next-line no-restricted-syntax -- the brand name is the same in every language */}
           <img className="bh-navbar-logo" src={logoUrl} alt="Bat Hunter" />
         </NavLink>
       </div>

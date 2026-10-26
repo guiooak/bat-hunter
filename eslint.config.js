@@ -47,6 +47,26 @@ export default tseslint.config(
     },
   },
   {
+    // Every text the player reads goes through src/i18n, in both languages.
+    // The legal pages keep one reviewed JSX block per language instead.
+    files: ['src/**/*.tsx'],
+    ignores: ['src/**/*.test.tsx', 'src/test/**', 'src/pages/legal-pages/**'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'JSXText[value=/[A-Za-z]{2,}/]',
+          message: 'Put the text in src/i18n (en.ts and pt.ts) and use t.',
+        },
+        {
+          selector:
+            'JSXAttribute[name.name=/^(label|title|placeholder|alt|aria-label|header|note)$/] > Literal[value=/[A-Za-z]{2,}/]',
+          message: 'Put the text in src/i18n (en.ts and pt.ts) and use t.',
+        },
+      ],
+    },
+  },
+  {
     // Node scripts: data migrations and maintenance jobs
     files: ['scripts/**/*.{js,mjs}'],
     languageOptions: {
