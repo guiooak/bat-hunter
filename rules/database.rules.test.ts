@@ -170,6 +170,13 @@ describe('matches, games and chat', () => {
     await assertFails(
       db(OTHER).ref('matches/m3').set({ id: 'm3', hostId: HOST, createdAt: 1 })
     );
+    // The guest joins later: a host can't put someone in a match (and then in
+    // their match list) without them
+    await assertFails(
+      db(HOST)
+        .ref('matches/m4')
+        .set({ id: 'm4', hostId: HOST, guestId: GUEST, createdAt: 1 })
+    );
     await assertFails(db(HOST).ref('matches/m2').update({ guestId: HOST }));
     await assertSucceeds(
       db(GUEST).ref('matches/m2').update({ guestId: GUEST })

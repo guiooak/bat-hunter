@@ -61,7 +61,7 @@
     "matches": {
       "$matchId": {
         ".read": "auth != null && (data.child('hostId').val() === auth.uid || data.child('guestId').val() === auth.uid)",
-        ".write": "auth != null && ((!data.exists() && newData.child('hostId').val() === auth.uid) || (data.exists() && !data.child('guestId').exists() && data.child('hostId').val() !== auth.uid && newData.child('guestId').val() === auth.uid))",
+        ".write": "auth != null && ((!data.exists() && newData.child('hostId').val() === auth.uid && !newData.child('guestId').exists()) || (data.exists() && !data.child('guestId').exists() && data.child('hostId').val() !== auth.uid && newData.child('guestId').val() === auth.uid))",
 
         "id": { ".validate": "newData.val() === $matchId" },
         "hostId": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
