@@ -496,7 +496,7 @@ describe('InvitationPage', () => {
       <InvitationPage />
     );
 
-    expect(screen.getByRole('button', { name: 'Join battle' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Join battle' })).toBeNull();
     await userEvent.click(screen.getByRole('button', { name: 'Nope' }));
     expect(screen.getAllByTestId('path')[0]).toHaveTextContent('/');
   });

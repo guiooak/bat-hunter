@@ -61,12 +61,17 @@ export function InvitationPage() {
     if (isPlayer) navigate(`/multi-player/${matchId}`, { replace: true });
   }, [isPlayer, matchId, navigate]);
 
-  async function onJoinBattle() {
-    // Unreachable: Join is disabled without a host. Removed in the refactor
-    // that follows the test suite.
-    /* v8 ignore next */
-    if (!matchId || !match?.hostId) return;
+  // Joinable once the invitation (with its host) is loaded
+  const joinable =
+    matchId && match?.hostId
+      ? { matchId, hostId: match.hostId, createdAt: match.createdAt }
+      : null;
 
+  async function onJoinBattle({
+    matchId,
+    hostId,
+    createdAt,
+  }: NonNullable<typeof joinable>) {
     if (!currentUser?.id) {
       setSignInModalOpen(true);
       return;
@@ -74,11 +79,11 @@ export function InvitationPage() {
 
     const matchData = {
       matchId,
-      hostId: match.hostId,
+      hostId,
       hostName: gameHost?.firstName || '',
       guestId: currentUser.id,
       guestName: currentUser.firstName || '',
-      createdAt: match.createdAt || Date.now(),
+      createdAt: createdAt || Date.now(),
     };
 
     setIsJoining(true);
@@ -88,7 +93,7 @@ export function InvitationPage() {
       // to write in the host matches list once it's part of the match.
       await joinMatchInFirebase(matchId, currentUser.id);
       await Promise.all([
-        setUserMatchInFirebase(match.hostId, matchData),
+        setUserMatchInFirebase(hostId, matchData),
         setUserMatchInFirebase(currentUser.id, matchData),
       ]);
 
@@ -122,11 +127,11 @@ export function InvitationPage() {
             <Button onClick={() => navigate('/')}>
               {isClosed ? 'Back home' : 'Nope'}
             </Button>
-            {!isClosed && (
+            {joinable && !isPrivate && (
               <Button
                 kind="primary"
-                onClick={onJoinBattle}
-                disabled={!match?.hostId || isJoining}
+                onClick={() => onJoinBattle(joinable)}
+                disabled={isJoining}
               >
                 Join battle
               </Button>
