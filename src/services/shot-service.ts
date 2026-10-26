@@ -6,7 +6,6 @@ import { playShotSound } from './audio-service';
 const aimImagePath = '/images/cursor/aim.png';
 const aimImageShotPath = '/images/cursor/aim-shot.png';
 const aimTargetImagePath = '/images/cursor/aim-target.png';
-const bodyEl = document.querySelector('body')!;
 
 export function getAimCursorOverTarget() {
   return buildAimCursor(aimTargetImagePath);
@@ -46,14 +45,16 @@ function showTouchShot(x: number, y: number) {
 export function isShotEnabled(e: ShotEventType) {
   const computedCursor =
     window.getComputedStyle(e.target as Element).cursor ||
-    window.getComputedStyle(bodyEl).cursor;
+    window.getComputedStyle(document.body).cursor;
 
   return computedCursor.includes('aim');
 }
 
-// shot handler. Pointer events cover mouse, touch and pen.
-document.onpointerdown = (e) => {
-  if (!bodyEl.style.cursor) return;
+// Plays the shot and flashes the crosshair on every pointer down while a game
+// cursor is set. Pointer events cover mouse, touch and pen.
+function onShot(e: PointerEvent) {
+  const body = document.body;
+  if (!body.style.cursor) return;
 
   if (isShotEnabled(e)) {
     playShotSound();
@@ -63,9 +64,16 @@ document.onpointerdown = (e) => {
     }
   }
 
-  bodyEl.style.cursor = getAimCursorShot();
+  body.style.cursor = getAimCursorShot();
 
   setTimeout(() => {
-    bodyEl.style.cursor = getAimCursorRegular();
+    body.style.cursor = getAimCursorRegular();
   }, 75);
-};
+}
+
+// Called once when the app starts (main.tsx). Returns the cleanup.
+export function listenToShots() {
+  document.addEventListener('pointerdown', onShot);
+
+  return () => document.removeEventListener('pointerdown', onShot);
+}

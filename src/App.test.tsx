@@ -39,6 +39,11 @@ describe('App', () => {
 describe('main', () => {
   it('renders the app into #root', async () => {
     const renderRoot = vi.fn();
+    const listenToShots = vi.fn();
+    vi.doMock('./services/shot-service', async (importOriginal) => ({
+      ...(await importOriginal<object>()),
+      listenToShots,
+    }));
     vi.doMock('react-dom/client', () => ({
       createRoot: vi.fn(() => ({ render: renderRoot })),
     }));
@@ -48,6 +53,7 @@ describe('main', () => {
 
     const { createRoot } = await import('react-dom/client');
     expect(createRoot).toHaveBeenCalledWith(document.getElementById('root'));
+    expect(listenToShots).toHaveBeenCalled();
     expect(renderRoot).toHaveBeenCalled();
   });
 });

@@ -4,8 +4,6 @@ import { MatchType } from 'src/models/match-model';
 import { buildArray } from './array-service';
 import { BAT_TYPES, BatType } from './bat-types';
 
-const bodyEl = document.querySelector('body')!;
-
 let isGameModeOn = false;
 
 export const getIsGameModeOn = () => isGameModeOn;
@@ -14,7 +12,7 @@ export function enableBatGame() {
   isGameModeOn = true;
   playBackgroundMusic();
 
-  bodyEl.style.cursor = getAimCursorRegular();
+  document.body.style.cursor = getAimCursorRegular();
 }
 
 // The crosshair without a game: no music, no score (e.g. the 404 page)
@@ -22,12 +20,12 @@ export function enableAimOnly() {
   isGameModeOn = false;
   pauseAllBackgroundMusic();
 
-  bodyEl.style.cursor = getAimCursorRegular();
+  document.body.style.cursor = getAimCursorRegular();
 }
 
 // Right away, so the next page (maybe a game) can set its own cursor
 export function disableAimOnly() {
-  bodyEl.style.cursor = '';
+  document.body.style.cursor = '';
 }
 
 export function disableBatGame() {
@@ -35,12 +33,12 @@ export function disableBatGame() {
   pauseAllBackgroundMusic();
 
   setTimeout(() => {
-    bodyEl.style.cursor = '';
+    document.body.style.cursor = '';
   }, 200);
 }
 
 export function setBodyOnClick(cb: ((e: ShotEventType) => void) | null) {
-  bodyEl.onpointerdown = cb;
+  document.body.onpointerdown = cb;
 }
 
 export function calcAccuracy(shotCounter: number, killCounter: number) {

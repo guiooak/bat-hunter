@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
+import { listenToShots } from './services/shot-service';
 // Fonts are served by the app itself, not by Google Fonts: no visitor IP goes
 // to a third party just to draw text.
 import '@fontsource/barlow/400.css';
@@ -9,6 +10,8 @@ import '@fontsource/barlow/600.css';
 import '@fontsource/chakra-petch/500.css';
 import '@fontsource/chakra-petch/600.css';
 import '@fontsource/chakra-petch/700.css';
+
+listenToShots();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,10 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+let stopListening = () => {};
+
 async function loadShots() {
   vi.resetModules();
   const audio = await import('./audio-service');
   const playShotSound = vi.spyOn(audio, 'playShotSound');
   const shots = await import('./shot-service');
+  stopListening = shots.listenToShots();
   return { ...shots, playShotSound };
 }
 
@@ -20,7 +23,10 @@ function pointerDown(target: EventTarget, pointerType = 'mouse') {
 
 describe('shot service', () => {
   beforeEach(() => vi.useFakeTimers());
-  afterEach(() => vi.useRealTimers());
+  afterEach(() => {
+    stopListening();
+    vi.useRealTimers();
+  });
 
   it('builds the crosshair cursors', async () => {
     const { getAimCursorRegular, getAimCursorOverTarget } = await loadShots();
@@ -54,6 +60,16 @@ describe('shot service', () => {
     );
 
     expect(isShotEnabled({ target })).toBe(true);
+  });
+
+  it('stops listening when asked', async () => {
+    const { playShotSound, getAimCursorRegular } = await loadShots();
+    document.body.style.cursor = getAimCursorRegular();
+
+    stopListening();
+    pointerDown(document.body);
+
+    expect(playShotSound).not.toHaveBeenCalled();
   });
 
   it('ignores pointers while no game cursor is set', async () => {
