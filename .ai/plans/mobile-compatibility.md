@@ -1,5 +1,9 @@
 # Bat Hunter: compatibilidade mobile
 
+## Status (17/10/2026)
+
+**Concluído:** toque com pointer events (`eab3729`) e layout para telas pequenas (`bf14d13`). Ajustes depois: botões flutuantes acima do painel com altura medida (`072637c`) e fim da rolagem vertical com `100dvh` (`4f951bd`). Testado pelo usuário no celular.
+
 ## Contexto
 O jogo só funciona com mouse. O tiro, o acerto no morcego e o "flash" da mira usam `mousedown`. Os painéis têm posição fixa e largura de desktop, então cobrem a tela do celular. O objetivo é **jogar no celular**. Este plano vem antes do [plano de melhoria no jogo](game-improvements.md) e é publicado sozinho.
 

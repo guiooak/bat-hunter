@@ -1,5 +1,9 @@
 # Bat Hunter: dificuldades e tipos de morcego
 
+## Status (17/10/2026)
+
+**Concluído** (`9f987fd`): Fácil/Difícil, morcego pequeno, dourado e coruja, pontos e regras do banco. Depois do plano: o seletor virou um controle segmentado (`0e7d7a9`), some durante a partida junto com o chat (`9fcbebd`), e os morcegos passaram a surgir sozinhos durante a partida, sem o botão "Add bats" (`3a86840`). A semente compartilhada de morcegos (seção "Fora do escopo") continua não implementada.
+
 ## Contexto
 Este plano cria a **dificuldade Fácil/Difícil**. Os novos tipos de morcego aparecem só no Difícil:
 - **pequeno e rápido**, que vale mais;
