@@ -45,8 +45,9 @@ export function useGameCounters({
   }, [match, isCurrentUserTheHost, playerKind]);
 }
 
-// Keeps the latest value reachable from long-living callbacks (bats, DOM handlers).
-function useLatestRef<T>(value: T) {
+// Keeps the latest value reachable from long-living callbacks (bats, DOM
+// handlers) and from effects that must not rerun when a callback is recreated.
+export function useLatestRef<T>(value: T) {
   const ref = useRef(value);
 
   useEffect(() => {

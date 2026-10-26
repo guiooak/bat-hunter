@@ -1,3 +1,4 @@
+import React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, screen } from '@testing-library/react';
 import { ME, renderWithContext } from 'src/test/render';
@@ -298,6 +299,27 @@ describe('MultiPlayerGameDashboard as host', () => {
     gameModel.setGameInFirebase.mockReset();
     gameModel.setPlayerDataInFirebase.mockReset();
     gameModel.setGameWinner.mockReset();
+  });
+});
+
+describe('Firebase round trips', () => {
+  // Every write comes back as a new match object, like the real listener
+  function LiveHarness({ initial }: { initial: MatchType }) {
+    const [match, setMatch] = React.useState(initial);
+    gameModel.setGameState.mockImplementation(async () => {
+      // Bounded, so a regression fails instead of hanging the suite
+      if (gameModel.setGameState.mock.calls.length > 5) return;
+      setMatch((current) => ({ ...current, games: { ...current.games } }));
+    });
+    return <Harness match={match} />;
+  }
+
+  it('writes the game state once per state change, not on every render', async () => {
+    renderWithContext(<LiveHarness initial={buildMatch({ g1: game() })} />);
+    await act(async () => {});
+
+    expect(gameModel.setGameState.mock.calls.length).toBeLessThanOrEqual(1);
+    gameModel.setGameState.mockReset();
   });
 });
 

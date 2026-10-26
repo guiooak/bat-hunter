@@ -10,6 +10,7 @@ import {
   useCountdown,
   useGameCounterTriggers,
   useGameMode,
+  useLatestRef,
 } from 'src/hooks/game-hooks';
 import { GAME_STATES, GameStateType } from 'src/models/game-model';
 import { BatType, Difficulty } from 'src/services/bat-types';
@@ -76,9 +77,13 @@ export function MultiPlayerGameDashboardController({
     }
   }, [isCurrentUserTheHost, remoteGameState]);
 
+  // Only on state changes: the parent recreates onStateChange on every render,
+  // and it writes to Firebase, whose echo renders again
+  const onStateChangeRef = useLatestRef(onStateChange);
+
   useEffect(() => {
-    onStateChange(currentGameState);
-  }, [currentGameState, onStateChange]);
+    onStateChangeRef.current(currentGameState);
+  }, [currentGameState, onStateChangeRef]);
 
   const GAME_MODE: Record<GameStateType, GameModeConfigType> = {
     [GAME_STATES.GAME_READY]: {
