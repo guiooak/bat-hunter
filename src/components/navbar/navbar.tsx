@@ -2,6 +2,7 @@ import { NavLink } from 'react-router';
 import './navbar.scss';
 import { Avatar, DropdownPopover } from 'src/components';
 import { useAuthContext } from 'src/features/authentication';
+import { LanguagePicker } from 'src/features/language-picker';
 import logoUrl from '../../../brand/logo/logo-horizontal-dark.svg';
 
 export function Navbar() {
@@ -21,6 +22,7 @@ export function Navbar() {
         </NavLink>
       </div>
       <div className="bh-navbar__right">
+        <LanguagePicker compact />
         {isValidCurrentUser ? (
           <DropdownPopover
             trigger={

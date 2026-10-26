@@ -27,6 +27,28 @@ describe('Navbar', () => {
   });
 });
 
+describe('Navbar language picker', () => {
+  it('switches the language for guests and players alike', async () => {
+    renderWithContext(<Navbar />, { currentUser: null });
+
+    const group = screen.getByRole('radiogroup', { name: 'Language' });
+    const english = screen.getByRole('radio', { name: 'English' });
+    const portuguese = screen.getByRole('radio', { name: 'Português' });
+
+    expect(group).toBeInTheDocument();
+    expect(english).toHaveTextContent('EN');
+    expect(portuguese).toHaveTextContent('PT');
+    expect(english).toBeChecked();
+
+    await userEvent.click(portuguese);
+
+    expect(screen.getByRole('radio', { name: 'Português' })).toBeChecked();
+    expect(
+      screen.getByRole('radiogroup', { name: 'Idioma' })
+    ).toBeInTheDocument();
+  });
+});
+
 describe('DropdownPopover', () => {
   function setup() {
     renderWithContext(

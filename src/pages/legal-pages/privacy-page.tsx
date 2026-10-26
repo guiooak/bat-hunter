@@ -13,8 +13,8 @@ const months = (days: number) => Math.round(days / 30);
 export function PrivacyPage() {
   return (
     <LegalPage
-      title={{ pt: 'Política de Privacidade', en: 'Privacy Policy' }}
-      content={{ pt: <PrivacyPt />, en: <PrivacyEn /> }}
+      title={{ 'pt-BR': 'Política de Privacidade', 'en-US': 'Privacy Policy' }}
+      content={{ 'pt-BR': <PrivacyPt />, 'en-US': <PrivacyEn /> }}
     />
   );
 }

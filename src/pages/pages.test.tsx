@@ -160,7 +160,7 @@ describe('LogoutPage', () => {
 
 describe('legal pages', () => {
   it('privacy policy in Portuguese, then in English', async () => {
-    renderWithContext(<PrivacyPage />);
+    renderWithContext(<PrivacyPage />, { language: 'pt-BR' });
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Política de Privacidade'
@@ -184,10 +184,23 @@ describe('legal pages', () => {
       'href',
       '/terms'
     );
+    expect(screen.getByRole('link', { name: '← Home' })).toHaveAttribute(
+      'href',
+      '/'
+    );
+  });
+
+  it('opens in the language of the app', () => {
+    renderWithContext(<PrivacyPage />);
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Privacy Policy'
+    );
+    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
   });
 
   it('terms of use in both languages', async () => {
-    renderWithContext(<TermsPage />);
+    renderWithContext(<TermsPage />, { language: 'pt-BR' });
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Termos de Uso'

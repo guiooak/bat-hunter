@@ -21,8 +21,8 @@ describe('App', () => {
 
   it.each([
     ['/', 'Too many bats, time to drop some.'],
-    ['/privacy', 'Política de Privacidade'],
-    ['/terms', 'Termos de Uso'],
+    ['/privacy', 'Privacy Policy'],
+    ['/terms', 'Terms of Use'],
     ['/login', 'Ready to hunt?'],
     ['/what', 'This page flew off into the night.'],
   ])('routes %s', async (path, text) => {

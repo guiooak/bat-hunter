@@ -419,6 +419,28 @@ describe('SegmentedControl', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  it('can be small, with the label for screen readers only', () => {
+    render(
+      <SegmentedControl
+        label="Language"
+        hideLabel
+        size="sm"
+        options={[{ value: 'en', label: 'EN', ariaLabel: 'English' }]}
+        value="en"
+      />
+    );
+
+    expect(screen.getByText('Language')).toHaveClass(
+      'bh-segmented__label--hidden'
+    );
+    expect(screen.getByRole('radio', { name: 'English' })).toHaveTextContent(
+      'EN'
+    );
+    expect(
+      screen.getByRole('radiogroup', { name: 'Language' }).parentElement
+    ).toHaveClass('bh-segmented--sm');
+  });
+
   it('works without onChange', async () => {
     render(<SegmentedControl label="L" options={[...options]} value="easy" />);
 

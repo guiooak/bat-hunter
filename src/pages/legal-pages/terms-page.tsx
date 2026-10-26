@@ -11,8 +11,8 @@ const mail = <a href={`mailto:${PRIVACY_CONTACT}`}>{PRIVACY_CONTACT}</a>;
 export function TermsPage() {
   return (
     <LegalPage
-      title={{ pt: 'Termos de Uso', en: 'Terms of Use' }}
-      content={{ pt: <TermsPt />, en: <TermsEn /> }}
+      title={{ 'pt-BR': 'Termos de Uso', 'en-US': 'Terms of Use' }}
+      content={{ 'pt-BR': <TermsPt />, 'en-US': <TermsEn /> }}
     />
   );
 }

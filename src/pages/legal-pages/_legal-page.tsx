@@ -1,19 +1,14 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { NavLink } from 'react-router';
-import { SegmentedControl, Title } from 'src/components';
+import { Title } from 'src/components';
+import { LanguagePicker } from 'src/features/language-picker';
+import { Language, useI18n } from 'src/i18n';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { LEGAL_UPDATED_AT } from 'src/services/legal-service';
 import './legal-page.scss';
 
-type Language = 'pt' | 'en';
-
-const LANGUAGES: { value: Language; label: string }[] = [
-  { value: 'pt', label: 'Português' },
-  { value: 'en', label: 'English' },
-];
-
-// Legal texts in Portuguese (the players are in Brazil) and English (the
-// language of the game).
+// Legal texts are long and reviewed as a whole: one JSX block per language,
+// shown in the language of the app (switching here switches it everywhere).
 export function LegalPage({
   title,
   content,
@@ -21,15 +16,15 @@ export function LegalPage({
   title: Record<Language, string>;
   content: Record<Language, ReactNode>;
 }) {
-  const [language, setLanguage] = useState<Language>('pt');
+  const { language, t, formatDate } = useI18n();
 
   useEffect(() => {
     disableBatGame();
     killAllBats();
   }, []);
 
-  const updatedAt = new Date(`${LEGAL_UPDATED_AT}T12:00:00`).toLocaleDateString(
-    language === 'pt' ? 'pt-BR' : 'en-US',
+  const updatedAt = formatDate(
+    new Date(`${LEGAL_UPDATED_AT}T12:00:00`).getTime(),
     { day: 'numeric', month: 'long', year: 'numeric' }
   );
 
@@ -38,26 +33,16 @@ export function LegalPage({
       <article className="legal-page__container" lang={language}>
         <div className="legal-page__header">
           <Title size="h1">{title[language]}</Title>
-          <SegmentedControl
-            label={language === 'pt' ? 'Idioma' : 'Language'}
-            options={LANGUAGES}
-            value={language}
-            onChange={setLanguage}
-          />
+          <LanguagePicker />
         </div>
         <p className="legal-page__updated">
-          {language === 'pt' ? 'Última atualização' : 'Last updated'}:{' '}
-          {updatedAt}
+          {t.legal.updated}: {updatedAt}
         </p>
         {content[language]}
         <nav className="legal-page__links">
-          <NavLink to="/privacy">
-            {language === 'pt' ? 'Política de Privacidade' : 'Privacy Policy'}
-          </NavLink>
-          <NavLink to="/terms">
-            {language === 'pt' ? 'Termos de Uso' : 'Terms of Use'}
-          </NavLink>
-          <NavLink to="/">← Home</NavLink>
+          <NavLink to="/privacy">{t.legal.privacyPolicy}</NavLink>
+          <NavLink to="/terms">{t.legal.termsOfUse}</NavLink>
+          <NavLink to="/">{t.common.backHome}</NavLink>
         </nav>
       </article>
     </div>

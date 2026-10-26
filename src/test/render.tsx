@@ -5,8 +5,8 @@ import { vi } from 'vitest';
 import { AuthContext } from 'src/features/authentication/auth-context/_auth-context-definition';
 import { MultiPlayerContext } from 'src/features/multi-player/multi-player-context/_multi-player-context-definition';
 import type { MatchType } from 'src/models/match-model';
-import { buildI18nValue, I18nContext } from 'src/i18n/_i18n-context-definition';
 import type { Language } from 'src/i18n';
+import { TestI18n } from './test-i18n';
 import type {
   AuthStatusType,
   UserSessionType,
@@ -73,9 +73,7 @@ function makeWrapper(context: TestContext, auth: ReturnType<typeof buildAuth>) {
     return (
       <MemoryRouter initialEntries={[context.route ?? '/']}>
         <AuthContext.Provider value={auth}>
-          <I18nContext.Provider
-            value={buildI18nValue(context.language ?? 'en-US', vi.fn())}
-          >
+          <TestI18n language={context.language ?? 'en-US'}>
             <MultiPlayerContext.Provider
               value={{
                 match: context.match,
@@ -85,7 +83,7 @@ function makeWrapper(context: TestContext, auth: ReturnType<typeof buildAuth>) {
             >
               {children}
             </MultiPlayerContext.Provider>
-          </I18nContext.Provider>
+          </TestI18n>
         </AuthContext.Provider>
       </MemoryRouter>
     );
