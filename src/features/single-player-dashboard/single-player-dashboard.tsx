@@ -20,8 +20,10 @@ import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboa
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { iterate } from 'src/services/iteration-service';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
+import { useI18n } from 'src/i18n';
 
 export function SinglePlayerDashboard() {
+  const { t } = useI18n();
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const [points, dispatchPoints] = useReducer(pointsReducer, 0);
@@ -63,9 +65,9 @@ export function SinglePlayerDashboard() {
       <GamePanel
         summary={
           <>
-            <GamePanelStat label="Kills" value={killCounter} />
-            <GamePanelStat label="Score" value={finalScore} />
-            <GamePanelStat label="Accuracy" value={`${accuracy}%`} />
+            <GamePanelStat label={t.game.kills} value={killCounter} />
+            <GamePanelStat label={t.game.score} value={finalScore} />
+            <GamePanelStat label={t.game.accuracy} value={`${accuracy}%`} />
           </>
         }
       >

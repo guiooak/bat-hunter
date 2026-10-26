@@ -2,6 +2,7 @@ import { Gap } from 'src/components/gap';
 import { Gutter } from 'src/components/gutter';
 import { Text } from 'src/components/text';
 import { Title } from 'src/components/title';
+import { useI18n } from 'src/i18n';
 
 // A player's kills, final score and accuracy: the single-player panel and
 // both multiplayer score cards.
@@ -18,6 +19,8 @@ export function ScoreSummary({
   finalScore: number;
   accuracy: number;
 }) {
+  const { t } = useI18n();
+
   return (
     <section className="bat-game-score-section">
       <Title size={titleSize}>{title}</Title>
@@ -28,11 +31,11 @@ export function ScoreSummary({
       </div>
       <Gap justify="space-around">
         <div className="text-center">
-          <div>Final Score</div>
+          <div>{t.game.finalScore}</div>
           <div>{finalScore}</div>
         </div>
         <div className="text-center">
-          <div>Accuracy</div>
+          <div>{t.game.accuracy}</div>
           <div>{accuracy}%</div>
         </div>
       </Gap>

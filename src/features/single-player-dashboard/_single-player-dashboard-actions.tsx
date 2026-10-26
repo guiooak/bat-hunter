@@ -1,6 +1,7 @@
 import { Button } from 'src/components/button';
 import { ButtonGroup } from 'src/components/button-group';
 import { NavLink } from 'react-router';
+import { useI18n } from 'src/i18n';
 
 export function SinglePlayerDashboardActions({
   buttonsDisabled,
@@ -9,12 +10,14 @@ export function SinglePlayerDashboardActions({
   buttonsDisabled: boolean;
   onCleanBats: () => void;
 }) {
+  const { t } = useI18n();
+
   return (
     <section>
       <ButtonGroup flex>
         <NavLink to={'/'}>
           <Button kind="tertiary" disabled={buttonsDisabled}>
-            Close
+            {t.single.close}
           </Button>
         </NavLink>
         <Button
@@ -22,7 +25,7 @@ export function SinglePlayerDashboardActions({
           disabled={buttonsDisabled}
           onClick={onCleanBats}
         >
-          Clean Bats
+          {t.single.cleanBats}
         </Button>
       </ButtonGroup>
     </section>

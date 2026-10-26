@@ -2,8 +2,8 @@ export type Difficulty = 'easy' | 'hard';
 
 export type BatType = 'normal' | 'small' | 'golden' | 'owl';
 
+// The names shown to the player are in src/i18n (batTypes)
 type BatTypeConfig = {
-  label: string;
   points: number;
   // Relative to the regular bat
   scale: number;
@@ -18,10 +18,9 @@ type BatTypeConfig = {
 
 // Starting values, tune freely.
 export const BAT_TYPES: Record<BatType, BatTypeConfig> = {
-  normal: { label: 'Bat', points: 1, scale: 1, speed: 1, weight: 60 },
-  small: { label: 'Small', points: 3, scale: 0.6, speed: 1.8, weight: 25 },
+  normal: { points: 1, scale: 1, speed: 1, weight: 60 },
+  small: { points: 3, scale: 0.6, speed: 1.8, weight: 25 },
   golden: {
-    label: 'Golden',
     points: 10,
     scale: 1,
     speed: 1.4,
@@ -29,7 +28,6 @@ export const BAT_TYPES: Record<BatType, BatTypeConfig> = {
     lifetime: 6000,
   },
   owl: {
-    label: 'Owl',
     points: -5,
     scale: 1.1,
     speed: 0.8,

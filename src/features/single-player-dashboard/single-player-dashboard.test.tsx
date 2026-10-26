@@ -176,3 +176,34 @@ describe('single-player parts on their own', () => {
     expect(screen.getByText('60s')).toBeInTheDocument();
   });
 });
+
+describe('SinglePlayerDashboard in Portuguese', () => {
+  it('free play, the hard mode legend and a challenge', () => {
+    renderWithContext(<SinglePlayerDashboard />, { language: 'pt-BR' });
+
+    expect(screen.getByText('Modo de jogo')).toBeInTheDocument();
+    expect(screen.getByText('Jogo livre!')).toBeInTheDocument();
+    expect(summary()).toBe('0Abates0Pontos100%Precisão');
+    expect(screen.getByText('Pontuação final')).toBeInTheDocument();
+    for (const name of ['Zerar', 'Fechar', 'Limpar morcegos', 'Controles']) {
+      expect(screen.getByRole('button', { name })).toBeInTheDocument();
+    }
+
+    act(() => fireEvent.click(screen.getByRole('radio', { name: 'Difícil' })));
+    expect(
+      screen.getByRole('list', { name: 'Alvos do modo difícil' })
+    ).toBeInTheDocument();
+    for (const name of ['Morcego', 'Pequeno', 'Dourado', 'Coruja']) {
+      expect(screen.getByAltText(name)).toBeInTheDocument();
+    }
+
+    click('Desafio');
+    expect(screen.getByText('Prepare-se!')).toBeInTheDocument();
+    click('Começar');
+    click('Cancelar');
+    expect(screen.getByText('Acabou o tempo!')).toBeInTheDocument();
+    click('Jogo livre');
+    click('Soltar morcegos');
+    expect(bats.created.length).toBeGreaterThan(0);
+  });
+});

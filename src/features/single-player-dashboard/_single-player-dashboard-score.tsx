@@ -1,4 +1,5 @@
 import { Button, ButtonGroup, ScoreSummary } from 'src/components';
+import { useI18n } from 'src/i18n';
 
 type Props = {
   killCounter: number;
@@ -21,10 +22,12 @@ export function SinglePlayerDashboardScore({
   onCreateBat,
   onResetScore,
 }: Props) {
+  const { t } = useI18n();
+
   return (
     <div>
       <ScoreSummary
-        title="Your Score"
+        title={t.game.yourScore}
         killCounter={killCounter}
         finalScore={finalScore}
         accuracy={accuracy}
@@ -32,7 +35,7 @@ export function SinglePlayerDashboardScore({
       <br />
       <ButtonGroup flex>
         <Button kind="tertiary" disabled={resetDisabled} onClick={onResetScore}>
-          Reset
+          {t.single.reset}
         </Button>
         {/* Bats come on their own during a challenge */}
         {!sendBatHidden && (
@@ -41,7 +44,7 @@ export function SinglePlayerDashboardScore({
             disabled={sendBatDisabled}
             onClick={onCreateBat}
           >
-            Send Bats
+            {t.single.sendBats}
           </Button>
         )}
       </ButtonGroup>

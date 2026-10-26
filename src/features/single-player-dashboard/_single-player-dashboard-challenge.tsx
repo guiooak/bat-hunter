@@ -8,6 +8,7 @@ import { useBatSpawner, useCountdown, useGameMode } from 'src/hooks/game-hooks';
 import { SINGLE_PLAYER_CHALLENGE_STATES } from './_single-player-constants';
 import { DifficultyPicker } from 'src/features/difficulty-picker';
 import { Difficulty } from 'src/services/bat-types';
+import { useI18n } from 'src/i18n';
 
 const COUNTDOWN_TIME_TOTAL = 60;
 
@@ -26,6 +27,7 @@ export function SinglePlayerDashboardChallenge({
   setIsScoreEnabled: (v: boolean) => void;
   onResetScore: () => void;
 }) {
+  const { t } = useI18n();
   const [currentGameState, setCurrentGameState] = currentGameStateFull;
   const { countdownTime, startCountdown, stopCountdown } = useCountdown(() =>
     setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED)
@@ -38,7 +40,7 @@ export function SinglePlayerDashboardChallenge({
 
   const GAME_MODE = {
     [SINGLE_PLAYER_CHALLENGE_STATES.FREE_PLAY]: {
-      label: 'Free Play!',
+      label: t.single.freePlayLabel,
       onStart: () => {
         stopCountdown();
         onResetScore();
@@ -48,7 +50,7 @@ export function SinglePlayerDashboardChallenge({
         setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY),
     },
     [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_READY]: {
-      label: 'Get Ready!',
+      label: t.game.getReady,
       onStart: () => {
         stopCountdown();
         onResetScore();
@@ -72,7 +74,7 @@ export function SinglePlayerDashboardChallenge({
         setCurrentGameState(SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED),
     },
     [SINGLE_PLAYER_CHALLENGE_STATES.CHALLENGE_FINISHED]: {
-      label: "Time's Up!",
+      label: t.game.timesUp,
       onStart: () => {
         stopCountdown();
         killAllBats();
@@ -91,7 +93,7 @@ export function SinglePlayerDashboardChallenge({
 
   return (
     <section>
-      <Title>Game Mode</Title>
+      <Title>{t.single.gameMode}</Title>
       <Gutter className="text-center" size="xxl">
         <GameClock
           countdownTime={countdownTime}
@@ -107,17 +109,21 @@ export function SinglePlayerDashboardChallenge({
       )}
       <ButtonGroup flex>
         {currentGameModel.onCancel && (
-          <Button onClick={currentGameModel.onCancel}>Cancel</Button>
+          <Button onClick={currentGameModel.onCancel}>{t.game.cancel}</Button>
         )}
         {currentGameModel.onFreePlay && (
-          <Button onClick={currentGameModel.onFreePlay}>Free Play</Button>
+          <Button onClick={currentGameModel.onFreePlay}>
+            {t.single.freePlay}
+          </Button>
         )}
         {currentGameModel.onChallengeReady && (
-          <Button onClick={currentGameModel.onChallengeReady}>Challenge</Button>
+          <Button onClick={currentGameModel.onChallengeReady}>
+            {t.single.challenge}
+          </Button>
         )}
         {currentGameModel.onChallengeStart && (
           <Button kind="primary" onClick={currentGameModel.onChallengeStart}>
-            Start
+            {t.game.start}
           </Button>
         )}
       </ButtonGroup>

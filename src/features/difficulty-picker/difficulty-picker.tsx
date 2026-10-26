@@ -7,12 +7,8 @@ import {
   Difficulty,
 } from 'src/services/bat-types';
 import { FLYING_BAT_IMG } from 'src/services/fly-engine-service';
+import { useI18n } from 'src/i18n';
 import './difficulty-picker.scss';
-
-const DIFFICULTIES: { value: Difficulty; label: string }[] = [
-  { value: 'easy', label: 'Easy' },
-  { value: 'hard', label: 'Hard' },
-];
 
 export function DifficultyPicker({
   value,
@@ -25,11 +21,16 @@ export function DifficultyPicker({
   readOnly?: boolean;
   note?: string;
 }) {
+  const { t } = useI18n();
+
   return (
     <div className="difficulty-picker">
       <SegmentedControl
-        label="Difficulty"
-        options={DIFFICULTIES}
+        label={t.difficulty.label}
+        options={[
+          { value: 'easy', label: t.difficulty.easy },
+          { value: 'hard', label: t.difficulty.hard },
+        ]}
         value={value}
         onChange={onChange}
         readOnly={readOnly}
@@ -41,11 +42,13 @@ export function DifficultyPicker({
 }
 
 function BatLegend() {
+  const { t } = useI18n();
+
   return (
-    <ul className="difficulty-picker__legend" aria-label="Hard mode targets">
+    <ul className="difficulty-picker__legend" aria-label={t.difficulty.legend}>
       {BAT_TYPE_NAMES.map((type) => (
-        <li key={type} title={BAT_TYPES[type].label}>
-          <BatIcon type={type} />
+        <li key={type} title={t.batTypes[type]}>
+          <BatIcon type={type} name={t.batTypes[type]} />
           <span
             className={clsx({
               'difficulty-picker__negative': BAT_TYPES[type].points < 0,
@@ -59,10 +62,10 @@ function BatLegend() {
   );
 }
 
-function BatIcon({ type }: { type: BatType }) {
+function BatIcon({ type, name }: { type: BatType; name: string }) {
   return (
     <img
-      alt={BAT_TYPES[type].label}
+      alt={name}
       src={type === 'owl' ? '/images/owl.svg' : FLYING_BAT_IMG}
       className={clsx(
         'difficulty-picker__icon',

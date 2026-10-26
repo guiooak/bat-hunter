@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import clsx from 'clsx';
+import { useI18n } from 'src/i18n';
 import './score-chip.scss';
 
 // Compact player score, shown instead of the score cards on phones.
@@ -18,6 +19,8 @@ export function ScoreChip({
   accuracy: number;
   className?: string;
 }) {
+  const { t } = useI18n();
+
   return (
     <div className={clsx('bh-score-chip', className)}>
       <div className="bh-score-chip__head">
@@ -26,7 +29,7 @@ export function ScoreChip({
       </div>
       <div className="bh-score-chip__kills">{killCounter}</div>
       <div className="bh-score-chip__meta">
-        {finalScore} pts · {accuracy}%
+        {finalScore} {t.game.points} · {accuracy}%
       </div>
     </div>
   );

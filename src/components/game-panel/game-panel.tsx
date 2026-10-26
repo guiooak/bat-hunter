@@ -2,6 +2,7 @@ import { PropsWithChildren, ReactNode, useState } from 'react';
 import clsx from 'clsx';
 import { Button } from 'src/components/button';
 import { Card } from 'src/components/card';
+import { useI18n } from 'src/i18n';
 import './game-panel.scss';
 
 // A Card on desktop. On phones it folds into a bar with the summary, and the
@@ -11,6 +12,7 @@ export function GamePanel({
   className,
   children,
 }: PropsWithChildren<{ summary: ReactNode; className?: string }>) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,7 +24,7 @@ export function GamePanel({
       <div className="bh-game-panel__bar">
         <div className="bh-game-panel__summary">{summary}</div>
         <Button kind="tertiary" onClick={() => setOpen(!open)}>
-          {open ? 'Hide' : 'Controls'}
+          {open ? t.game.hide : t.game.controls}
         </Button>
       </div>
       <div className="bh-game-panel__body">{children}</div>
