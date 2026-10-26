@@ -833,6 +833,59 @@ describe('in Portuguese', () => {
     ).toBeInTheDocument();
   });
 
+  it('matches, with the date in Brazilian format', async () => {
+    userModel.getUserMatchesFromFirebase.mockResolvedValueOnce([
+      {
+        matchId: 'a',
+        hostId: 'h',
+        hostName: 'Ana',
+        guestId: 'g',
+        guestName: 'Caio',
+        createdAt: Date.UTC(2026, 1, 3, 12),
+      },
+    ]);
+    renderAt('/matches', '/matches', <MatchesPage />, pt);
+
+    expect(await screen.findByText('Minhas partidas')).toBeInTheDocument();
+    const [header, row] = screen.getAllByRole('row');
+    expect(header).toHaveTextContent('#AnfitriãoConvidadoCriada em');
+    expect(row).toHaveTextContent('03/02/2026');
+    expect(screen.getByRole('button', { name: 'Abrir' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '← Início' })).toBeInTheDocument();
+  });
+
+  it('my data', async () => {
+    accountService.getAccountSummary.mockResolvedValueOnce({
+      matches: 2,
+      messages: 5,
+      preferences: { 'bh-difficulty': 'hard', 'bh-language': 'pt-BR' },
+    });
+    renderAt('/account', '/account', <AccountPage />, pt);
+
+    expect(
+      await screen.findByText(
+        '2 partidas com os placares, e 5 mensagens que você enviou no chat.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Só neste navegador: dificuldade, idioma.')
+    ).toBeInTheDocument();
+    expect(screen.getByText(`ID da conta ${ME.id}`)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Baixar meus dados' })
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Excluir minha conta' })
+    );
+    expect(
+      screen.getByRole('button', { name: 'Sim, excluir tudo' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Manter minha conta' })
+    ).toBeInTheDocument();
+  });
+
   it('the 404 page', () => {
     renderWithContext(<NotFoundPage />, pt);
 

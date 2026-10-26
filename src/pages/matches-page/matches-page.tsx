@@ -7,11 +7,13 @@ import {
   UserMatchType,
 } from 'src/models/user-model';
 import { SignInModal } from 'src/features/sign-in-modal';
+import { useI18n } from 'src/i18n';
 import './matches-page.scss';
 
 export function MatchesPage() {
   const navigate = useNavigate();
   const { currentUser, status } = useAuthContext();
+  const { t, formatDate } = useI18n();
   const [matches, setMatches] = useState<UserMatchType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,7 @@ export function MatchesPage() {
       <div className="matches-page">
         <Gutter size="xxl" direction="vertical">
           <Text align="center" secondary block>
-            Loading matches...
+            {t.matches.loading}
           </Text>
         </Gutter>
       </div>
@@ -52,29 +54,37 @@ export function MatchesPage() {
     <div className="matches-page">
       <div className="matches-page-container">
         <Gutter size="lg" direction="bottom">
-          <Title size="h1">My Matches</Title>
+          <Title size="h1">{t.matches.title}</Title>
         </Gutter>
 
         {matches.length === 0 ? (
           <Gutter size="xxl" direction="vertical">
             <Text align="center" secondary block>
-              No matches found.
+              {t.matches.empty}
             </Text>
           </Gutter>
         ) : (
-          <Table headers={['#', 'Host', 'Guest', 'Created At', '']}>
+          <Table
+            headers={[
+              '#',
+              t.matches.host,
+              t.matches.guest,
+              t.matches.createdAt,
+              '',
+            ]}
+          >
             {matches.map((match, index) => (
               <tr key={match.matchId}>
                 <td>{index + 1}</td>
                 <td>{match.hostName}</td>
                 <td>{match.guestName}</td>
-                <td>{new Date(match.createdAt).toLocaleDateString()}</td>
+                <td>{formatDate(match.createdAt)}</td>
                 <td>
                   <Button
                     kind="primary"
                     onClick={() => navigate(`/multi-player/${match.matchId}`)}
                   >
-                    Open
+                    {t.matches.open}
                   </Button>
                 </td>
               </tr>
@@ -83,7 +93,7 @@ export function MatchesPage() {
         )}
 
         <NavLink to="/" className="matches-back-link">
-          ← Home
+          {t.common.backHome}
         </NavLink>
       </div>
     </div>

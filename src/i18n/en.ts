@@ -113,6 +113,59 @@ export const en = {
     join: 'Join battle',
     joinError: 'Ops! It was not possible to join this battle. Try again.',
   },
+  matches: {
+    loading: 'Loading matches...',
+    title: 'My Matches',
+    empty: 'No matches found.',
+    host: 'Host',
+    guest: 'Guest',
+    createdAt: 'Created At',
+    open: 'Open',
+  },
+  account: {
+    title: 'My data',
+    // The intro links to the policy: the text around the link
+    introStart:
+      'What Bat Hunter keeps about you, a copy to take with you, and the way out. Details in the ',
+    introLink: 'Privacy Policy',
+    introEnd: '.',
+    keepTitle: 'What we keep',
+    accountId: 'Account ID',
+    keepProfile:
+      'Your first name and photo, from Google. To correct them, change them in your Google account and sign in again.',
+    keepMatches: (matches: number | string, messages: number | string) =>
+      `${matches} matches with their scores, and ${messages} chat messages you sent.`,
+    keepPresence:
+      'Your presence (online or away), only while you play multiplayer.',
+    keepEmail:
+      "Your email, kept by Google's sign-in service (Firebase Authentication). The game never reads it.",
+    keepBrowser: (preferences: string) =>
+      `In this browser only: ${preferences}.`,
+    noPreferences: 'no saved preferences',
+    preferenceNames: {
+      'bh-background-music-muted': 'background music muted',
+      'bh-difficulty': 'difficulty',
+      'bh-language': 'language',
+    },
+    downloadTitle: 'Download a copy',
+    downloadText:
+      'A JSON file with your account, your matches (your own scores) and your messages.',
+    download: 'Download my data',
+    downloadBusy: 'Preparing…',
+    downloadError: 'The download failed. Try again in a moment.',
+    deleteTitle: 'Delete my account',
+    deleteText:
+      'Erases your profile, your match list, your chat messages and your sign-in. Your opponents keep their own scores, and you show up as a removed player. This cannot be undone.',
+    deleteWarning:
+      'Google will ask you to confirm it is you. Then everything is erased.',
+    deleteButton: 'Delete my account',
+    keepAccount: 'Keep my account',
+    deleteConfirm: 'Yes, delete everything',
+    deleteBusy: 'Deleting…',
+    deleteError: (contact: string) =>
+      `The account was not deleted. Try again, or write to ${contact}.`,
+    contact: (contact: string) => `Anything else about your data: ${contact}.`,
+  },
   login: {
     title: 'Ready to hunt?',
     text: 'Sign in to challenge friends and keep your match history.',

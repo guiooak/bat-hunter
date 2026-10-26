@@ -266,6 +266,7 @@ function flatten(messages: object, prefix = ''): Record<string, string> {
 // Same in both languages on purpose: names, symbols, loanwords
 const SAME_IN_BOTH = new Set<string>([
   'signIn.noticeEnd',
+  'account.introEnd',
   'game.points',
   'presence.online',
   'presence.offline',

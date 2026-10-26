@@ -111,6 +111,58 @@ export const pt: Messages = {
     join: 'Entrar na batalha',
     joinError: 'Ops! Não foi possível entrar nesta batalha. Tente de novo.',
   },
+  matches: {
+    loading: 'Carregando partidas...',
+    title: 'Minhas partidas',
+    empty: 'Nenhuma partida encontrada.',
+    host: 'Anfitrião',
+    guest: 'Convidado',
+    createdAt: 'Criada em',
+    open: 'Abrir',
+  },
+  account: {
+    title: 'Meus dados',
+    introStart:
+      'O que o Bat Hunter guarda sobre você, uma cópia para levar com você e a porta de saída. Detalhes na ',
+    introLink: 'Política de Privacidade',
+    introEnd: '.',
+    keepTitle: 'O que guardamos',
+    accountId: 'ID da conta',
+    keepProfile:
+      'Seu primeiro nome e sua foto, vindos do Google. Para corrigi-los, altere-os na sua conta Google e entre de novo.',
+    keepMatches: (matches, messages) =>
+      `${matches} partidas com os placares, e ${messages} mensagens que você enviou no chat.`,
+    keepPresence:
+      'Sua presença (online ou ausente), só enquanto você joga multiplayer.',
+    keepEmail:
+      'Seu e-mail, guardado pelo serviço de login do Google (Firebase Authentication). O jogo nunca o lê.',
+    keepBrowser: (preferences) => `Só neste navegador: ${preferences}.`,
+    noPreferences: 'nenhuma preferência salva',
+    preferenceNames: {
+      'bh-background-music-muted': 'música de fundo desligada',
+      'bh-difficulty': 'dificuldade',
+      'bh-language': 'idioma',
+    },
+    downloadTitle: 'Baixar uma cópia',
+    downloadText:
+      'Um arquivo JSON com sua conta, suas partidas (seus próprios placares) e suas mensagens.',
+    download: 'Baixar meus dados',
+    downloadBusy: 'Preparando…',
+    downloadError: 'O download falhou. Tente de novo daqui a pouco.',
+    deleteTitle: 'Excluir minha conta',
+    deleteText:
+      'Apaga seu perfil, sua lista de partidas, suas mensagens no chat e seu login. Seus oponentes mantêm os próprios placares, e você aparece como jogador removido. Não dá para desfazer.',
+    deleteWarning:
+      'O Google vai pedir para você confirmar que é você. Depois, tudo é apagado.',
+    deleteButton: 'Excluir minha conta',
+    keepAccount: 'Manter minha conta',
+    deleteConfirm: 'Sim, excluir tudo',
+    deleteBusy: 'Excluindo…',
+    deleteError: (contact) =>
+      `A conta não foi excluída. Tente de novo ou escreva para ${contact}.`,
+    contact: (contact) =>
+      `Qualquer outra questão sobre seus dados: ${contact}.`,
+  },
   login: {
     title: 'Pronto para caçar?',
     text: 'Entre para desafiar amigos e guardar seu histórico de partidas.',

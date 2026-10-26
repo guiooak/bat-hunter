@@ -11,6 +11,7 @@ import {
 import { reauthenticateCurrentUser } from 'src/services/auth-service';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { PRIVACY_CONTACT } from 'src/services/legal-service';
+import { useI18n } from 'src/i18n';
 import './account-page.scss';
 
 type Summary = Awaited<ReturnType<typeof getAccountSummary>>;
@@ -19,6 +20,7 @@ type Summary = Awaited<ReturnType<typeof getAccountSummary>>;
 export function AccountPage() {
   const navigate = useNavigate();
   const { currentUser, status } = useAuthContext();
+  const { t } = useI18n();
   const userId = currentUser?.id;
   const [summary, setSummary] = useState<Summary | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -58,7 +60,7 @@ export function AccountPage() {
       URL.revokeObjectURL(link.href);
     } catch (e) {
       console.error('AccountPage::ERROR: export', e);
-      setError('The download failed. Try again in a moment.');
+      setError(t.account.downloadError);
     } finally {
       setIsExporting(false);
     }
@@ -78,9 +80,7 @@ export function AccountPage() {
       navigate('/', { replace: true });
     } catch (e) {
       console.error('AccountPage::ERROR: delete', e);
-      setError(
-        `The account was not deleted. Try again, or write to ${PRIVACY_CONTACT}.`
-      );
+      setError(t.account.deleteError(PRIVACY_CONTACT));
       setIsDeleting(false);
     }
   }
@@ -99,91 +99,81 @@ export function AccountPage() {
   return (
     <div className="account-page">
       <div className="account-page__container">
-        <Title size="h1">My data</Title>
+        <Title size="h1">{t.account.title}</Title>
         <p className="account-page__intro">
-          What Bat Hunter keeps about you, a copy to take with you, and the way
-          out. Details in the <NavLink to="/privacy">Privacy Policy</NavLink>.
+          {t.account.introStart}
+          <NavLink to="/privacy">{t.account.introLink}</NavLink>
+          {t.account.introEnd}
         </p>
 
         <section className="account-page__card">
-          <h2>What we keep</h2>
+          <h2>{t.account.keepTitle}</h2>
           <div className="account-page__profile">
             <Avatar src={currentUser?.picture} />
             <div>
               <div className="account-page__name">{currentUser?.firstName}</div>
               <div className="account-page__muted">
-                Account ID {currentUser?.id}
+                {t.account.accountId} {currentUser?.id}
               </div>
             </div>
           </div>
           <ul>
+            <li>{t.account.keepProfile}</li>
             <li>
-              Your first name and photo, from Google. To correct them, change
-              them in your Google account and sign in again.
+              {t.account.keepMatches(
+                summary ? summary.matches : '…',
+                summary ? summary.messages : '…'
+              )}
             </li>
+            <li>{t.account.keepPresence}</li>
+            <li>{t.account.keepEmail}</li>
             <li>
-              {summary ? summary.matches : '…'} matches with their scores, and{' '}
-              {summary ? summary.messages : '…'} chat messages you sent.
-            </li>
-            <li>
-              Your presence (online or away), only while you play multiplayer.
-            </li>
-            <li>
-              Your email, kept by Google's sign-in service (Firebase
-              Authentication). The game never reads it.
-            </li>
-            <li>
-              In this browser only:{' '}
-              {summary && Object.keys(summary.preferences).length
-                ? Object.keys(summary.preferences)
-                    .map((key) => key.replace('bh-', '').replace(/-/g, ' '))
-                    .join(', ')
-                : 'no saved preferences'}
-              .
+              {t.account.keepBrowser(
+                summary && Object.keys(summary.preferences).length
+                  ? Object.keys(summary.preferences)
+                      .map(
+                        (key) =>
+                          t.account.preferenceNames[
+                            key as keyof typeof t.account.preferenceNames
+                          ]
+                      )
+                      .join(', ')
+                  : t.account.noPreferences
+              )}
             </li>
           </ul>
         </section>
 
         <section className="account-page__card">
-          <h2>Download a copy</h2>
-          <p>
-            A JSON file with your account, your matches (your own scores) and
-            your messages.
-          </p>
+          <h2>{t.account.downloadTitle}</h2>
+          <p>{t.account.downloadText}</p>
           <Button kind="secondary" onClick={onExport} disabled={isExporting}>
-            {isExporting ? 'Preparing…' : 'Download my data'}
+            {isExporting ? t.account.downloadBusy : t.account.download}
           </Button>
         </section>
 
         <section className="account-page__card account-page__card--danger">
-          <h2>Delete my account</h2>
-          <p>
-            Erases your profile, your match list, your chat messages and your
-            sign-in. Your opponents keep their own scores, and you show up as a
-            removed player. This cannot be undone.
-          </p>
+          <h2>{t.account.deleteTitle}</h2>
+          <p>{t.account.deleteText}</p>
           {confirmingDelete ? (
             <>
-              <p className="account-page__warning">
-                Google will ask you to confirm it is you. Then everything is
-                erased.
-              </p>
+              <p className="account-page__warning">{t.account.deleteWarning}</p>
               <ButtonGroup>
                 <Button
                   kind="tertiary"
                   onClick={() => setConfirmingDelete(false)}
                   disabled={isDeleting}
                 >
-                  Keep my account
+                  {t.account.keepAccount}
                 </Button>
                 <Button kind="primary" onClick={onDelete} disabled={isDeleting}>
-                  {isDeleting ? 'Deleting…' : 'Yes, delete everything'}
+                  {isDeleting ? t.account.deleteBusy : t.account.deleteConfirm}
                 </Button>
               </ButtonGroup>
             </>
           ) : (
             <Button kind="secondary" onClick={() => setConfirmingDelete(true)}>
-              Delete my account
+              {t.account.deleteButton}
             </Button>
           )}
         </section>
@@ -191,7 +181,7 @@ export function AccountPage() {
         {error && <p className="account-page__error">{error}</p>}
 
         <p className="account-page__muted">
-          Anything else about your data: {PRIVACY_CONTACT}.
+          {t.account.contact(PRIVACY_CONTACT)}
         </p>
       </div>
     </div>
