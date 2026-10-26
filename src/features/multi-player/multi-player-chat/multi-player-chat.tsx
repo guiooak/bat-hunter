@@ -97,7 +97,7 @@ export function MultiPlayerChat() {
           ref={chatScrollContainerRef}
           className="multi-player-chat__container"
         >
-          <div className="multi-player-chat__scroll-cotainer">
+          <div className="multi-player-chat__scroll-container">
             <Gap vertical size="md">
               {messagesArray.map((message) => {
                 const isSelf = message?.authorId === currentUser?.id;

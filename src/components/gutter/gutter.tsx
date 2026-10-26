@@ -41,7 +41,7 @@ export const Gutter = ({
 
   return (
     <div
-      className={clsx('wk-gutter', className)}
+      className={clsx('bh-gutter', className)}
       style={{
         display: fit ? 'inline-block' : 'block',
         ...style,

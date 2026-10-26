@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.multi-player-guest-dashboard {
+.multi-player-opponent-dashboard {
   width: 230px;
   position: absolute;
   top: 75px;
@@ -29,7 +29,7 @@
     right: 8px;
     width: auto;
 
-    &.multi-player-guest-dashboard--with-match {
+    &.multi-player-opponent-dashboard--with-match {
       top: calc(var(--bh-navbar-height) + 8px);
       left: auto;
       width: calc(50% - 12px);

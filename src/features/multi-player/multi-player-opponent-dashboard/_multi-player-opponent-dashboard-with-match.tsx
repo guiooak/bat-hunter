@@ -30,7 +30,7 @@ export function MultiPlayerOpponentDashboardWithMatch({
 
   return (
     <>
-      <Card className="multi-player-guest-dashboard-with-match">
+      <Card className="multi-player-opponent-dashboard-with-match">
         <div className="status-slot">{status}</div>
         <Gutter size="md">
           <ScoreSummary

@@ -133,7 +133,7 @@ describe('basic components', () => {
       display: 'inline-block',
       margin: '32px',
     });
-    expect(container.firstChild).toHaveClass('wk-gutter', 'g');
+    expect(container.firstChild).toHaveClass('bh-gutter', 'g');
   });
 
   it('Text maps its options to classes', () => {

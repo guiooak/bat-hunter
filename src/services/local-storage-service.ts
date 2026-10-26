@@ -12,6 +12,6 @@ export function setLocalStorageValue(
   key: ValidLocalStorageKeysType,
   value: unknown
 ) {
-  const stringfiedValue = JSON.stringify(value);
-  localStorage.setItem(key, stringfiedValue);
+  const stringifiedValue = JSON.stringify(value);
+  localStorage.setItem(key, stringifiedValue);
 }

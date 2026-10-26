@@ -319,9 +319,9 @@ describe('player dashboards', () => {
 
     expect(screen.getByText('1300 pts · 100%')).toBeInTheDocument();
     expect(screen.getAllByText('online')).toHaveLength(2);
-    expect(document.querySelector('.multi-player-guest-dashboard')).toHaveClass(
-      'multi-player-guest-dashboard--with-match'
-    );
+    expect(
+      document.querySelector('.multi-player-opponent-dashboard')
+    ).toHaveClass('multi-player-opponent-dashboard--with-match');
   });
 
   it('opponent card works with no match at all', async () => {

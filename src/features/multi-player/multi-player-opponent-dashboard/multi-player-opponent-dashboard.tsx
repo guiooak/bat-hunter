@@ -12,8 +12,8 @@ export function MultiPlayerOpponentDashboard() {
 
   return (
     <div
-      className={clsx('multi-player-guest-dashboard', {
-        'multi-player-guest-dashboard--with-match': hasMatch,
+      className={clsx('multi-player-opponent-dashboard', {
+        'multi-player-opponent-dashboard--with-match': hasMatch,
       })}
     >
       {hasMatch ? (

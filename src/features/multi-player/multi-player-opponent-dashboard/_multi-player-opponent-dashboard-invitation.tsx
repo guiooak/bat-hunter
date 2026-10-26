@@ -34,7 +34,7 @@ export function MultiPlayerOpponentDashboardInvitation() {
         open={signInModalOpen}
         onClose={() => setSignInModalOpen(false)}
       />
-      <div className="multi-player-guest-dashboard-invitation">
+      <div className="multi-player-opponent-dashboard-invitation">
         <Gutter size="md">
           <Title>Match Setup</Title>
 
