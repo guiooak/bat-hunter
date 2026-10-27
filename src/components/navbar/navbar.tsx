@@ -26,7 +26,7 @@ export function Navbar() {
         </NavLink>
       </div>
       <div className="bh-navbar__right">
-        <LanguagePicker compact />
+        <LanguagePicker />
         {isValidCurrentUser ? (
           <DropdownPopover
             trigger={

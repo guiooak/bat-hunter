@@ -168,7 +168,7 @@ describe('LogoutPage', () => {
 });
 
 describe('legal pages', () => {
-  it('privacy policy in Portuguese, then in English', async () => {
+  it('privacy policy in Portuguese', () => {
     renderWithContext(<PrivacyPage />, { language: 'pt-BR' });
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
@@ -181,8 +181,13 @@ describe('legal pages', () => {
       screen.getAllByRole('link', { name: 'game.bat.hunter@gmail.com' }).length
     ).toBeGreaterThan(0);
     expect(screen.getByRole('table')).toBeInTheDocument();
+    // The language is picked in the navbar only
+    expect(screen.queryByRole('radiogroup')).toBeNull();
+  });
 
-    await userEvent.click(screen.getByRole('radio', { name: 'English' }));
+  it('privacy policy in English', () => {
+    renderWithContext(<PrivacyPage />);
+
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Privacy Policy'
     );
@@ -199,24 +204,18 @@ describe('legal pages', () => {
     );
   });
 
-  it('opens in the language of the app', () => {
-    renderWithContext(<PrivacyPage />);
-
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      'Privacy Policy'
-    );
-    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
-  });
-
-  it('terms of use in both languages', async () => {
-    renderWithContext(<TermsPage />, { language: 'pt-BR' });
+  it('terms of use in both languages', () => {
+    const { unmount } = renderWithContext(<TermsPage />, {
+      language: 'pt-BR',
+    });
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Termos de Uso'
     );
     expect(screen.getByText(/maiores de 13 anos/)).toBeInTheDocument();
+    unmount();
 
-    await userEvent.click(screen.getByRole('radio', { name: 'English' }));
+    renderWithContext(<TermsPage />);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Terms of Use'
     );

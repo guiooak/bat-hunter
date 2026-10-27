@@ -1,14 +1,13 @@
 import { ReactNode, useEffect } from 'react';
 import { NavLink } from 'react-router';
 import { Title } from 'src/components';
-import { LanguagePicker } from 'src/features/language-picker';
 import { Language, useI18n } from 'src/i18n';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { LEGAL_UPDATED_AT } from 'src/services/legal-service';
 import './legal-page.scss';
 
 // Legal texts are long and reviewed as a whole: one JSX block per language,
-// shown in the language of the app (switching here switches it everywhere).
+// shown in the language picked in the navbar.
 export function LegalPage({
   title,
   content,
@@ -33,7 +32,6 @@ export function LegalPage({
       <article className="legal-page__container" lang={language}>
         <div className="legal-page__header">
           <Title size="h1">{title[language]}</Title>
-          <LanguagePicker />
         </div>
         <p className="legal-page__updated">
           {t.legal.updated}: {updatedAt}
