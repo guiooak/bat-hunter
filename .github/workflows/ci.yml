@@ -10,9 +10,12 @@ on:
 permissions:
   contents: read
 
+# One run per ref at a time. On main the next run waits for this one, so a
+# push never cancels a deploy halfway (and two quick pushes never take the
+# same version); on a PR a new push cancels the run it makes stale.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   checks:
