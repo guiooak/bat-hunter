@@ -52,10 +52,15 @@ jobs:
 
   # Only ships once every check above has passed. Pushes to main go to the live
   # channel (and publish the database rules); PRs get an ephemeral preview
-  # channel. PRs from forks are skipped, since they don't receive the secrets.
+  # channel. PRs from forks and from Dependabot are skipped: they don't receive
+  # the secrets (Dependabot only gets its own, and it gets no production
+  # credentials on purpose). Their checks still run.
   deploy:
     needs: [checks, rules]
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]')
     runs-on: ubuntu-latest
     permissions:
       contents: read
