@@ -119,7 +119,7 @@ Every live deploy is a [GitHub Release](https://github.com/guiooak/bat-hunter/re
 - `feat:` → minor.
 - Anything else → patch. Every deploy gets a version, even a docs-only one.
 
-Merge commits don't count, the commits they bring do. The first release is `package.json`'s `1.0.0`; after that the tags are the source of truth and `package.json` isn't bumped. The release notes list the commits by kind.
+Merge commits don't count, the commits they bring do. The first release is `package.json`'s `1.0.0`; after that the tags are the source of truth and `package.json` isn't bumped. The release notes list the commits by kind, followed by GitHub's generated list of the merged pull requests and a link to compare with the previous release.
 
 The release is created only after the deploy succeeds: a failed deploy leaves no tag, and the next run takes the same number. A manual run on a commit already released keeps its version and creates nothing.
 

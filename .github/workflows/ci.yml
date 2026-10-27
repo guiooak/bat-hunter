@@ -163,7 +163,9 @@ jobs:
       # Every live deploy is a GitHub Release, tagged on the deployed commit.
       # Only after the deploy succeeds: a failed one leaves no tag, and the
       # next run takes the same version. A commit already released (a manual
-      # run with nothing new) keeps its tag and makes no release.
+      # run with nothing new) keeps its tag and makes no release. Our notes
+      # (the commits by kind) go on top; --generate-notes adds GitHub's list
+      # of the merged PRs and the compare link below them.
       - uses: actions/download-artifact@v7
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.version.outputs.released != 'true'
         with:
@@ -179,7 +181,8 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "v$VERSION" \
-            --notes-file "$RUNNER_TEMP/release-notes.md"
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --generate-notes
 
       - name: Deploy to Firebase Hosting (preview)
         if: github.event_name == 'pull_request'
