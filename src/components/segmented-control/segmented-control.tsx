@@ -2,12 +2,7 @@ import { KeyboardEvent, useId, useRef } from 'react';
 import clsx from 'clsx';
 import './segmented-control.scss';
 
-type Option<T extends string> = {
-  value: T;
-  label: string;
-  // Accessible name when the label is an abbreviation (EN, PT)
-  ariaLabel?: string;
-};
+type Option<T extends string> = { value: T; label: string };
 
 // One choice out of a few, shown as a single track. A setting, not an action:
 // it stays smaller and quieter than the buttons around it.
@@ -18,8 +13,6 @@ export function SegmentedControl<T extends string>({
   onChange,
   readOnly = false,
   note,
-  size = 'md',
-  hideLabel = false,
 }: {
   label: string;
   options: Option<T>[];
@@ -29,10 +22,6 @@ export function SegmentedControl<T extends string>({
   readOnly?: boolean;
   // Short text beside a read-only choice, e.g. who picks it
   note?: string;
-  // Small, for a toolbar (the navbar)
-  size?: 'sm' | 'md';
-  // Still read by screen readers
-  hideLabel?: boolean;
 }) {
   const labelId = useId();
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -56,13 +45,8 @@ export function SegmentedControl<T extends string>({
   }
 
   return (
-    <div className={clsx('bh-segmented', `bh-segmented--${size}`)}>
-      <div
-        className={clsx('bh-segmented__label', {
-          'bh-segmented__label--hidden': hideLabel,
-        })}
-        id={labelId}
-      >
+    <div className="bh-segmented">
+      <div className="bh-segmented__label" id={labelId}>
         {label}
       </div>
       {readOnly ? (
@@ -88,7 +72,6 @@ export function SegmentedControl<T extends string>({
                 type="button"
                 role="radio"
                 aria-checked={checked}
-                aria-label={option.ariaLabel}
                 tabIndex={checked ? 0 : -1}
                 className={clsx('bh-segmented__option', {
                   'bh-segmented__option--checked': checked,

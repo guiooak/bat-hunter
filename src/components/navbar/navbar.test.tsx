@@ -20,7 +20,13 @@ describe('Navbar', () => {
     renderWithContext(<Navbar />);
 
     expect(screen.getByText(`Hi ${ME.firstName}!`)).toBeInTheDocument();
-    for (const name of ['Matches', 'My data', 'Privacy', 'Sign out']) {
+    for (const name of [
+      'Matches',
+      'My data',
+      'Settings',
+      'Privacy',
+      'Sign out',
+    ]) {
       expect(screen.getByRole('link', { name })).toBeInTheDocument();
     }
     expect(screen.getAllByRole('img')[1]).toHaveAttribute('src', ME.picture);
@@ -40,7 +46,13 @@ describe('Navbar in Portuguese', () => {
     renderWithContext(<Navbar />, { language: 'pt-BR' });
 
     expect(screen.getByText(`Oi, ${ME.firstName}!`)).toBeInTheDocument();
-    for (const name of ['Partidas', 'Meus dados', 'Privacidade', 'Sair']) {
+    for (const name of [
+      'Partidas',
+      'Meus dados',
+      'Configurações',
+      'Privacidade',
+      'Sair',
+    ]) {
       expect(screen.getByRole('link', { name })).toBeInTheDocument();
     }
   });
@@ -52,25 +64,11 @@ describe('Navbar in Portuguese', () => {
   });
 });
 
-describe('Navbar language picker', () => {
-  it('switches the language for guests and players alike', async () => {
+describe('Navbar language', () => {
+  it('has no language picker: it lives in Settings', () => {
     renderWithContext(<Navbar />, { currentUser: null });
 
-    const group = screen.getByRole('radiogroup', { name: 'Language' });
-    const english = screen.getByRole('radio', { name: 'English' });
-    const portuguese = screen.getByRole('radio', { name: 'Português' });
-
-    expect(group).toBeInTheDocument();
-    expect(english).toHaveTextContent('EN');
-    expect(portuguese).toHaveTextContent('PT');
-    expect(english).toBeChecked();
-
-    await userEvent.click(portuguese);
-
-    expect(screen.getByRole('radio', { name: 'Português' })).toBeChecked();
-    expect(
-      screen.getByRole('radiogroup', { name: 'Idioma' })
-    ).toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup')).toBeNull();
   });
 });
 

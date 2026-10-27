@@ -13,6 +13,7 @@ import { NotFoundPage } from './pages/not-found-page';
 import { PrivacyPage, TermsPage } from './pages/legal-pages';
 import { AccountPage } from './pages/account-page';
 import { I18nProvider } from './i18n';
+import { SettingsPage } from './pages/settings-page';
 
 export function App() {
   return (
@@ -40,6 +41,7 @@ export function App() {
                 <Route path="login" element={<LoginPage />} />
                 <Route path="logout" element={<LogoutPage />} />
                 <Route path="account" element={<AccountPage />} />
+                <Route path="settings" element={<SettingsPage />} />
                 <Route path="privacy" element={<PrivacyPage />} />
                 <Route path="terms" element={<TermsPage />} />
                 <Route path="*" element={<NotFoundPage />} />

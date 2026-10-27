@@ -37,6 +37,7 @@ export function HomePage() {
       <footer className="home-page__legal">
         <NavLink to="/privacy">{t.home.privacy}</NavLink>
         <NavLink to="/terms">{t.home.terms}</NavLink>
+        <NavLink to="/settings">{t.home.settings}</NavLink>
       </footer>
     </div>
   );

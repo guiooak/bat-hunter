@@ -1,0 +1,41 @@
+.settings-page {
+  min-height: var(--full-height);
+  cursor: initial;
+
+  & .settings-page__container {
+    padding: 32px 16px 64px;
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    line-height: 1.55;
+  }
+
+  & h1 {
+    margin: 0;
+  }
+
+  & .settings-page__card {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+    background-color: var(--bh-surface);
+    border: 1px solid var(--bh-line);
+    border-radius: var(--bh-radius);
+
+    & .bh-segmented {
+      align-items: flex-start;
+    }
+  }
+
+  & .settings-page__note {
+    margin: 0;
+    color: var(--bh-muted);
+    font-size: 14px;
+  }
+}

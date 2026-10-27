@@ -12,6 +12,7 @@ export const pt: Messages = {
     matches: 'Partidas',
     myData: 'Meus dados',
     privacy: 'Privacidade',
+    settings: 'Configurações',
     signOut: 'Sair',
     signIn: 'Entrar',
   },
@@ -21,6 +22,12 @@ export const pt: Messages = {
     playMulti: 'Jogar online',
     privacy: 'Privacidade',
     terms: 'Termos',
+    settings: 'Configurações',
+  },
+  settings: {
+    title: 'Configurações',
+    languageNote:
+      'Fica salvo neste navegador, e na sua conta quando você está logado.',
   },
   game: {
     kills: 'Abates',

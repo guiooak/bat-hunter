@@ -81,6 +81,7 @@ import { MatchesPage } from './matches-page';
 import { MultiPlayerPage } from './multi-player-page';
 import { NotFoundPage } from './not-found-page';
 import { SinglePlayerPage } from './single-player-page';
+import { SettingsPage } from './settings-page';
 
 function Path() {
   return <p data-testid="path">{useLocation().pathname}</p>;
@@ -138,6 +139,11 @@ describe('HomePage', () => {
     expect(screen.getByRole('link', { name: 'Terms' })).toHaveAttribute(
       'href',
       '/terms'
+    );
+    // Guests reach the language from here
+    expect(screen.getByRole('link', { name: 'Settings' })).toHaveAttribute(
+      'href',
+      '/settings'
     );
   });
 });
@@ -220,6 +226,41 @@ describe('legal pages', () => {
       'Terms of Use'
     );
     expect(screen.getByText(/aged 13 and over/)).toBeInTheDocument();
+  });
+});
+
+describe('SettingsPage', () => {
+  it('switches the language of the whole app, signed in or not', async () => {
+    renderWithContext(<SettingsPage />, { currentUser: null });
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Settings'
+    );
+    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
+    expect(screen.getByText(/Saved in this browser/)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('radio', { name: 'Português' }));
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Configurações'
+    );
+    expect(
+      screen.getByRole('radiogroup', { name: 'Idioma' })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Fica salvo neste navegador/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '← Início' })).toHaveAttribute(
+      'href',
+      '/'
+    );
+  });
+
+  it('turns the game off and clears the bats', () => {
+    const disable = vi.spyOn(gameService, 'disableBatGame');
+    document.body.innerHTML = '<div class="flying-bat"></div>';
+    renderWithContext(<SettingsPage />);
+
+    expect(disable).toHaveBeenCalled();
+    expect(document.querySelector('.flying-bat')).toBeNull();
   });
 });
 

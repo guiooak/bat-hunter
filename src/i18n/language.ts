@@ -8,11 +8,10 @@ export const LANGUAGES = ['en-US', 'pt-BR'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Each language is named in itself, so anyone finds their own
-export const LANGUAGE_NAMES: Record<Language, { name: string; short: string }> =
-  {
-    'en-US': { name: 'English', short: 'EN' },
-    'pt-BR': { name: 'Português', short: 'PT' },
-  };
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  'en-US': 'English',
+  'pt-BR': 'Português',
+};
 
 export function isLanguage(value: unknown): value is Language {
   return LANGUAGES.includes(value as Language);

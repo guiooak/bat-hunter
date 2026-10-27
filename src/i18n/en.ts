@@ -12,6 +12,7 @@ export const en = {
     matches: 'Matches',
     myData: 'My data',
     privacy: 'Privacy',
+    settings: 'Settings',
     signOut: 'Sign out',
     signIn: 'Sign in',
   },
@@ -21,6 +22,12 @@ export const en = {
     playMulti: 'Play Multi',
     privacy: 'Privacy',
     terms: 'Terms',
+    settings: 'Settings',
+  },
+  settings: {
+    title: 'Settings',
+    languageNote:
+      'Saved in this browser, and in your account when you are signed in.',
   },
   game: {
     kills: 'Kills',
