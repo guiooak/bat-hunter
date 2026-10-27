@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 import { Title } from 'src/components';
 import { LanguagePicker } from 'src/features/language-picker';
 import { useI18n } from 'src/i18n';
+import { appVersion } from 'src/services/app-version';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import './settings-page.scss';
 
@@ -10,6 +11,7 @@ import './settings-page.scss';
 // far; it starts from the browser, so most players never need to come here.
 export function SettingsPage() {
   const { t } = useI18n();
+  const version = appVersion();
 
   useEffect(() => {
     disableBatGame();
@@ -27,6 +29,18 @@ export function SettingsPage() {
         </section>
 
         <NavLink to="/">{t.common.backHome}</NavLink>
+
+        {/* What is running, for support: links to its release when there is one */}
+        <p className="settings-page__version">
+          {t.settings.version}{' '}
+          {version.href ? (
+            <a href={version.href} target="_blank" rel="noreferrer">
+              {version.label}
+            </a>
+          ) : (
+            version.label
+          )}
+        </p>
       </div>
     </div>
   );
