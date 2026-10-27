@@ -27,7 +27,7 @@
 | Concorrência | **Uma execução por ref.** Na `main` os runs entram em fila; num PR, um push novo cancela o run antigo | Dois pushes seguidos na `main` não calculam a mesma versão nem cancelam um deploy no meio. |
 | Compilar uma vez | Um job `build` próprio compila com os secrets e o `VITE_APP_VERSION` e guarda o `dist/` como artefato. O `deploy` publica esse artefato | O que vai ao ar é o que passou nos checks. **O job continua com o nome `build`**, que é um dos checks exigidos pela regra da `main`. |
 | Prévias e local | PRs mostram a versão que viriam a ser, `X.Y.Z-pr.N`. O build local mostra `dev` | Dá para conferir na prévia antes do merge. |
-| Onde aparece no app | **No pé da página de Configurações** (`/settings`): "Versão v1.0.0", pequeno e discreto, com link para o GitHub Release (o repositório é público). Prévias e `dev` aparecem sem link | O bat-hunter não tem sidebar como o tymebox. Configurações já é a página de detalhes do app, e não ocupa a tela do jogo. |
+| Onde aparece no app | **No pé da página de Configurações** (`/settings`): "Versão v1.0.0", pequeno e discreto, com link para o GitHub Release (o repositório é público). Prévias e `dev` aparecem sem link | O bat-hunter não tem sidebar como o tymebox. Configurações já é a página de detalhes do app, e não ocupa a tela do jogo. **Só lá, não no rodapé da home** (27/10): a versão serve para suporte e depuração, não para o jogador, e o rodapé já tem Privacidade, Termos e Configurações. |
 | Script | `scripts/release-version.mjs`, com testes em `scripts/release-version.test.ts` | Segue o `retention.mjs`: os scripts daqui são `.mjs`, entram na cobertura de 100% e no lint de Node. *(O tymebox usa `.ts`.)* |
 | Dependabot | Os PRs dele também ganham `X.Y.Z-pr.N` e passam pelo `build`, mas continuam sem deploy de prévia | O job `version` não precisa de secret. A regra que pula o deploy para o Dependabot fica como está. |
 
@@ -85,11 +85,12 @@ Do PR do tymebox, ficam de fora as partes que são específicas daquele reposit�
 - A prévia do PR deve mostrar `v1.0.0-pr.N` em Configurações.
 - Depois do merge, o primeiro deploy da `main` deve criar a tag e o release `v1.0.0`.
 
-## Em aberto
+## Depois deste PR
 
-- **Proteger as tags?** A regra "Main Protection" vale só para a branch `main`, então o `GITHUB_TOKEN` consegue criar tags (é o que o release precisa). Uma regra para `v*`, que só o GitHub Actions possa criar, evita tags feitas à mão. A recomendação é criar essa regra depois que o `v1.0.0` sair.
-- **Mostrar a versão também no rodapé da home?** Hoje a proposta é só em Configurações. A recomendação é manter assim.
-- **Travar o `firebase-tools` no `yarn.lock`?** O tymebox passou a usar a versão travada no deploy e nos testes de regras. Aqui os dois usam `npx firebase-tools@15`, que pega a versão mais nova da linha 15. A recomendação é fazer num PR separado, porque mexe nos testes de regras e não no versionamento.
+Decidido em 27/10. Cada item vai num PR próprio.
+
+- **Proteger as tags `v*` contra alteração e exclusão**, logo depois que o `v1.0.0` sair. É uma regra de tag no GitHub que bloqueia mover uma tag para outro commit e apagá-la. A criação continua liberada, porque é o CI que cria a tag depois de cada deploy. Bloquear também a criação exigiria liberar o GitHub Actions como exceção, e um erro nisso faria o deploy sair sem release. Assim, uma versão publicada não pode ser reescrita depois.
+- **Travar o `firebase-tools` nas `devDependencies`**, logo em seguida. Hoje o deploy das regras e o `test:rules` rodam `npx --yes firebase-tools@15`, que baixa na hora a versão mais nova da linha 15. Isso fica fora do `yarn.lock` e da quarentena de 3 dias do `.yarnrc.yml`: uma versão maliciosa publicada hoje rodaria no CI com a conta de serviço de produção. Com a versão travada, o deploy e os testes usam a mesma versão testada, e as atualizações chegam por PR do Dependabot. O custo é um `yarn install` mais pesado em todos os jobs.
 
 ## Estimativa
 
