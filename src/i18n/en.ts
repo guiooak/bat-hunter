@@ -28,6 +28,7 @@ export const en = {
     title: 'Settings',
     languageNote:
       'Saved in this browser, and in your account when you are signed in.',
+    version: 'Version',
   },
   game: {
     kills: 'Kills',

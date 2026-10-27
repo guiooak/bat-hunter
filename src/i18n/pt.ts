@@ -28,6 +28,7 @@ export const pt: Messages = {
     title: 'Configurações',
     languageNote:
       'Fica salvo neste navegador, e na sua conta quando você está logado.',
+    version: 'Versão',
   },
   game: {
     kills: 'Abates',

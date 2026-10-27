@@ -254,6 +254,22 @@ describe('SettingsPage', () => {
     );
   });
 
+  it('shows the running version, linked to its release', () => {
+    const { unmount } = renderWithContext(<SettingsPage />);
+    expect(screen.getByText('Version dev')).toBeInTheDocument();
+    unmount();
+
+    vi.stubEnv('VITE_APP_VERSION', '1.2.0');
+    renderWithContext(<SettingsPage />, { language: 'pt-BR' });
+    vi.unstubAllEnvs();
+
+    expect(screen.getByText(/Versão/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'v1.2.0' })).toHaveAttribute(
+      'href',
+      'https://github.com/guiooak/bat-hunter/releases/tag/v1.2.0'
+    );
+  });
+
   it('turns the game off and clears the bats', () => {
     const disable = vi.spyOn(gameService, 'disableBatGame');
     document.body.innerHTML = '<div class="flying-bat"></div>';

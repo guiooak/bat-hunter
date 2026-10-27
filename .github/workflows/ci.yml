@@ -10,9 +10,12 @@ on:
 permissions:
   contents: read
 
+# One run per ref at a time. On main the next run waits for this one, so a
+# push never cancels a deploy halfway (and two quick pushes never take the
+# same version); on a PR a new push cancels the run it makes stale.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   checks:
@@ -21,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [lint, typecheck, 'format:check', build, 'test:coverage']
+        script: [lint, typecheck, 'format:check', 'test:coverage']
     steps:
       - uses: actions/checkout@v7
       - run: corepack enable
@@ -31,6 +34,61 @@ jobs:
           cache: yarn
       - run: yarn install --immutable
       - run: yarn ${{ matrix.script }}
+
+  # The version this run ships as: the next release on main, X.Y.Z-pr.N on a
+  # PR (scripts/release-version.mjs). Needs the full history and the tags.
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      released: ${{ steps.version.outputs.released }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - id: version
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: node scripts/release-version.mjs ${PR_NUMBER:+--pr "$PR_NUMBER"} --notes release-notes.md
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-notes
+          path: release-notes.md
+
+  # The bundle that ships: deploy publishes this artifact instead of building
+  # again, so what goes live is what passed the checks. Named `build`, one of
+  # the checks the main ruleset requires. The Firebase web config isn't secret
+  # (it ends up in the bundle) but stays out of the repo; forks and Dependabot
+  # get none, and they don't deploy.
+  build:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: corepack enable
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn build
+        env:
+          VITE_APP_VERSION: ${{ needs.version.outputs.version }}
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
 
   # The database rules against the Firebase emulator, which needs Java
   rules:
@@ -56,37 +114,33 @@ jobs:
   # the secrets (Dependabot only gets its own, and it gets no production
   # credentials on purpose). Their checks still run.
   deploy:
-    needs: [checks, rules]
+    needs: [checks, version, build, rules]
     if: >-
       github.event_name != 'pull_request' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.user.login != 'dependabot[bot]')
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      # write: to tag the release after a live deploy
+      contents: write
       checks: write
       pull-requests: write
     steps:
+      # firebase.json and the rules come from the checkout, the files from
+      # the build job.
       - uses: actions/checkout@v7
-      - run: corepack enable
+      - uses: actions/download-artifact@v7
+        with:
+          name: dist
+          path: dist/
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: yarn
-      - run: yarn install --immutable
-      - name: Build
-        run: yarn build
-        env:
-          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
-          VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
-          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
 
+      # Only main goes live, from a push or a manual run: a manual run on any
+      # other branch used to ship that branch, rules included.
       - name: Deploy database rules
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/service-account.json"
           GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/service-account.json" \
@@ -98,13 +152,34 @@ jobs:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Deploy to Firebase Hosting (live)
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME }}
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
           channelId: live
+
+      # Every live deploy is a GitHub Release, tagged on the deployed commit.
+      # Only after the deploy succeeds: a failed one leaves no tag, and the
+      # next run takes the same version. A commit already released (a manual
+      # run with nothing new) keeps its tag and makes no release.
+      - uses: actions/download-artifact@v7
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.version.outputs.released != 'true'
+        with:
+          name: release-notes
+          path: ${{ runner.temp }}
+      - name: Release on GitHub
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.version.outputs.released != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          gh release create "v$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "v$VERSION" \
+            --notes-file "$RUNNER_TEMP/release-notes.md"
 
       - name: Deploy to Firebase Hosting (preview)
         if: github.event_name == 'pull_request'

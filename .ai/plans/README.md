@@ -13,6 +13,7 @@ As decisões tomadas, e por quem, estão em [../decisions.md](../decisions.md).
 | [lgpd-compliance.md](lgpd-compliance.md) | Conformidade com a LGPD | Concluído (23/10), com pendências manuais |
 | [engineering-quality.md](engineering-quality.md) | Testes com 100% de cobertura e refatorações | Concluído (25/10) |
 | [i18n.md](i18n.md) | App bilíngue: pt-BR e en-US | Concluído (26/10) |
+| [versioned-releases.md](versioned-releases.md) | Versão em cada deploy, com tag, GitHub Release e a versão no app | Implementado (27/10), à espera do primeiro deploy |
 
 ## Histórico
 
