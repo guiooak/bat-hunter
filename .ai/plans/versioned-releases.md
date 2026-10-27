@@ -2,7 +2,7 @@
 
 ## Status (27/10/2026)
 
-**Proposto.** Nada implementado ainda. Baseado no PR [guiooak/tymebox#15](https://github.com/guiooak/tymebox/pull/15), adaptado ao CI e às convenções deste repositório.
+**Implementado, à espera do primeiro deploy.** As 4 fases estão no PR [#5](https://github.com/guiooak/bat-hunter/pull/5), junto com este plano. Baseado no PR [guiooak/tymebox#15](https://github.com/guiooak/tymebox/pull/15), adaptado ao CI e às convenções deste repositório. Depois do merge, o primeiro deploy da `main` deve criar a `v1.0.0`; os itens de "Depois deste PR" vêm em seguida.
 
 ## Situação atual
 

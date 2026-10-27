@@ -98,8 +98,10 @@ The game keeps only what multiplayer needs, readable only by the players involve
 
 Done by GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) once lint, typecheck, format, build, the tests (100% coverage) and the database rules tests pass:
 
-- Push to `main` → database rules + Hosting live channel.
-- Pull request → Hosting preview channel (Google sign-in doesn't work there, since preview domains aren't authorized).
+- Merge to `main` → database rules + Hosting live channel, then a GitHub Release. Only `main` goes live, also from a manual run.
+- Pull request → Hosting preview channel (Google sign-in doesn't work there, since preview domains aren't authorized). Dependabot's PRs run the checks but don't deploy.
+
+`main` only takes pull requests whose checks pass. Runs on `main` queue, so a new merge never cancels a deploy halfway; on a PR, a new push cancels the stale run. The deploy ships the bundle the `build` check produced.
 
 Required repository secrets:
 
@@ -108,6 +110,20 @@ Required repository secrets:
 | `FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME` | Created by `npx firebase-tools init hosting:github`. Also grant it the _Firebase Realtime Database Admin_ role in IAM. |
 | `FIREBASE_PROJECT_ID` | `bat-hunter-game` |
 | `VITE_FIREBASE_*` | Same values as `.env.local` (`gh secret set -f .env.local`). |
+
+## Releases
+
+Every live deploy is a [GitHub Release](https://github.com/guiooak/bat-hunter/releases), tagged `vX.Y.Z` on the deployed commit. [`scripts/release-version.mjs`](scripts/release-version.mjs) computes the version from the commits since the last `v*` tag:
+
+- `feat!:` (any type with `!`) or a `BREAKING CHANGE:` footer → major.
+- `feat:` → minor.
+- Anything else → patch. Every deploy gets a version, even a docs-only one.
+
+Merge commits don't count, the commits they bring do. The first release is `package.json`'s `1.0.0`; after that the tags are the source of truth and `package.json` isn't bumped. The release notes list the commits by kind.
+
+The release is created only after the deploy succeeds: a failed deploy leaves no tag, and the next run takes the same number. A manual run on a commit already released keeps its version and creates nothing.
+
+The running version is at the foot of the Settings page (`/settings`), linked to its release. PR previews show `X.Y.Z-pr.N` and local builds `dev`.
 
 ## Brand
 

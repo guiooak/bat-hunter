@@ -44,4 +44,6 @@ yarn test:rules      # database rules on the Firebase emulator (needs Java 21)
 
 ## Commits
 
-One commit per change, with a message that explains why (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`). Pushes to `main` deploy after lint, typecheck, format, build, tests with coverage and rules tests pass.
+One commit per change, with a message that explains why (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`, `ci:`). The type decides the release version: `feat` bumps the minor, a `!` after the type or a `BREAKING CHANGE:` footer the major, anything else the patch (see the README's Releases). A squash merge keeps only the PR's title, so it follows the same format.
+
+Changes reach `main` through pull requests. Each merge deploys after lint, typecheck, format, build, tests with coverage and rules tests pass.
