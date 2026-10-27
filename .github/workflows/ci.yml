@@ -133,20 +133,26 @@ jobs:
         with:
           name: dist
           path: dist/
+      - run: corepack enable
       - uses: actions/setup-node@v7
         with:
           node-version: 24
+          cache: yarn
+      # For the firebase-tools locked in yarn.lock: the version the rules tests
+      # ran with, not whatever 15.x npm serves today
+      - run: yarn install --immutable
 
       # Only main goes live, from a push or a manual run: a manual run on any
       # other branch used to ship that branch, rules included.
       - name: Deploy database rules
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/service-account.json"
-          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/service-account.json" \
-            npx --yes firebase-tools@15 deploy --only database --project "$FIREBASE_PROJECT_ID" --non-interactive \
-            || { cat firebase-debug.log; rm "$RUNNER_TEMP/service-account.json"; exit 1; }
-          rm "$RUNNER_TEMP/service-account.json"
+          creds="$RUNNER_TEMP/service-account.json"
+          trap 'rm -f "$creds"' EXIT
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$creds"
+          export GOOGLE_APPLICATION_CREDENTIALS="$creds"
+          yarn firebase deploy --only database --project "$FIREBASE_PROJECT_ID" --non-interactive \
+            || { cat firebase-debug.log; exit 1; }
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
