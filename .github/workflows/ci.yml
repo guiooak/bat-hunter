@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [lint, typecheck, 'format:check', build, 'test:coverage']
+        script: [lint, typecheck, 'format:check', 'test:coverage']
     steps:
       - uses: actions/checkout@v7
       - run: corepack enable
@@ -34,6 +34,35 @@ jobs:
           cache: yarn
       - run: yarn install --immutable
       - run: yarn ${{ matrix.script }}
+
+  # The bundle that ships: deploy publishes this artifact instead of building
+  # again, so what goes live is what passed the checks. Named `build`, one of
+  # the checks the main ruleset requires. The Firebase web config isn't secret
+  # (it ends up in the bundle) but stays out of the repo; forks and Dependabot
+  # get none, and they don't deploy.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: corepack enable
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
 
   # The database rules against the Firebase emulator, which needs Java
   rules:
@@ -59,7 +88,7 @@ jobs:
   # the secrets (Dependabot only gets its own, and it gets no production
   # credentials on purpose). Their checks still run.
   deploy:
-    needs: [checks, rules]
+    needs: [checks, build, rules]
     if: >-
       github.event_name != 'pull_request' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
@@ -70,23 +99,16 @@ jobs:
       checks: write
       pull-requests: write
     steps:
+      # firebase.json and the rules come from the checkout, the files from
+      # the build job.
       - uses: actions/checkout@v7
-      - run: corepack enable
+      - uses: actions/download-artifact@v7
+        with:
+          name: dist
+          path: dist/
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: yarn
-      - run: yarn install --immutable
-      - name: Build
-        run: yarn build
-        env:
-          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
-          VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
-          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
 
       # Only main goes live, from a push or a manual run: a manual run on any
       # other branch used to ship that branch, rules included.
