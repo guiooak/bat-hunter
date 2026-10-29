@@ -2,7 +2,7 @@
 
 ## Status (27/10/2026)
 
-**Implementado, à espera do primeiro deploy.** As 4 fases estão no PR [#5](https://github.com/guiooak/bat-hunter/pull/5), junto com este plano. Baseado no PR [guiooak/tymebox#15](https://github.com/guiooak/tymebox/pull/15), adaptado ao CI e às convenções deste repositório. Depois do merge, o primeiro deploy da `main` deve criar a `v1.0.0`; os itens de "Depois deste PR" vêm em seguida.
+**Concluído (27/10).** As 4 fases entraram no PR [#5](https://github.com/guiooak/bat-hunter/pull/5), junto com este plano, e o primeiro deploy criou a [`v1.0.0`](https://github.com/guiooak/bat-hunter/releases/tag/v1.0.0). Baseado no PR [guiooak/tymebox#15](https://github.com/guiooak/tymebox/pull/15), adaptado ao CI e às convenções deste repositório. Os dois itens de "Depois deste PR" também estão feitos.
 
 ## Situação atual
 
@@ -87,10 +87,10 @@ Do PR do tymebox, ficam de fora as partes que são específicas daquele reposit�
 
 ## Depois deste PR
 
-Decidido em 27/10. Cada item vai num PR próprio.
+Decidido e feito em 27/10.
 
-- **Proteger as tags `v*` contra alteração e exclusão**, logo depois que o `v1.0.0` sair. É uma regra de tag no GitHub que bloqueia mover uma tag para outro commit e apagá-la. A criação continua liberada, porque é o CI que cria a tag depois de cada deploy. Bloquear também a criação exigiria liberar o GitHub Actions como exceção, e um erro nisso faria o deploy sair sem release. Assim, uma versão publicada não pode ser reescrita depois.
-- **Travar o `firebase-tools` nas `devDependencies`**, logo em seguida. Hoje o deploy das regras e o `test:rules` rodam `npx --yes firebase-tools@15`, que baixa na hora a versão mais nova da linha 15. Isso fica fora do `yarn.lock` e da quarentena de 3 dias do `.yarnrc.yml`: uma versão maliciosa publicada hoje rodaria no CI com a conta de serviço de produção. Com a versão travada, o deploy e os testes usam a mesma versão testada, e as atualizações chegam por PR do Dependabot. O custo é um `yarn install` mais pesado em todos os jobs.
+- **Feito: tags `v*` protegidas contra alteração e exclusão** (ruleset "Release tags", criada depois da `v1.0.0`). É uma regra de tag no GitHub que bloqueia mover uma tag para outro commit e apagá-la. A criação continua liberada, porque é o CI que cria a tag depois de cada deploy. Bloquear também a criação exigiria liberar o GitHub Actions como exceção, e um erro nisso faria o deploy sair sem release. Assim, uma versão publicada não pode ser reescrita depois.
+- **Feito: `firebase-tools` travado nas `devDependencies`** (PR [#6](https://github.com/guiooak/bat-hunter/pull/6)). Hoje o deploy das regras e o `test:rules` rodam `npx --yes firebase-tools@15`, que baixa na hora a versão mais nova da linha 15. Isso fica fora do `yarn.lock` e da quarentena de 3 dias do `.yarnrc.yml`: uma versão maliciosa publicada hoje rodaria no CI com a conta de serviço de produção. Com a versão travada, o deploy e os testes usam a mesma versão testada, e as atualizações chegam por PR do Dependabot. O custo é um `yarn install` mais pesado em todos os jobs.
 
 ## Estimativa
 

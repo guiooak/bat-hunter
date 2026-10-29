@@ -87,7 +87,7 @@ The app uses the Firebase project `bat-hunter-game`:
 To try the rules locally (requires Java):
 
 ```bash
-npx firebase-tools emulators:start --only auth,database
+yarn firebase emulators:start --only auth,database
 ```
 
 ## Privacy (LGPD)
@@ -107,7 +107,7 @@ Required repository secrets:
 
 | Secret | Value |
 | --- | --- |
-| `FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME` | Created by `npx firebase-tools init hosting:github`. Also grant it the _Firebase Realtime Database Admin_ role in IAM. |
+| `FIREBASE_SERVICE_ACCOUNT_BAT_HUNTER_GAME` | Created by `yarn firebase init hosting:github`. Also grant it the _Firebase Realtime Database Admin_ role in IAM. |
 | `FIREBASE_PROJECT_ID` | `bat-hunter-game` |
 | `VITE_FIREBASE_*` | Same values as `.env.local` (`gh secret set -f .env.local`). |
 
